@@ -6,13 +6,25 @@ export async function POST(request) {
   try {
     const { htmlContent, resumeData, templateType } = await request.json();
 
-    // Launch browser correctly for Vercel
-    const browser = await playwright.chromium.launch({
-      // sparticuzChromium se zaroori settings istemal karen
-      args: sparticuzChromium.args,
-      executablePath: await sparticuzChromium.executablePath(),
-      headless: sparticuzChromium.headless,
-    });
+    let browser;
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    if (isProduction) {
+      // ✅ PRODUCTION (VERCEL) LOGIC
+      // Vercel par sparticuzChromium istemal hoga
+      browser = await playwright.chromium.launch({
+        args: sparticuzChromium.args,
+        executablePath: await sparticuzChromium.executablePath(),
+        headless: sparticuzChromium.headless,
+      });
+    } else {
+      // ✅ DEVELOPMENT (LOCAL) LOGIC
+      // Local machine par playwright ka default browser istemal hoga
+      // Iske liye `npx playwright install` command pehle se chali honi chahiye
+      browser = await playwright.chromium.launch({
+        headless: true, // Aap isse `false` karke browser dekh bhi sakte hain
+      });
+    }
 
     const page = await browser.newPage();
 
@@ -25,7 +37,6 @@ export async function POST(request) {
         <title>Resume - ${resumeData?.name || 'Your Name'}</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <style>
-          /* Aapki custom styles yahan reh sakti hain */
           body { font-family: Arial, sans-serif; }
         </style>
       </head>
@@ -35,12 +46,10 @@ export async function POST(request) {
       </html>
     `;
 
-    // Content set karen aur CDN script ke load hone ka intezar karen
     await page.setContent(completeHtmlContent, {
       waitUntil: 'networkidle',
     });
 
-    // PDF generate karen
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
@@ -54,7 +63,6 @@ export async function POST(request) {
 
     await browser.close();
 
-    // PDF response bhejen
     return new Response(pdfBuffer, {
       headers: {
         'Content-Type': 'application/pdf',
