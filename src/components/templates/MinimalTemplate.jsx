@@ -192,6 +192,165 @@ const MinimalTemplate = ({ data }) => {
           </div>
         </div>
       )}
+
+      {/* Teaching Experience */}
+      {data.teaching && data.teaching.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-2xl font-light text-gray-900 mb-6 text-center uppercase tracking-wide">
+            Teaching Experience
+          </h2>
+          <div className="space-y-4">
+            {data.teaching.map((course, index) => (
+              <div key={index} className="border-l border-gray-300 pl-6">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900">
+                      {course.course}
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      {course.institution}
+                    </p>
+                  </div>
+                  <span className="text-gray-500 text-sm">
+                    {course.date}
+                  </span>
+                </div>
+                {course.description && (
+                  <p className="text-gray-700 leading-relaxed text-sm">
+                    {course.description}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Publications */}
+      {data.publications && data.publications.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-2xl font-light text-gray-900 mb-6 text-center uppercase tracking-wide">
+            Publications
+          </h2>
+          <div className="space-y-4">
+            {data.publications.map((pub, index) => (
+              <div key={index} className="border-l border-gray-300 pl-6">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900">
+                      {pub.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      {pub.journal}
+                    </p>
+                  </div>
+                  <span className="text-gray-500 text-sm">
+                    {pub.date}
+                  </span>
+                </div>
+                {pub.url && (
+                  <a
+                    href={pub.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-600 hover:text-gray-800 text-sm"
+                  >
+                    View Publication →
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Professional Memberships */}
+      {data.memberships && data.memberships.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-2xl font-light text-gray-900 mb-6 text-center uppercase tracking-wide">
+            Professional Memberships
+          </h2>
+          <div className="space-y-3">
+            {data.memberships.map((membership, index) => (
+              <div key={index} className="flex justify-between items-center">
+                <div>
+                  <span className="text-gray-900 font-medium">
+                    {membership.organization}
+                  </span>
+                  {membership.role && (
+                    <p className="text-gray-600 text-sm">
+                      {membership.role}
+                    </p>
+                  )}
+                </div>
+                <span className="text-gray-500 text-sm">
+                  {membership.date || membership.period}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Security Clearance */}
+      {data.clearance && data.clearance.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-2xl font-light text-gray-900 mb-6 text-center uppercase tracking-wide">
+            Security Clearance
+          </h2>
+          <div className="space-y-4">
+            {data.clearance.map((clearance, index) => (
+              <div key={index} className="border-l border-gray-300 pl-6">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900">
+                      {clearance.level}
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      {clearance.agency}
+                    </p>
+                  </div>
+                  <span className="text-gray-500 text-sm">
+                    {clearance.date}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* References */}
+      {data.references && data.references.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-2xl font-light text-gray-900 mb-6 text-center uppercase tracking-wide">
+            References
+          </h2>
+          <div className="space-y-4">
+            {data.references.map((reference, index) => (
+              <div key={index} className="border-l border-gray-300 pl-6">
+                <h3 className="text-lg font-medium text-gray-900 mb-1">
+                  {reference.name}
+                </h3>
+                <p className="text-gray-600 text-sm mb-1">
+                  {reference.title}
+                </p>
+                <p className="text-gray-600 text-sm mb-2">
+                  {reference.company || reference.organization}
+                </p>
+                <div className="text-sm text-gray-500 space-y-1">
+                  {reference.email && (
+                    <p>Email: {reference.email}</p>
+                  )}
+                  {reference.phone && (
+                    <p>Phone: {reference.phone}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

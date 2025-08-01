@@ -237,6 +237,180 @@ const StartupTemplate = ({ data }) => {
         </div>
       )}
 
+      {/* Certifications */}
+      {data.certifications && data.certifications.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+            Certifications
+          </h2>
+          <div className="space-y-2">
+            {data.certifications.map((cert, index) => (
+              <div key={index} className="flex justify-between items-center">
+                <span className="text-gray-900 font-medium">
+                  {cert.name}
+                </span>
+                <span className="text-gray-600 text-sm">
+                  {cert.issuer} • {cert.date}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Teaching Experience */}
+      {data.teaching && data.teaching.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+            Teaching Experience
+          </h2>
+          <div className="space-y-4">
+            {data.teaching.map((course, index) => (
+              <div key={index} className="border-l-4 border-orange-600 pl-4">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {course.course}
+                  </h3>
+                  <span className="text-gray-600 text-sm">
+                    {course.date}
+                  </span>
+                </div>
+                <p className="text-orange-600 font-medium mb-2">
+                  {course.institution}
+                </p>
+                {course.description && (
+                  <p className="text-gray-700 text-sm">
+                    {course.description}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Publications */}
+      {data.publications && data.publications.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+            Publications
+          </h2>
+          <div className="space-y-3">
+            {data.publications.map((pub, index) => (
+              <div key={index} className="border-l-4 border-green-600 pl-4">
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                  {pub.title}
+                </h3>
+                <p className="text-green-600 font-medium mb-1">
+                  {pub.journal}
+                </p>
+                <p className="text-gray-600 text-sm mb-2">
+                  {pub.date}
+                </p>
+                {pub.url && (
+                  <a
+                    href={pub.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 text-sm"
+                  >
+                    View Publication →
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Professional Memberships */}
+      {data.memberships && data.memberships.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+            Professional Memberships
+          </h2>
+          <div className="space-y-2">
+            {data.memberships.map((membership, index) => (
+              <div key={index} className="flex justify-between items-center">
+                <div>
+                  <span className="text-gray-900 font-medium">
+                    {membership.organization}
+                  </span>
+                  {membership.role && (
+                    <p className="text-gray-600 text-sm">
+                      {membership.role}
+                    </p>
+                  )}
+                </div>
+                <span className="text-gray-600 text-sm">
+                  {membership.date || membership.period}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Security Clearance */}
+      {data.clearance && data.clearance.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+            Security Clearance
+          </h2>
+          <div className="space-y-3">
+            {data.clearance.map((clearance, index) => (
+              <div key={index} className="border-l-4 border-red-600 pl-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {clearance.level}
+                    </h3>
+                    <p className="text-red-600 font-medium">
+                      {clearance.agency}
+                    </p>
+                  </div>
+                  <span className="text-gray-600 text-sm">
+                    {clearance.date}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* References */}
+      {data.references && data.references.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+            References
+          </h2>
+          <div className="space-y-4">
+            {data.references.map((reference, index) => (
+              <div key={index} className="border-l-4 border-purple-600 pl-4">
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                  {reference.name}
+                </h3>
+                <p className="text-purple-600 font-medium mb-1">
+                  {reference.title}
+                </p>
+                <p className="text-gray-600 text-sm mb-2">
+                  {reference.company || reference.organization}
+                </p>
+                <div className="text-sm text-gray-600 space-y-1">
+                  {reference.email && (
+                    <p>Email: {reference.email}</p>
+                  )}
+                  {reference.phone && (
+                    <p>Phone: {reference.phone}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Contact/Footer */}
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-4 lg:p-8 rounded-lg text-white text-center">
         <h3 className="text-2xl font-bold mb-4">Let's Build Something Amazing Together</h3>

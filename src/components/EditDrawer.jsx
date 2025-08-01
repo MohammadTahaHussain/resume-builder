@@ -277,14 +277,719 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
     </div>
   );
 
+  const renderEducationSection = () => (
+    <div className="space-y-4">
+      {formData.education?.map((edu, index) => (
+        <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium text-gray-900">Education {index + 1}</h4>
+            <button
+              onClick={() => {
+                const newEdu = formData.education.filter((_, i) => i !== index);
+                setFormData(prev => ({ ...prev, education: newEdu }));
+              }}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={edu.degree || ''}
+              onChange={(e) => handleArrayChange('education', index, { degree: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Degree (e.g., Bachelor of Science in Computer Science)"
+            />
+            <input
+              type="text"
+              value={edu.institution || ''}
+              onChange={(e) => handleArrayChange('education', index, { institution: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Institution (e.g., University of California)"
+            />
+            <div className="grid grid-cols-2 gap-2">
+              <input
+                type="text"
+                value={edu.graduationYear || ''}
+                onChange={(e) => handleArrayChange('education', index, { graduationYear: e.target.value })}
+                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                placeholder="Graduation Year"
+              />
+              <input
+                type="text"
+                value={edu.gpa || ''}
+                onChange={(e) => handleArrayChange('education', index, { gpa: e.target.value })}
+                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                placeholder="GPA (optional)"
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          const newEdu = [...(formData.education || []), {
+            degree: '',
+            institution: '',
+            graduationYear: '',
+            gpa: ''
+          }];
+          setFormData(prev => ({ ...prev, education: newEdu }));
+        }}
+        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+      >
+        + Add Education
+      </button>
+    </div>
+  );
+
+  const renderProjectsSection = () => (
+    <div className="space-y-4">
+      {formData.projects?.map((project, index) => (
+        <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium text-gray-900">Project {index + 1}</h4>
+            <button
+              onClick={() => {
+                const newProjects = formData.projects.filter((_, i) => i !== index);
+                setFormData(prev => ({ ...prev, projects: newProjects }));
+              }}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={project.name || ''}
+              onChange={(e) => handleArrayChange('projects', index, { name: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Project Name"
+            />
+            <textarea
+              value={project.description || ''}
+              onChange={(e) => handleArrayChange('projects', index, { description: e.target.value })}
+              rows={3}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Project Description"
+            />
+            <input
+              type="text"
+              value={project.technologies || ''}
+              onChange={(e) => handleArrayChange('projects', index, { technologies: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Technologies (e.g., React, Node.js, MongoDB)"
+            />
+            <input
+              type="url"
+              value={project.url || ''}
+              onChange={(e) => handleArrayChange('projects', index, { url: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Project URL (optional)"
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          const newProjects = [...(formData.projects || []), {
+            name: '',
+            description: '',
+            technologies: '',
+            url: ''
+          }];
+          setFormData(prev => ({ ...prev, projects: newProjects }));
+        }}
+        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+      >
+        + Add Project
+      </button>
+    </div>
+  );
+
+  const renderCertificationsSection = () => (
+    <div className="space-y-4">
+      {formData.certifications?.map((cert, index) => (
+        <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium text-gray-900">Certification {index + 1}</h4>
+            <button
+              onClick={() => {
+                const newCerts = formData.certifications.filter((_, i) => i !== index);
+                setFormData(prev => ({ ...prev, certifications: newCerts }));
+              }}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={cert.name || ''}
+              onChange={(e) => handleArrayChange('certifications', index, { name: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Certification Name"
+            />
+            <input
+              type="text"
+              value={cert.issuer || ''}
+              onChange={(e) => handleArrayChange('certifications', index, { issuer: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Issuing Organization"
+            />
+            <input
+              type="text"
+              value={cert.date || ''}
+              onChange={(e) => handleArrayChange('certifications', index, { date: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Date Obtained"
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          const newCerts = [...(formData.certifications || []), {
+            name: '',
+            issuer: '',
+            date: ''
+          }];
+          setFormData(prev => ({ ...prev, certifications: newCerts }));
+        }}
+        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+      >
+        + Add Certification
+      </button>
+    </div>
+  );
+
+  const renderAwardsSection = () => (
+    <div className="space-y-4">
+      {formData.awards?.map((award, index) => (
+        <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium text-gray-900">Award {index + 1}</h4>
+            <button
+              onClick={() => {
+                const newAwards = formData.awards.filter((_, i) => i !== index);
+                setFormData(prev => ({ ...prev, awards: newAwards }));
+              }}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={award.name || ''}
+              onChange={(e) => handleArrayChange('awards', index, { name: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Award Name"
+            />
+            <input
+              type="text"
+              value={award.issuer || ''}
+              onChange={(e) => handleArrayChange('awards', index, { issuer: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Issuing Organization"
+            />
+            <input
+              type="text"
+              value={award.date || ''}
+              onChange={(e) => handleArrayChange('awards', index, { date: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Date Received"
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          const newAwards = [...(formData.awards || []), {
+            name: '',
+            issuer: '',
+            date: ''
+          }];
+          setFormData(prev => ({ ...prev, awards: newAwards }));
+        }}
+        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+      >
+        + Add Award
+      </button>
+    </div>
+  );
+
+  const renderAchievementsSection = () => (
+    <div className="space-y-4">
+      {formData.achievements?.map((achievement, index) => (
+        <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium text-gray-900">Achievement {index + 1}</h4>
+            <button
+              onClick={() => {
+                const newAchievements = formData.achievements.filter((_, i) => i !== index);
+                setFormData(prev => ({ ...prev, achievements: newAchievements }));
+              }}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={typeof achievement === 'string' ? achievement : achievement.title || ''}
+              onChange={(e) => {
+                const newAchievements = [...(formData.achievements || [])];
+                if (typeof achievement === 'string') {
+                  newAchievements[index] = e.target.value;
+                } else {
+                  newAchievements[index] = { ...achievement, title: e.target.value };
+                }
+                setFormData(prev => ({ ...prev, achievements: newAchievements }));
+              }}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Achievement Title"
+            />
+            {typeof achievement === 'object' && (
+              <textarea
+                value={achievement.description || ''}
+                onChange={(e) => {
+                  const newAchievements = [...(formData.achievements || [])];
+                  newAchievements[index] = { ...achievement, description: e.target.value };
+                  setFormData(prev => ({ ...prev, achievements: newAchievements }));
+                }}
+                rows={3}
+                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                placeholder="Achievement Description"
+              />
+            )}
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          const newAchievements = [...(formData.achievements || []), ''];
+          setFormData(prev => ({ ...prev, achievements: newAchievements }));
+        }}
+        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+      >
+        + Add Achievement
+      </button>
+    </div>
+  );
+
+  const renderPublicationsSection = () => (
+    <div className="space-y-4">
+      {formData.publications?.map((pub, index) => (
+        <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium text-gray-900">Publication {index + 1}</h4>
+            <button
+              onClick={() => {
+                const newPubs = formData.publications.filter((_, i) => i !== index);
+                setFormData(prev => ({ ...prev, publications: newPubs }));
+              }}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={pub.title || ''}
+              onChange={(e) => handleArrayChange('publications', index, { title: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Publication Title"
+            />
+            <input
+              type="text"
+              value={pub.journal || ''}
+              onChange={(e) => handleArrayChange('publications', index, { journal: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Journal/Conference"
+            />
+            <input
+              type="text"
+              value={pub.date || ''}
+              onChange={(e) => handleArrayChange('publications', index, { date: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Publication Date"
+            />
+            <input
+              type="url"
+              value={pub.url || ''}
+              onChange={(e) => handleArrayChange('publications', index, { url: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Publication URL (optional)"
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          const newPubs = [...(formData.publications || []), {
+            title: '',
+            journal: '',
+            date: '',
+            url: ''
+          }];
+          setFormData(prev => ({ ...prev, publications: newPubs }));
+        }}
+        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+      >
+        + Add Publication
+      </button>
+    </div>
+  );
+
+  const renderMembershipsSection = () => (
+    <div className="space-y-4">
+      {formData.memberships?.map((membership, index) => (
+        <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium text-gray-900">Membership {index + 1}</h4>
+            <button
+              onClick={() => {
+                const newMemberships = formData.memberships.filter((_, i) => i !== index);
+                setFormData(prev => ({ ...prev, memberships: newMemberships }));
+              }}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={membership.organization || ''}
+              onChange={(e) => handleArrayChange('memberships', index, { organization: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Organization Name"
+            />
+            <input
+              type="text"
+              value={membership.role || ''}
+              onChange={(e) => handleArrayChange('memberships', index, { role: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Role/Position"
+            />
+            <input
+              type="text"
+              value={membership.date || ''}
+              onChange={(e) => handleArrayChange('memberships', index, { date: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Membership Date"
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          const newMemberships = [...(formData.memberships || []), {
+            organization: '',
+            role: '',
+            date: ''
+          }];
+          setFormData(prev => ({ ...prev, memberships: newMemberships }));
+        }}
+        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+      >
+        + Add Membership
+      </button>
+    </div>
+  );
+
+  const renderClearanceSection = () => (
+    <div className="space-y-4">
+      {formData.clearance?.map((clearance, index) => (
+        <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium text-gray-900">Clearance {index + 1}</h4>
+            <button
+              onClick={() => {
+                const newClearances = formData.clearance.filter((_, i) => i !== index);
+                setFormData(prev => ({ ...prev, clearance: newClearances }));
+              }}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={clearance.level || ''}
+              onChange={(e) => handleArrayChange('clearance', index, { level: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Clearance Level"
+            />
+            <input
+              type="text"
+              value={clearance.agency || ''}
+              onChange={(e) => handleArrayChange('clearance', index, { agency: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Issuing Agency"
+            />
+            <input
+              type="text"
+              value={clearance.date || ''}
+              onChange={(e) => handleArrayChange('clearance', index, { date: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Date Obtained"
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          const newClearances = [...(formData.clearance || []), {
+            level: '',
+            agency: '',
+            date: ''
+          }];
+          setFormData(prev => ({ ...prev, clearance: newClearances }));
+        }}
+        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+      >
+        + Add Clearance
+      </button>
+    </div>
+  );
+
+  const renderReferencesSection = () => (
+    <div className="space-y-4">
+      {formData.references?.map((ref, index) => (
+        <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium text-gray-900">Reference {index + 1}</h4>
+            <button
+              onClick={() => {
+                const newRefs = formData.references.filter((_, i) => i !== index);
+                setFormData(prev => ({ ...prev, references: newRefs }));
+              }}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={ref.name || ''}
+              onChange={(e) => handleArrayChange('references', index, { name: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Reference Name"
+            />
+            <input
+              type="text"
+              value={ref.title || ''}
+              onChange={(e) => handleArrayChange('references', index, { title: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Job Title"
+            />
+            <input
+              type="text"
+              value={ref.company || ''}
+              onChange={(e) => handleArrayChange('references', index, { company: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Company"
+            />
+            <input
+              type="email"
+              value={ref.email || ''}
+              onChange={(e) => handleArrayChange('references', index, { email: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Email"
+            />
+            <input
+              type="tel"
+              value={ref.phone || ''}
+              onChange={(e) => handleArrayChange('references', index, { phone: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Phone"
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          const newRefs = [...(formData.references || []), {
+            name: '',
+            title: '',
+            company: '',
+            email: '',
+            phone: ''
+          }];
+          setFormData(prev => ({ ...prev, references: newRefs }));
+        }}
+        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+      >
+        + Add Reference
+      </button>
+    </div>
+  );
+
+  const renderTeachingSection = () => (
+    <div className="space-y-4">
+      {formData.teaching?.map((teaching, index) => (
+        <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium text-gray-900">Teaching Experience {index + 1}</h4>
+            <button
+              onClick={() => {
+                const newTeaching = formData.teaching.filter((_, i) => i !== index);
+                setFormData(prev => ({ ...prev, teaching: newTeaching }));
+              }}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={teaching.course || ''}
+              onChange={(e) => handleArrayChange('teaching', index, { course: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Course Name"
+            />
+            <input
+              type="text"
+              value={teaching.institution || ''}
+              onChange={(e) => handleArrayChange('teaching', index, { institution: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Institution"
+            />
+            <input
+              type="text"
+              value={teaching.date || ''}
+              onChange={(e) => handleArrayChange('teaching', index, { date: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Teaching Period"
+            />
+            <textarea
+              value={teaching.description || ''}
+              onChange={(e) => handleArrayChange('teaching', index, { description: e.target.value })}
+              rows={3}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Description of teaching responsibilities"
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          const newTeaching = [...(formData.teaching || []), {
+            course: '',
+            institution: '',
+            date: '',
+            description: ''
+          }];
+          setFormData(prev => ({ ...prev, teaching: newTeaching }));
+        }}
+        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+      >
+        + Add Teaching Experience
+      </button>
+    </div>
+  );
+
+  const renderAdditionalSection = () => (
+    <div className="space-y-4">
+      {formData.additional?.map((item, index) => (
+        <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium text-gray-900">Additional Item {index + 1}</h4>
+            <button
+              onClick={() => {
+                const newAdditional = formData.additional.filter((_, i) => i !== index);
+                setFormData(prev => ({ ...prev, additional: newAdditional }));
+              }}
+              className="text-red-500 hover:text-red-700 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={typeof item === 'string' ? item : item.title || ''}
+              onChange={(e) => {
+                const newAdditional = [...(formData.additional || [])];
+                if (typeof item === 'string') {
+                  newAdditional[index] = e.target.value;
+                } else {
+                  newAdditional[index] = { ...item, title: e.target.value };
+                }
+                setFormData(prev => ({ ...prev, additional: newAdditional }));
+              }}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+              placeholder="Title"
+            />
+            {typeof item === 'object' && (
+              <textarea
+                value={item.content || ''}
+                onChange={(e) => {
+                  const newAdditional = [...(formData.additional || [])];
+                  newAdditional[index] = { ...item, content: e.target.value };
+                  setFormData(prev => ({ ...prev, additional: newAdditional }));
+                }}
+                rows={3}
+                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                placeholder="Content"
+              />
+            )}
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          const newAdditional = [...(formData.additional || []), ''];
+          setFormData(prev => ({ ...prev, additional: newAdditional }));
+        }}
+        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+      >
+        + Add Additional Item
+      </button>
+    </div>
+  );
+
   const renderSection = () => {
     switch (activeSection) {
       case 'personal':
         return renderPersonalSection();
       case 'experience':
         return renderExperienceSection();
+      case 'education':
+        return renderEducationSection();
       case 'skills':
         return renderSkillsSection();
+      case 'projects':
+        return renderProjectsSection();
+      case 'certifications':
+        return renderCertificationsSection();
+      case 'awards':
+        return renderAwardsSection();
+      case 'achievements':
+        return renderAchievementsSection();
+      case 'publications':
+        return renderPublicationsSection();
+      case 'memberships':
+        return renderMembershipsSection();
+      case 'clearance':
+        return renderClearanceSection();
+      case 'references':
+        return renderReferencesSection();
+      case 'teaching':
+        return renderTeachingSection();
+      case 'additional':
+        return renderAdditionalSection();
       default:
         return (
           <div className="text-center text-gray-500 py-8">
@@ -305,7 +1010,7 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
       )}
 
       {/* Drawer */}
-      <div className={`fixed top-0 right-0 h-full w-full min-w-[300px] max-w-[600px] lg:w-1/2 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
+      <div className={`fixed top-0 right-0 h-full w-full min-w-[300px] max-w-[640px] lg:w-1/2 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="h-full flex flex-col">

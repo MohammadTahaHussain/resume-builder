@@ -180,6 +180,169 @@ const ClassicTemplate = ({ data }) => {
           </div>
         </div>
       )}
+
+      {/* Teaching Experience */}
+      {data.teaching && data.teaching.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+            Teaching Experience
+          </h2>
+          <div className="space-y-6">
+            {data.teaching.map((course, index) => (
+              <div key={index} className="border-l-4 border-gray-800 pl-6">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      {course.course}
+                    </h3>
+                    <p className="text-lg text-gray-700 font-semibold">
+                      {course.institution}
+                    </p>
+                  </div>
+                  <span className="text-gray-600 font-medium">
+                    {course.date}
+                  </span>
+                </div>
+                {course.description && (
+                  <p className="text-gray-700 leading-relaxed text-lg">
+                    {course.description}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Publications */}
+      {data.publications && data.publications.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+            Publications
+          </h2>
+          <div className="space-y-4">
+            {data.publications.map((pub, index) => (
+              <div key={index} className="border-l-4 border-gray-800 pl-6">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      {pub.title}
+                    </h3>
+                    <p className="text-lg text-gray-700 font-semibold">
+                      {pub.journal}
+                    </p>
+                  </div>
+                  <span className="text-gray-600 font-medium">
+                    {pub.date}
+                  </span>
+                </div>
+                {pub.url && (
+                  <a
+                    href={pub.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    View Publication →
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Professional Memberships */}
+      {data.memberships && data.memberships.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+            Professional Memberships
+          </h2>
+          <div className="space-y-4">
+            {data.memberships.map((membership, index) => (
+              <div key={index} className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    {membership.organization}
+                  </h3>
+                  {membership.role && (
+                    <p className="text-lg text-gray-700 font-semibold">
+                      {membership.role}
+                    </p>
+                  )}
+                </div>
+                <span className="text-gray-600 font-medium text-lg">
+                  {membership.date || membership.period}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Security Clearance */}
+      {data.clearance && data.clearance.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+            Security Clearance
+          </h2>
+          <div className="space-y-6">
+            {data.clearance.map((clearance, index) => (
+              <div key={index} className="border-l-4 border-gray-800 pl-6">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      {clearance.level}
+                    </h3>
+                    <p className="text-lg text-gray-700 font-semibold">
+                      {clearance.agency}
+                    </p>
+                  </div>
+                  <span className="text-gray-600 font-medium text-lg">
+                    {clearance.date}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* References */}
+      {data.references && data.references.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+            References
+          </h2>
+          <div className="space-y-6">
+            {data.references.map((reference, index) => (
+              <div key={index} className="border-l-4 border-gray-800 pl-6">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      {reference.name}
+                    </h3>
+                    <p className="text-lg text-gray-700 font-semibold">
+                      {reference.title}
+                    </p>
+                    <p className="text-lg text-gray-700 font-semibold">
+                      {reference.company || reference.organization}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-lg text-gray-700 space-y-1">
+                  {reference.email && (
+                    <p>Email: {reference.email}</p>
+                  )}
+                  {reference.phone && (
+                    <p>Phone: {reference.phone}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

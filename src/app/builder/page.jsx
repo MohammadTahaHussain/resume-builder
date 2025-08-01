@@ -33,6 +33,7 @@ function BuilderContent() {
 
   // Function to handle data updates from drawer
   const handleDataUpdate = (updatedData) => {
+    console.log(updatedData);
     setResumeData(updatedData);
   };
 
