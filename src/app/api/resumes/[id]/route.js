@@ -13,13 +13,19 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const userId = session.user?.id || session.user?._id
+    
+    if (!userId) {
+      return NextResponse.json({ error: 'User ID not found in session' }, { status: 400 })
+    }
+
     const { id } = params
 
     await connectDB()
     
     const resume = await Resume.findOne({ 
       _id: id, 
-      userId: session.user.id 
+      userId 
     })
     
     if (!resume) {
@@ -44,15 +50,34 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const userId = session.user?.id || session.user?._id
+    
+    if (!userId) {
+      return NextResponse.json({ error: 'User ID not found in session' }, { status: 400 })
+    }
+
     const { id } = params
     const body = await request.json()
 
     await connectDB()
     
+    // Transform the data to match our schema
+    const transformedData = {
+      personal: body.data?.personal || {},
+      experience: body.data?.experience || [],
+      education: body.data?.education || [],
+      skills: transformSkills(body.data?.skills),
+      projects: body.data?.projects || [],
+      certifications: body.data?.certifications || [],
+      languages: body.data?.languages || [],
+      interests: body.data?.interests || []
+    }
+    
     const resume = await Resume.findOneAndUpdate(
-      { _id: id, userId: session.user.id },
+      { _id: id, userId },
       { 
         ...body,
+        data: transformedData,
         lastModified: new Date(),
         updatedAt: new Date()
       },
@@ -81,13 +106,19 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const userId = session.user?.id || session.user?._id
+    
+    if (!userId) {
+      return NextResponse.json({ error: 'User ID not found in session' }, { status: 400 })
+    }
+
     const { id } = params
 
     await connectDB()
     
     const resume = await Resume.findOneAndDelete({ 
       _id: id, 
-      userId: session.user.id 
+      userId 
     })
     
     if (!resume) {
@@ -102,4 +133,24 @@ export async function DELETE(request, { params }) {
       { status: 500 }
     )
   }
+}
+
+// Helper function to transform skills data
+function transformSkills(skills) {
+  if (!skills) return []
+  
+  // If skills is already in the correct format (array of objects)
+  if (Array.isArray(skills) && skills.length > 0 && typeof skills[0] === 'object') {
+    return skills
+  }
+  
+  // If skills is a simple array of strings, convert to our schema format
+  if (Array.isArray(skills) && skills.length > 0 && typeof skills[0] === 'string') {
+    return [{
+      category: 'Technical Skills',
+      skills: skills
+    }]
+  }
+  
+  return []
 } 

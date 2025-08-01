@@ -136,15 +136,28 @@ const CreativeTemplate = ({ data }) => {
 
       {/* Skills */}
       {data.skills && data.skills.length > 0 && (
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-            <span className="w-8 h-1 bg-gradient-to-r from-green-500 to-blue-500 mr-4"></span>
-            Skills & Tools
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+            Skills
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {data.skills.map((skill, index) => (
-              <div key={index} className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-lg text-center hover:shadow-md transition-shadow">
-                <span className="text-gray-800 font-medium">{skill}</span>
+          <div className="space-y-4">
+            {data.skills.map((skillGroup, index) => (
+              <div key={index}>
+                {skillGroup.category && (
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    {skillGroup.category}
+                  </h3>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {skillGroup.skills && skillGroup.skills.map((skill, idx) => (
+                    <span
+                      key={idx}
+                      className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

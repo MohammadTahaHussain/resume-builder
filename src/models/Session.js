@@ -20,7 +20,6 @@ const sessionSchema = new mongoose.Schema({
 })
 
 // Create indexes
-sessionSchema.index({ sessionToken: 1 }, { unique: true })
 sessionSchema.index({ userId: 1 })
 
 const Session = mongoose.models.Session || mongoose.model('Session', sessionSchema)

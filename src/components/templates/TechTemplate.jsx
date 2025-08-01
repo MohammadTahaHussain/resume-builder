@@ -30,16 +30,30 @@ const TechTemplate = ({ data }) => {
         </div>
       )}
 
-      {/* Technical Skills */}
+      {/* Skills */}
       {data.skills && data.skills.length > 0 && (
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
-            Technical Skills
+            Skills
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {data.skills.map((skill, index) => (
-              <div key={index} className="bg-green-50 border border-green-200 p-3 rounded-lg">
-                <span className="text-green-800 font-medium">{skill}</span>
+          <div className="space-y-4">
+            {data.skills.map((skillGroup, index) => (
+              <div key={index}>
+                {skillGroup.category && (
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    {skillGroup.category}
+                  </h3>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {skillGroup.skills && skillGroup.skills.map((skill, idx) => (
+                    <span
+                      key={idx}
+                      className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

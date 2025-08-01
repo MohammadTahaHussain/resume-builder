@@ -13,9 +13,15 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const userId = session.user?.id || session.user?._id
+    
+    if (!userId) {
+      return NextResponse.json({ error: 'User ID not found in session' }, { status: 400 })
+    }
+
     await connectDB()
     
-    const resumes = await Resume.find({ userId: session.user.id })
+    const resumes = await Resume.find({ userId })
       .sort({ updatedAt: -1 })
       .select('-data')
     
@@ -37,16 +43,35 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // Check for user ID in both id and _id fields
+    const userId = session.user?.id || session.user?._id
+    
+    if (!userId) {
+      return NextResponse.json({ error: 'User ID not found in session' }, { status: 400 })
+    }
+
     const body = await request.json()
     const { title, template, data } = body
 
     await connectDB()
     
+    // Transform the data to match our schema
+    const transformedData = {
+      personal: data.personal || {},
+      experience: data.experience || [],
+      education: data.education || [],
+      skills: transformSkills(data.skills),
+      projects: data.projects || [],
+      certifications: data.certifications || [],
+      languages: data.languages || [],
+      interests: data.interests || []
+    }
+    
     const resume = new Resume({
-      userId: session.user.id,
+      userId: userId,
       title: title || 'My Resume',
       template: template || 'modern',
-      data: data || {},
+      data: transformedData,
     })
     
     await resume.save()
@@ -59,4 +84,24 @@ export async function POST(request) {
       { status: 500 }
     )
   }
+}
+
+// Helper function to transform skills data
+function transformSkills(skills) {
+  if (!skills) return []
+  
+  // If skills is already in the correct format (array of objects)
+  if (Array.isArray(skills) && skills.length > 0 && typeof skills[0] === 'object') {
+    return skills
+  }
+  
+  // If skills is a simple array of strings, convert to our schema format
+  if (Array.isArray(skills) && skills.length > 0 && typeof skills[0] === 'string') {
+    return [{
+      category: 'Technical Skills',
+      skills: skills
+    }]
+  }
+  
+  return []
 } 

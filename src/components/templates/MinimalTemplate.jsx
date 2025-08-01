@@ -93,18 +93,29 @@ const MinimalTemplate = ({ data }) => {
 
       {/* Skills */}
       {data.skills && data.skills.length > 0 && (
-        <div className="mb-10">
-          <h2 className="text-2xl font-light text-gray-900 mb-6 text-center uppercase tracking-wide">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
             Skills
           </h2>
-          <div className="flex flex-wrap justify-center gap-3">
-            {data.skills.map((skill, index) => (
-              <span
-                key={index}
-                className="text-gray-700 bg-gray-100 px-3 py-1 rounded-full text-sm"
-              >
-                {skill}
-              </span>
+          <div className="space-y-4">
+            {data.skills.map((skillGroup, index) => (
+              <div key={index}>
+                {skillGroup.category && (
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    {skillGroup.category}
+                  </h3>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {skillGroup.skills && skillGroup.skills.map((skill, idx) => (
+                    <span
+                      key={idx}
+                      className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>

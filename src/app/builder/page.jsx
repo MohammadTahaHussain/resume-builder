@@ -41,7 +41,12 @@ function BuilderContent() {
       if (response.ok) {
         const resume = await response.json();
         setResumeData(resume.data);
-        setSelectedProfession(resume.template);
+        // Update template in URL if it's different
+        if (resume.template !== selectedTemplate) {
+          const params = new URLSearchParams(searchParams);
+          params.set("template", resume.template);
+          router.push(`/builder?id=${id}&${params.toString()}`);
+        }
         console.log('Resume loaded successfully!', resume);
       }
     } catch (error) {
@@ -61,8 +66,17 @@ function BuilderContent() {
         data: resumeData,
       };
 
-      const url = resumeIdFromUrl ? `/api/resumes/${resumeIdFromUrl}` : '/api/resumes';
-      const method = resumeIdFromUrl ? 'PUT' : 'POST';
+      let url, method;
+      
+      if (resumeIdFromUrl) {
+        // Update existing resume
+        url = `/api/resumes/${resumeIdFromUrl}`;
+        method = 'PUT';
+      } else {
+        // Create new resume
+        url = '/api/resumes';
+        method = 'POST';
+      }
 
       const response = await fetch(url, {
         method,
@@ -75,6 +89,14 @@ function BuilderContent() {
       if (response.ok) {
         const savedResume = await response.json();
         setLastSaved(new Date());
+        
+        // If this was a new resume, update the URL with the ID
+        if (!resumeIdFromUrl && savedResume._id) {
+          const params = new URLSearchParams(searchParams);
+          params.set("id", savedResume._id);
+          router.push(`/builder?${params.toString()}`);
+        }
+        
         console.log('Resume saved successfully!', savedResume);
       }
     } catch (error) {
