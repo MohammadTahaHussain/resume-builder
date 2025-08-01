@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import TemplateManager from "../../components/TemplateManager";
 import EditDrawer from "../../components/EditDrawer";
+import PDFDownloader from "../../components/PDFDownloader";
 import { sampleResumeData } from "../../constants/sampleData";
 import { templates } from "../../constants/templates";
 
@@ -13,6 +14,7 @@ function BuilderContent() {
   const [selectedProfession, setSelectedProfession] = useState("softwareEngineer");
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
   const [resumeData, setResumeData] = useState(sampleResumeData.softwareEngineer);
+  const resumeRef = useRef(null);
 
   // Get template from URL params, default to 'modern'
   const selectedTemplate = searchParams.get("template") || "modern";
@@ -36,6 +38,9 @@ function BuilderContent() {
 
   // Get available templates for the builder
   const availableTemplates = templates.slice(0, 3);
+
+  // Get current template name
+  const currentTemplate = templates.find(t => t.id === selectedTemplate);
 
   // Available professions
   const professions = [
@@ -62,7 +67,7 @@ function BuilderContent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Template Selection */}
-          <div className="lg:col-span-1 sticky top-96">
+          <div className="lg:col-span-1 lg:sticky top-4 h-fit">
             <div className="bg-white rounded-lg shadow-lg p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">
                 Choose Template
@@ -119,9 +124,11 @@ function BuilderContent() {
                 >
                   Edit Information
                 </button>
-                <button className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-200">
-                  Download PDF
-                </button>
+                <PDFDownloader 
+                  resumeData={resumeData}
+                  templateType={selectedTemplate}
+                  templateName={currentTemplate?.name}
+                />
                 <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-200">
                   Get AI Suggestions
                 </button>
@@ -148,10 +155,12 @@ function BuilderContent() {
 
               {/* Template Preview */}
               <div className="border rounded-lg overflow-hidden bg-gray-50 p-4">
-                <TemplateManager
-                  templateType={selectedTemplate}
-                  data={resumeData}
-                />
+                <div ref={resumeRef} data-resume-content>
+                  <TemplateManager
+                    templateType={selectedTemplate}
+                    data={resumeData}
+                  />
+                </div>
               </div>
             </div>
           </div>

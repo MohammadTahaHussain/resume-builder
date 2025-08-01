@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import ModernTemplate from './templates/ModernTemplate';
 import ClassicTemplate from './templates/ClassicTemplate';
 import CreativeTemplate from './templates/CreativeTemplate';
@@ -7,35 +8,43 @@ import AcademicTemplate from './templates/AcademicTemplate';
 import StartupTemplate from './templates/StartupTemplate';
 import FederalTemplate from './templates/FederalTemplate';
 
-const TemplateManager = ({ templateType, data }) => {
+const TemplateManager = forwardRef(({ templateType, data, isForPDF = false }, ref) => {
   const renderTemplate = () => {
+    const templateProps = { 
+      data, 
+      isForPDF,
+      ref: isForPDF ? ref : undefined 
+    };
+
     switch (templateType) {
       case 'modern':
-        return <ModernTemplate data={data} />;
+        return <ModernTemplate {...templateProps} />;
       case 'classic':
-        return <ClassicTemplate data={data} />;
+        return <ClassicTemplate {...templateProps} />;
       case 'creative':
-        return <CreativeTemplate data={data} />;
+        return <CreativeTemplate {...templateProps} />;
       case 'minimal':
-        return <MinimalTemplate data={data} />;
+        return <MinimalTemplate {...templateProps} />;
       case 'tech':
-        return <TechTemplate data={data} />;
+        return <TechTemplate {...templateProps} />;
       case 'academic':
-        return <AcademicTemplate data={data} />;
+        return <AcademicTemplate {...templateProps} />;
       case 'startup':
-        return <StartupTemplate data={data} />;
+        return <StartupTemplate {...templateProps} />;
       case 'federal':
-        return <FederalTemplate data={data} />;
+        return <FederalTemplate {...templateProps} />;
       default:
-        return <ModernTemplate data={data} />;
+        return <ModernTemplate {...templateProps} />;
     }
   };
 
   return (
-    <div className="template-container">
+    <div className={`template-container ${isForPDF ? 'pdf-template' : ''}`}>
       {renderTemplate()}
     </div>
   );
-};
+});
+
+TemplateManager.displayName = 'TemplateManager';
 
 export default TemplateManager; 
