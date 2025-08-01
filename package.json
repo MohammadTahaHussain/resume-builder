@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/core": "^0.40.0",
     "@sparticuz/chromium": "^138.0.2",
     "next": "15.4.5",
+    "next-auth": "^5.0.0-beta.29",
     "playwright-core": "^1.54.2",
     "react": "19.1.0",
     "react-dom": "19.1.0"

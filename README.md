@@ -20,6 +20,87 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Authentication Setup
+
+This project uses NextAuth.js for authentication with Google and GitHub providers.
+
+### 1. Environment Variables
+
+Create a `.env.local` file in the root directory and add the following variables:
+
+```bash
+# NextAuth Configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-nextauth-secret-key-here
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# GitHub OAuth
+GITHUB_ID=your-github-client-id
+GITHUB_SECRET=your-github-client-secret
+```
+
+### 2. Generate NextAuth Secret
+
+Generate a secure secret for NextAuth:
+
+```bash
+openssl rand -base64 32
+```
+
+Or use an online generator and add it to your `.env.local` file as `NEXTAUTH_SECRET`.
+
+### 3. Google OAuth Setup
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Google+ API (or Google Identity API)
+4. Go to "Credentials" and create an OAuth 2.0 Client ID
+5. Add `http://localhost:3000/api/auth/callback/google` to the authorized redirect URIs
+6. Copy the Client ID and Client Secret to your `.env.local` file
+
+### 4. GitHub OAuth Setup
+
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Click "New OAuth App"
+3. Set the Authorization callback URL to `http://localhost:3000/api/auth/callback/github`
+4. Copy the Client ID and Client Secret to your `.env.local` file
+
+### 5. Testing Authentication
+
+1. Start the development server: `npm run dev`
+2. Navigate to `http://localhost:3000/auth/signin`
+3. You should see the sign-in options for configured providers
+4. If no providers are configured, you'll see a warning message
+
+### 6. Troubleshooting
+
+**Error: "Cannot read properties of undefined (reading 'custom')"**
+- This usually means the NextAuth secret is not properly configured
+- Make sure `NEXTAUTH_SECRET` is set in your `.env.local` file
+
+**No sign-in buttons appear**
+- Check that your OAuth provider credentials are correctly set in `.env.local`
+- Verify that the callback URLs match exactly what's configured in your OAuth apps
+
+**Authentication works locally but not in production**
+- Update `NEXTAUTH_URL` to your production domain
+- Ensure all environment variables are set in your production environment
+- Update callback URLs in your OAuth provider settings
+
+## Features
+
+- ✅ Google OAuth Authentication
+- ✅ GitHub OAuth Authentication  
+- ✅ Protected Routes (Builder, Dashboard)
+- ✅ User Profile Management
+- ✅ Responsive Navigation
+- ✅ Beautiful UI with Tailwind CSS
+- ✅ PDF Generation with Watermarks
+- ✅ Multiple Resume Templates
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

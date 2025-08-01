@@ -8,9 +8,16 @@ export const navigationItems = [
     description: 'Landing page with overview'
   },
   {
+    name: 'Dashboard',
+    href: '/dashboard',
+    description: 'Your personal dashboard',
+    requiresAuth: true
+  },
+  {
     name: 'Build Resume',
     href: '/builder',
-    description: 'Create your resume'
+    description: 'Create your resume',
+    requiresAuth: true
   },
   {
     name: 'Templates',
