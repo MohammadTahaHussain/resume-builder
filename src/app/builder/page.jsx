@@ -37,7 +37,7 @@ function BuilderContent() {
   };
 
   // Get available templates for the builder
-  const availableTemplates = templates.slice(0, 3);
+  const availableTemplates = templates;
 
   // Get current template name
   const currentTemplate = templates.find(t => t.id === selectedTemplate);
@@ -154,7 +154,7 @@ function BuilderContent() {
               </div>
 
               {/* Template Preview */}
-              <div className="border rounded-lg overflow-hidden bg-gray-50 p-4">
+              <div className="rounded-lg overflow-hidden bg-gray-50 p-4">
                 <div ref={resumeRef} data-resume-content>
                   <TemplateManager
                     templateType={selectedTemplate}
