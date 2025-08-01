@@ -305,7 +305,7 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
       )}
 
       {/* Drawer */}
-      <div className={`fixed top-0 right-0 h-full w-96 lg:w-1/2 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
+      <div className={`fixed top-0 right-0 h-full w-full min-w-[300px] max-w-[600px] lg:w-1/2 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="h-full flex flex-col">
