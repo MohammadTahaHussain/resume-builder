@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import TemplateManager from "../../components/TemplateManager";
 import EditDrawer from "../../components/EditDrawer";
 import { sampleResumeData } from "../../constants/sampleData";
 import { templates } from "../../constants/templates";
 
-export default function BuilderPage() {
+function BuilderContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedProfession, setSelectedProfession] = useState("softwareEngineer");
@@ -62,7 +62,7 @@ export default function BuilderPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Template Selection */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 sticky top-96">
             <div className="bg-white rounded-lg shadow-lg p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">
                 Choose Template
@@ -166,5 +166,20 @@ export default function BuilderPage() {
         onSave={handleDataUpdate}
       />
     </div>
+  );
+}
+
+export default function BuilderPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading resume builder...</p>
+        </div>
+      </div>
+    }>
+      <BuilderContent />
+    </Suspense>
   );
 }
