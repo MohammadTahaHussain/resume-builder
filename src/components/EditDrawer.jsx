@@ -5,6 +5,7 @@ import { useState } from 'react';
 const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
   const [formData, setFormData] = useState(data);
   const [activeSection, setActiveSection] = useState('personal');
+  const [newSkill, setNewSkill] = useState('');
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -25,6 +26,20 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
   const handleSave = () => {
     onSave(formData);
     onClose();
+  };
+
+  const addSkill = () => {
+    if (newSkill.trim()) {
+      const currentSkills = Array.isArray(formData.skills) ? formData.skills : [];
+      handleInputChange('skills', [...currentSkills, newSkill.trim()]);
+      setNewSkill('');
+    }
+  };
+
+  const removeSkill = (index) => {
+    const currentSkills = Array.isArray(formData.skills) ? formData.skills : [];
+    const newSkills = currentSkills.filter((_, i) => i !== index);
+    handleInputChange('skills', newSkills);
   };
 
   const sections = [
@@ -188,46 +203,77 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
 
   const renderSkillsSection = () => (
     <div className="space-y-4">
+      {/* Add New Skill */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Skills (comma separated)</label>
-        <textarea
-          value={Array.isArray(formData.skills) ? formData.skills.join(', ') : ''}
-          onChange={(e) => {
-            const skillsText = e.target.value;
-            const skillsArray = skillsText.split(',').map(s => s.trim()).filter(s => s);
-            handleInputChange('skills', skillsArray);
-          }}
-          rows={4}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          placeholder="JavaScript, React, Node.js, Python..."
-        />
-        <p className="text-xs text-gray-500 mt-1">
-          Type skills separated by commas
-        </p>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Add New Skill</label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={newSkill}
+            onChange={(e) => setNewSkill(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                addSkill();
+              }
+            }}
+            className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter a skill (e.g., JavaScript)"
+          />
+          <button
+            onClick={addSkill}
+            className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Add
+          </button>
+        </div>
       </div>
-      
-      {/* Individual Skills Display */}
-      {Array.isArray(formData.skills) && formData.skills.length > 0 && (
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Current Skills:</label>
-          <div className="flex flex-wrap gap-2">
+
+      {/* Current Skills */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Current Skills</label>
+        {Array.isArray(formData.skills) && formData.skills.length > 0 ? (
+          <div className="space-y-2">
             {formData.skills.map((skill, index) => (
-              <div key={index} className="flex items-center bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                <span>{skill}</span>
+              <div key={index} className="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                <span className="text-gray-900">{skill}</span>
                 <button
-                  onClick={() => {
-                    const newSkills = formData.skills.filter((_, i) => i !== index);
-                    handleInputChange('skills', newSkills);
-                  }}
-                  className="ml-2 text-blue-600 hover:text-blue-800"
+                  onClick={() => removeSkill(index)}
+                  className="text-red-500 hover:text-red-700 text-lg font-bold"
                 >
                   ×
                 </button>
               </div>
             ))}
           </div>
+        ) : (
+          <div className="text-center text-gray-500 py-4 border-2 border-dashed border-gray-300 rounded-lg">
+            <p>No skills added yet</p>
+            <p className="text-sm">Add your first skill above</p>
+          </div>
+        )}
+      </div>
+
+      {/* Quick Add Common Skills */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Quick Add Common Skills</label>
+        <div className="flex flex-wrap gap-2">
+          {['JavaScript', 'React', 'Node.js', 'Python', 'HTML', 'CSS', 'Git', 'SQL'].map((skill) => (
+            <button
+              key={skill}
+              onClick={() => {
+                const currentSkills = Array.isArray(formData.skills) ? formData.skills : [];
+                if (!currentSkills.includes(skill)) {
+                  handleInputChange('skills', [...currentSkills, skill]);
+                }
+              }}
+              className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors"
+            >
+              + {skill}
+            </button>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 
@@ -278,7 +324,7 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
 
           {/* Navigation */}
           <div className="flex-1 overflow-y-auto">
-            <div className="p-4 lg:grid gird-cols-2">
+            <div className="p-4 lg:grid grid-cols-2 gap-4">
               {/* Section Navigation */}
               <div className="mb-6">
                 <h3 className="text-sm font-medium text-gray-700 mb-3">Sections</h3>
@@ -301,7 +347,7 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
               </div>
 
               {/* Section Content */}
-              <div className="border-t border-gray-200 pt-6">
+              <div className="max-lg:border-t border-gray-200 max-lg:pt-6">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
                   {sections.find(s => s.id === activeSection)?.name}
                 </h3>
