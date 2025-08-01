@@ -4,7 +4,7 @@ import sparticuzChromium from '@sparticuz/chromium';
 
 export async function POST(request) {
   try {
-    const { htmlContent, resumeData, templateType } = await request.json();
+    const { htmlContent, resumeData, templateType, watermarkOptions } = await request.json();
 
     let browser;
     const isProduction = process.env.NODE_ENV === 'production';
@@ -28,7 +28,13 @@ export async function POST(request) {
 
     const page = await browser.newPage();
 
-    // CDN ke saath aapka HTML content
+    // Watermark configuration from client
+    const showWatermark = true;
+    const watermarkText = 'Resume Builder by Taha';
+    const watermarkOpacity = '0.2'; // Very light watermark
+    const watermarkColor = '#000000'; // Black color
+
+    // CDN ke saath aapka HTML content with watermark
     const completeHtmlContent = `
       <!DOCTYPE html>
       <html>
@@ -37,11 +43,62 @@ export async function POST(request) {
         <title>Resume - ${resumeData?.name || 'Your Name'}</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <style>
-          body { font-family: Arial, sans-serif; }
+          body { 
+            font-family: Arial, sans-serif; 
+            position: relative;
+            min-height: 100vh;
+          }
+          
+          /* Watermark Styles */
+          .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 12px;
+            color: ${watermarkColor};
+            opacity: ${watermarkOpacity};
+            // transform: rotate(-45deg);
+            pointer-events: none;
+            z-index: 1000;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+          }
+          
+          /* Alternative: Diagonal watermark across the page */
+          .watermark-diagonal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 48px;
+            color: ${watermarkColor};
+            opacity: ${watermarkOpacity};
+            pointer-events: none;
+            z-index: 1000;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+          }
+          
+          /* Print styles for watermark */
+          @media print {
+            .watermark, .watermark-diagonal {
+              -webkit-print-color-adjust: exact;
+              color-adjust: exact;
+            }
+          }
         </style>
       </head>
       <body>
         ${htmlContent}
+        
+        ${showWatermark ? `<!-- Bottom Right Watermark -->
+        <div class="watermark">${watermarkText}</div>` : ''}
+        
+        <!-- Optional: Diagonal Watermark (uncomment to use) -->
+        <!-- <div class="watermark-diagonal">${watermarkText}</div> -->
       </body>
       </html>
     `;
@@ -50,14 +107,17 @@ export async function POST(request) {
       waitUntil: 'networkidle',
     });
 
+    // Set viewport for better PDF generation
+    await page.setViewportSize({ width: 794, height: 1123 }); // A4 dimensions
+
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
       margin: {
-        top: '0.5in',
-        right: '0.5in',
-        bottom: '0.5in',
-        left: '0.5in',
+        top: '0.25in',
+        right: '0.25in',
+        bottom: '0.25in',
+        left: '0.25in',
       },
     });
 
