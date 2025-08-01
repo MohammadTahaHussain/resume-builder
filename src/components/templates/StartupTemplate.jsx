@@ -1,9 +1,9 @@
 const StartupTemplate = ({ data }) => {
   return (
-    <div className="bg-white max-w-4xl mx-auto p-8 font-sans">
+    <div className="bg-white max-w-4xl mx-auto lg:p-8 font-sans">
       {/* Header with Dynamic Design */}
       <div className="relative mb-12">
-        <div className="bg-gradient-to-r from-red-600 via-orange-600 to-red-700 p-8 rounded-lg text-white">
+        <div className="bg-gradient-to-r from-red-600 via-orange-600 to-red-700 p-4 lg:p-8 rounded-lg text-white">
           <div className="text-center">
             <h1 className="text-5xl font-bold mb-4 tracking-tight">
               {data.name || 'Your Name'}
@@ -238,7 +238,7 @@ const StartupTemplate = ({ data }) => {
       )}
 
       {/* Contact/Footer */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-8 rounded-lg text-white text-center">
+      <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-4 lg:p-8 rounded-lg text-white text-center">
         <h3 className="text-2xl font-bold mb-4">Let's Build Something Amazing Together</h3>
         <p className="text-gray-300 mb-6">
           Ready to disrupt industries and create innovative solutions? Let's discuss your next venture.

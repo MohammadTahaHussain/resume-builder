@@ -154,7 +154,7 @@ function BuilderContent() {
               </div>
 
               {/* Template Preview */}
-              <div className="rounded-lg overflow-hidden bg-gray-50 p-4">
+              <div className="rounded-lg overflow-hidden bg-gray-50 lg:p-4">
                 <div ref={resumeRef} data-resume-content>
                   <TemplateManager
                     templateType={selectedTemplate}

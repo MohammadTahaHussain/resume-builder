@@ -1,6 +1,6 @@
 const AcademicTemplate = ({ data }) => {
   return (
-    <div className="bg-white max-w-4xl mx-auto p-8 font-serif">
+    <div className="bg-white max-w-4xl mx-auto p-4 lg:p-8 font-serif">
       {/* Header */}
       <div className="text-center border-b-2 border-purple-800 pb-6 mb-8">
         <h1 className="text-5xl font-bold text-gray-900 mb-3 tracking-wide">
