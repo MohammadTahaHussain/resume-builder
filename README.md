@@ -40,6 +40,9 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 # GitHub OAuth
 GITHUB_ID=your-github-client-id
 GITHUB_SECRET=your-github-client-secret
+
+# MongoDB Configuration
+MONGODB_URI=your-mongodb-connection-string
 ```
 
 ### 2. Generate NextAuth Secret
@@ -68,14 +71,28 @@ Or use an online generator and add it to your `.env.local` file as `NEXTAUTH_SEC
 3. Set the Authorization callback URL to `http://localhost:3000/api/auth/callback/github`
 4. Copy the Client ID and Client Secret to your `.env.local` file
 
-### 5. Testing Authentication
+### 5. MongoDB Setup
+
+#### Option A: MongoDB Atlas (Recommended)
+1. Go to [MongoDB Atlas](https://www.mongodb.com/atlas)
+2. Create a free account and cluster
+3. Create a database user with read/write permissions
+4. Get your connection string from "Connect" → "Connect your application"
+5. Add it to your `.env.local` file as `MONGODB_URI`
+
+#### Option B: Local MongoDB
+1. Install MongoDB locally
+2. Start MongoDB service
+3. Use connection string: `mongodb://localhost:27017/resume-builder`
+
+### 6. Testing Authentication
 
 1. Start the development server: `npm run dev`
 2. Navigate to `http://localhost:3000/auth/signin`
 3. You should see the sign-in options for configured providers
 4. If no providers are configured, you'll see a warning message
 
-### 6. Troubleshooting
+### 7. Troubleshooting
 
 **Error: "Cannot read properties of undefined (reading 'custom')"**
 - This usually means the NextAuth secret is not properly configured
@@ -90,16 +107,41 @@ Or use an online generator and add it to your `.env.local` file as `NEXTAUTH_SEC
 - Ensure all environment variables are set in your production environment
 - Update callback URLs in your OAuth provider settings
 
+**MongoDB connection issues**
+- Verify your `MONGODB_URI` is correct
+- Check that your MongoDB cluster is running
+- Ensure your IP address is whitelisted in MongoDB Atlas
+
 ## Features
 
 - ✅ Google OAuth Authentication
 - ✅ GitHub OAuth Authentication  
+- ✅ MongoDB Database Integration
+- ✅ User Resume Management
 - ✅ Protected Routes (Builder, Dashboard)
 - ✅ User Profile Management
 - ✅ Responsive Navigation
 - ✅ Beautiful UI with Tailwind CSS
 - ✅ PDF Generation with Watermarks
 - ✅ Multiple Resume Templates
+- ✅ CRUD Operations for Resumes
+
+## Database Schema
+
+### Users
+- Basic user information (name, email, image)
+- Linked to OAuth accounts
+- Associated with multiple resumes
+
+### Resumes
+- User-specific resume data
+- Template information
+- Download tracking
+- Public/private settings
+
+### Accounts & Sessions
+- NextAuth OAuth account data
+- Session management
 
 ## Learn More
 

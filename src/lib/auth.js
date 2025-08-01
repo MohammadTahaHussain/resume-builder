@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import Google from "next-auth/providers/google"
 import GitHub from "next-auth/providers/github"
+import { CustomAdapter } from "./custom-adapter"
 
 const providers = []
 
@@ -26,14 +27,21 @@ if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers,
+  adapter: CustomAdapter(),
   pages: {
     signIn: '/auth/signin',
   },
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token, user }) {
+      if (user) {
+        session.user.id = user.id
+      }
       return session
     },
     async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+      }
       return token
     },
   },

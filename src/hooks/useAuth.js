@@ -28,7 +28,7 @@ export function useAuth() {
       return null // Still loading
     }
     
-    if (!session) {
+    if (status === 'unauthenticated') {
       router.push('/auth/signin')
       return null
     }
@@ -39,7 +39,7 @@ export function useAuth() {
   return {
     session,
     status,
-    isAuthenticated: !!session,
+    isAuthenticated: status === 'authenticated',
     isLoading: status === 'loading',
     login,
     logout,

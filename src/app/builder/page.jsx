@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import TemplateManager from "../../components/TemplateManager";
 import EditDrawer from "../../components/EditDrawer";
 import PDFDownloader from "../../components/PDFDownloader";
@@ -12,18 +13,92 @@ import ProtectedRoute from "../../components/ProtectedRoute";
 function BuilderContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { session } = useAuth();
   const [selectedProfession, setSelectedProfession] = useState("softwareEngineer");
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
   const [resumeData, setResumeData] = useState(sampleResumeData.softwareEngineer);
+  const [isSaving, setIsSaving] = useState(false);
+  const [lastSaved, setLastSaved] = useState(null);
   const resumeRef = useRef(null);
 
   // Get template from URL params, default to 'modern'
   const selectedTemplate = searchParams.get("template") || "modern";
+  
+  // Get resume ID from URL params for editing existing resume
+  const resumeIdFromUrl = searchParams.get("id");
+
+  // Load resume data if editing existing resume
+  useEffect(() => {
+    if (resumeIdFromUrl) {
+      loadResume(resumeIdFromUrl);
+    }
+  }, [resumeIdFromUrl]);
+
+  // Load resume from database
+  const loadResume = async (id) => {
+    try {
+      const response = await fetch(`/api/resumes/${id}`);
+      if (response.ok) {
+        const resume = await response.json();
+        setResumeData(resume.data);
+        setSelectedProfession(resume.template);
+        console.log('Resume loaded successfully!', resume);
+      }
+    } catch (error) {
+      console.error('Error loading resume:', error);
+    }
+  };
+
+  // Save resume to database
+  const saveResume = async (title = "My Resume") => {
+    if (!session) return;
+    
+    setIsSaving(true);
+    try {
+      const resumePayload = {
+        title,
+        template: selectedTemplate,
+        data: resumeData,
+      };
+
+      const url = resumeIdFromUrl ? `/api/resumes/${resumeIdFromUrl}` : '/api/resumes';
+      const method = resumeIdFromUrl ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resumePayload),
+      });
+
+      if (response.ok) {
+        const savedResume = await response.json();
+        setLastSaved(new Date());
+        console.log('Resume saved successfully!', savedResume);
+      }
+    } catch (error) {
+      console.error('Error saving resume:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   // Update resume data when profession changes
   useEffect(() => {
     setResumeData(sampleResumeData[selectedProfession] || sampleResumeData.softwareEngineer);
   }, [selectedProfession]);
+
+  // Auto-save functionality
+  useEffect(() => {
+    if (session && resumeData) {
+      const autoSaveTimer = setTimeout(() => {
+        saveResume();
+      }, 5000); // Auto-save after 5 seconds of inactivity
+
+      return () => clearTimeout(autoSaveTimer);
+    }
+  }, [resumeData, session]);
 
   // Function to update template in URL
   const updateTemplateInURL = (templateId) => {
@@ -59,10 +134,28 @@ function BuilderContent() {
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Resume Builder</h1>
-          <p className="text-blue-100">
-            Create your professional resume with our AI-powered builder
-          </p>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-white mb-2">Resume Builder</h1>
+              <p className="text-blue-100">
+                Create your professional resume with our AI-powered builder
+              </p>
+            </div>
+            <div className="flex items-center space-x-4">
+              {lastSaved && (
+                <span className="text-blue-200 text-sm">
+                  Last saved: {lastSaved.toLocaleTimeString()}
+                </span>
+              )}
+              <button
+                onClick={() => saveResume()}
+                disabled={isSaving}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50"
+              >
+                {isSaving ? 'Saving...' : 'Save Resume'}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
