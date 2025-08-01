@@ -1,6 +1,6 @@
 const CreativeTemplate = ({ data }) => {
   return (
-    <div className="bg-white shadow-lg max-w-4xl mx-auto p-8 font-sans">
+    <div className="bg-white max-w-4xl mx-auto p-8 font-sans">
       {/* Header with Creative Design */}
       <div className="relative mb-12">
         <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 p-8 rounded-lg text-white">

@@ -1,6 +1,6 @@
 const StartupTemplate = ({ data }) => {
   return (
-    <div className="bg-white shadow-lg max-w-4xl mx-auto p-8 font-sans">
+    <div className="bg-white max-w-4xl mx-auto p-8 font-sans">
       {/* Header with Dynamic Design */}
       <div className="relative mb-12">
         <div className="bg-gradient-to-r from-red-600 via-orange-600 to-red-700 p-8 rounded-lg text-white">

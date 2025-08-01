@@ -1,6 +1,6 @@
 const TechTemplate = ({ data }) => {
   return (
-    <div className="bg-white shadow-lg max-w-4xl mx-auto p-8 font-sans">
+    <div className="bg-white max-w-4xl mx-auto p-8 font-sans">
       {/* Header */}
       <div className="border-b-4 border-green-600 pb-6 mb-8">
         <div className="text-center">

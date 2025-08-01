@@ -1,6 +1,6 @@
 const MinimalTemplate = ({ data }) => {
   return (
-    <div className="bg-white shadow-lg max-w-4xl mx-auto p-8 font-sans">
+    <div className="bg-white max-w-4xl mx-auto p-8 font-sans">
       {/* Header - Minimal Design */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-light text-gray-900 mb-2 tracking-wide">
