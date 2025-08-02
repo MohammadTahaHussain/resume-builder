@@ -1,22 +1,21 @@
 const MinimalTemplate = ({ data }) => {
   return (
-    <div className="bg-white max-w-4xl mx-auto lg:p-8 font-sans">
-      {/* Header - Minimal Design */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-light text-gray-900 mb-2 tracking-wide">
-          {data.name || 'Your Name'}
-        </h1>
-        <p className="text-xl text-gray-600 mb-4 font-medium">
-          {data.title || 'Professional Title'}
-        </p>
-        <div className="flex flex-wrap justify-center gap-6 text-gray-500 text-sm">
-          <span>{data.email || 'email@example.com'}</span>
-          <span>•</span>
-          <span>{data.phone || '+1 (555) 123-4567'}</span>
-          <span>•</span>
-          <span>{data.location || 'City, State'}</span>
+    <div className="w-full overflow-x-auto">
+      <div className="bg-white min-w-[800px] max-w-3xl mx-auto lg:p-8 font-sans">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-light text-gray-900 mb-2">
+            {data.name || 'Your Name'}
+          </h1>
+          <p className="text-lg text-gray-600 mb-4">
+            {data.title || 'Professional Title'}
+          </p>
+          <div className="flex justify-center space-x-4 text-sm text-gray-500">
+            <span>{data.email || 'email@example.com'}</span>
+            <span>{data.phone || '+1 (555) 123-4567'}</span>
+            <span>{data.location || 'City, State'}</span>
+          </div>
         </div>
-      </div>
 
       {/* Summary */}
       {data.summary && (
@@ -358,6 +357,7 @@ const MinimalTemplate = ({ data }) => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

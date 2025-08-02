@@ -1,26 +1,21 @@
 const AcademicTemplate = ({ data }) => {
   return (
-    <div className="bg-white max-w-4xl mx-auto p-4 lg:p-8 font-serif">
-      {/* Header */}
-      <div className="text-center border-b-2 border-purple-800 pb-6 mb-8">
-        <h1 className="text-5xl font-bold text-gray-900 mb-3 tracking-wide">
-          {data.name || 'Your Name'}
-        </h1>
-        <p className="text-2xl text-purple-700 font-medium mb-4">
-          {data.title || 'Academic Professional'}
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-600 text-lg">
-          <div>
-            <span className="font-semibold">Email:</span> {data.email || 'email@example.com'}
-          </div>
-          <div>
-            <span className="font-semibold">Phone:</span> {data.phone || '+1 (555) 123-4567'}
-          </div>
-          <div>
-            <span className="font-semibold">Location:</span> {data.location || 'City, State'}
+    <div className="w-full overflow-x-auto">
+      <div className="bg-white min-w-[800px] max-w-4xl mx-auto lg:p-8 font-serif">
+        {/* Header */}
+        <div className="text-center border-b-2 border-gray-800 pb-6 mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            {data.name || 'Your Name'}
+          </h1>
+          <p className="text-xl text-gray-700 font-semibold mb-4">
+            {data.title || 'Academic Professional'}
+          </p>
+          <div className="flex justify-center space-x-6 text-gray-600">
+            <span>{data.email || 'email@example.com'}</span>
+            <span>{data.phone || '+1 (555) 123-4567'}</span>
+            <span>{data.location || 'City, State'}</span>
           </div>
         </div>
-      </div>
 
       {/* Research Summary */}
       {data.summary && (
@@ -278,6 +273,7 @@ const AcademicTemplate = ({ data }) => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

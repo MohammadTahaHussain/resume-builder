@@ -170,15 +170,15 @@ function BuilderContent() {
   }, [selectedProfession]);
 
   // Auto-save functionality
-  useEffect(() => {
-    if (session && resumeData) {
-      const autoSaveTimer = setTimeout(() => {
-        saveResume();
-      }, 5000); // Auto-save after 5 seconds of inactivity
+  // useEffect(() => {
+  //   if (session && resumeData) {
+  //     const autoSaveTimer = setTimeout(() => {
+  //       saveResume();
+  //     }, 5000); // Auto-save after 5 seconds of inactivity
 
-      return () => clearTimeout(autoSaveTimer);
-    }
-  }, [resumeData, session]);
+  //     return () => clearTimeout(autoSaveTimer);
+  //   }
+  // }, [resumeData, session]);
 
   // Function to update template in URL
   const updateTemplateInURL = (templateId) => {
@@ -312,7 +312,7 @@ function BuilderContent() {
   };
 
   // Get available templates for the builder
-  const availableTemplates = templates.slice(0, 3);
+  const availableTemplates = templates;
 
   // Get current template name
   const currentTemplate = templates.find(t => t.id === selectedTemplate);
@@ -332,10 +332,10 @@ function BuilderContent() {
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
+          <div className="md:flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">Resume Builder</h1>
-              <p className="text-blue-100">
+              <p className="text-blue-100 max-lg:text-sm">
                 Create your professional resume with our AI-powered builder
               </p>
             </div>
@@ -348,7 +348,7 @@ function BuilderContent() {
               <button
                 onClick={() => saveResume()}
                 disabled={isSaving}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50"
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 max-lg:text-sm max-md:mt-4 max-md:w-full"
               >
                 {isSaving ? 'Saving...' : 'Save Resume'}
               </button>

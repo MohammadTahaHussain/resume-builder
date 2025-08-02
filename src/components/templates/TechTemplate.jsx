@@ -1,22 +1,23 @@
 const TechTemplate = ({ data }) => {
   return (
-    <div className="bg-white max-w-4xl mx-auto lg:p-8 font-sans">
-      {/* Header */}
-      <div className="border-b-4 border-green-600 pb-6 mb-8">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            {data.name || 'Your Name'}
-          </h1>
-          <p className="text-xl text-green-600 font-semibold mb-2">
-            {data.title || 'Technical Professional'}
-          </p>
-          <div className="flex justify-center space-x-6 text-gray-600">
-            <span>{data.email || 'email@example.com'}</span>
-            <span>{data.phone || '+1 (555) 123-4567'}</span>
-            <span>{data.location || 'City, State'}</span>
+    <div className="w-full overflow-x-auto">
+      <div className="bg-white min-w-[800px] max-w-4xl mx-auto lg:p-8 font-mono">
+        {/* Header */}
+        <div className="bg-gray-900 text-white p-8 mb-8">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold mb-2">
+              {data.name || 'Your Name'}
+            </h1>
+            <p className="text-xl text-green-400 font-semibold mb-4">
+              {data.title || 'Software Engineer'}
+            </p>
+            <div className="flex justify-center space-x-6 text-gray-300">
+              <span>{data.email || 'email@example.com'}</span>
+              <span>{data.phone || '+1 (555) 123-4567'}</span>
+              <span>{data.location || 'San Francisco, CA'}</span>
+            </div>
           </div>
         </div>
-      </div>
 
       {/* Summary */}
       {data.summary && (
@@ -322,6 +323,7 @@ const TechTemplate = ({ data }) => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };
