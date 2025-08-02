@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 const SmartSuggestions = ({ resumeData, onApplySuggestion }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [processingSuggestion, setProcessingSuggestion] = useState(null);
 
   // Generate suggestions based on resume data
   useEffect(() => {
@@ -76,9 +77,11 @@ const SmartSuggestions = ({ resumeData, onApplySuggestion }) => {
   };
 
   const handleApplySuggestion = async (suggestion) => {
+    setProcessingSuggestion(suggestion.id);
     if (onApplySuggestion) {
-      onApplySuggestion(suggestion);
+      await onApplySuggestion(suggestion);
     }
+    setProcessingSuggestion(null);
   };
 
   if (suggestions.length === 0 && !isLoading) {
@@ -144,9 +147,21 @@ const SmartSuggestions = ({ resumeData, onApplySuggestion }) => {
               </div>
               <button
                 onClick={() => handleApplySuggestion(suggestion)}
-                className="ml-3 px-3 py-1 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                disabled={processingSuggestion === suggestion.id}
+                className={`ml-3 px-3 py-1 text-sm rounded-lg transition-colors ${
+                  processingSuggestion === suggestion.id
+                    ? 'bg-gray-400 text-white cursor-not-allowed'
+                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                }`}
               >
-                Apply
+                {processingSuggestion === suggestion.id ? (
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    Processing...
+                  </div>
+                ) : (
+                  'Apply'
+                )}
               </button>
             </div>
           </div>

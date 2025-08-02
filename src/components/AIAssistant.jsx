@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import ReactMarkdown from 'react-markdown';
 
 const AIAssistant = ({ resumeData, onUpdateData }) => {
   const { session } = useAuth();
@@ -300,7 +301,18 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
                             : 'bg-gray-50 text-gray-900'
                         }`}
                       >
-                        <div className="text-sm whitespace-pre-wrap">{message.text}</div>
+                        <ReactMarkdown 
+                          components={{
+                            ul: ({ children }) => <ul className="list-disc pl-4 space-y-1 mt-2">{children}</ul>,
+                            li: ({ children }) => <li className="text-sm">{children}</li>,
+                            strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                            p: ({ children }) => <p className="mb-2">{children}</p>,
+                            h3: ({ children }) => <h3 className="text-base font-semibold mt-3 mb-2">{children}</h3>,
+                            h4: ({ children }) => <h4 className="text-sm font-semibold mt-2 mb-1">{children}</h4>
+                          }}
+                        >
+                          {message.text}
+                        </ReactMarkdown>
                       </div>
                     ))}
                   </div>

@@ -11,6 +11,7 @@ import { templates } from "../../constants/templates";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import AIAssistant from "../../components/AIAssistant";
 import SmartSuggestions from "../../components/SmartSuggestions";
+import ReactMarkdown from 'react-markdown';
 
 function BuilderContent() {
   const router = useRouter();
@@ -23,6 +24,8 @@ function BuilderContent() {
   const [lastSaved, setLastSaved] = useState(null);
   const [isLoadingResume, setIsLoadingResume] = useState(false);
   const resumeRef = useRef(null);
+  const [aiResults, setAiResults] = useState(null);
+  const [showAiModal, setShowAiModal] = useState(false);
 
   // Get template from URL params, default to 'modern'
   const selectedTemplate = searchParams.get("template") || "modern";
@@ -203,6 +206,19 @@ function BuilderContent() {
           const summaryData = await summaryResponse.json();
           if (summaryResponse.ok) {
             setResumeData({ ...resumeData, summary: summaryData.summary });
+            setAiResults({
+              title: 'Summary Generated!',
+              content: summaryData.summary,
+              type: 'success'
+            });
+            setShowAiModal(true);
+          } else {
+            setAiResults({
+              title: 'Error',
+              content: summaryData.error || 'Failed to generate summary',
+              type: 'error'
+            });
+            setShowAiModal(true);
           }
           break;
 
@@ -215,8 +231,20 @@ function BuilderContent() {
           });
           const enhanceData = await enhanceResponse.json();
           if (enhanceResponse.ok) {
-            // Show enhanced achievements in a modal or notification
-            console.log('Enhanced achievements:', enhanceData.enhancedAchievements);
+            setAiResults({
+              title: 'Enhanced Achievements',
+              content: enhanceData.enhancedAchievements,
+              type: 'enhancement',
+              originalData: allAchievements
+            });
+            setShowAiModal(true);
+          } else {
+            setAiResults({
+              title: 'Error',
+              content: enhanceData.error || 'Failed to enhance achievements',
+              type: 'error'
+            });
+            setShowAiModal(true);
           }
           break;
 
@@ -231,7 +259,20 @@ function BuilderContent() {
           });
           const skillsData = await skillsResponse.json();
           if (skillsResponse.ok) {
-            console.log('Suggested skills:', skillsData.suggestedSkills);
+            setAiResults({
+              title: 'Suggested Skills',
+              content: skillsData.suggestedSkills,
+              type: 'suggestions',
+              currentSkills: resumeData.skills || []
+            });
+            setShowAiModal(true);
+          } else {
+            setAiResults({
+              title: 'Error',
+              content: skillsData.error || 'Failed to suggest skills',
+              type: 'error'
+            });
+            setShowAiModal(true);
           }
           break;
 
@@ -243,12 +284,30 @@ function BuilderContent() {
           });
           const analyzeData = await analyzeResponse.json();
           if (analyzeResponse.ok) {
-            console.log('Resume analysis:', analyzeData.analysis);
+            setAiResults({
+              title: 'Resume Analysis',
+              content: analyzeData.analysis,
+              type: 'analysis'
+            });
+            setShowAiModal(true);
+          } else {
+            setAiResults({
+              title: 'Error',
+              content: analyzeData.error || 'Failed to analyze resume',
+              type: 'error'
+            });
+            setShowAiModal(true);
           }
           break;
       }
     } catch (error) {
       console.error('Error applying AI suggestion:', error);
+      setAiResults({
+        title: 'Error',
+        content: 'Failed to connect to AI service. Please try again.',
+        type: 'error'
+      });
+      setShowAiModal(true);
     }
   };
 
@@ -422,6 +481,164 @@ function BuilderContent() {
         resumeData={resumeData}
         onUpdateData={handleDataUpdate}
       />
+
+      {/* AI Results Modal */}
+      {showAiModal && aiResults && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 flex items-center">
+                {aiResults.type === 'success' && '✅'}
+                {aiResults.type === 'error' && '❌'}
+                {aiResults.type === 'enhancement' && '✨'}
+                {aiResults.type === 'suggestions' && '💡'}
+                {aiResults.type === 'analysis' && '📊'}
+                <span className="ml-2">{aiResults.title}</span>
+              </h3>
+              <button
+                onClick={() => setShowAiModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 overflow-y-auto max-h-[60vh]">
+              {aiResults.type === 'enhancement' && (
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Original Achievements:</h4>
+                    <div className="bg-gray-50 p-3 rounded-lg">
+                      {aiResults.originalData.map((achievement, index) => (
+                        <div key={index} className="text-gray-600 mb-1">• {achievement}</div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Enhanced Achievements:</h4>
+                    <div className="bg-green-50 p-3 rounded-lg prose prose-sm max-w-none">
+                      <ReactMarkdown 
+                        components={{
+                          ul: ({ children }) => <ul className="list-disc pl-5 space-y-1">{children}</ul>,
+                          li: ({ children }) => <li className="text-gray-800">{children}</li>,
+                          strong: ({ children }) => <strong className="font-semibold text-gray-900">{children}</strong>,
+                          p: ({ children }) => <p className="mb-2 text-gray-800">{children}</p>
+                        }}
+                      >
+                        {aiResults.content}
+                      </ReactMarkdown>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {aiResults.type === 'suggestions' && (
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Current Skills:</h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {aiResults.currentSkills.map((skill, index) => (
+                        <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Suggested Skills:</h4>
+                    <div className="bg-blue-50 p-3 rounded-lg prose prose-sm max-w-none">
+                      <ReactMarkdown 
+                        components={{
+                          ul: ({ children }) => <ul className="list-disc pl-5 space-y-1">{children}</ul>,
+                          li: ({ children }) => <li className="text-gray-800">{children}</li>,
+                          strong: ({ children }) => <strong className="font-semibold text-gray-900">{children}</strong>,
+                          p: ({ children }) => <p className="mb-2 text-gray-800">{children}</p>
+                        }}
+                      >
+                        {aiResults.content}
+                      </ReactMarkdown>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {aiResults.type === 'analysis' && (
+                <div className="bg-blue-50 p-4 rounded-lg prose prose-sm max-w-none">
+                  <ReactMarkdown 
+                    components={{
+                      ul: ({ children }) => <ul className="list-disc pl-5 space-y-1">{children}</ul>,
+                      li: ({ children }) => <li className="text-gray-800">{children}</li>,
+                      strong: ({ children }) => <strong className="font-semibold text-gray-900">{children}</strong>,
+                      p: ({ children }) => <p className="mb-2 text-gray-800">{children}</p>,
+                      h3: ({ children }) => <h3 className="text-lg font-semibold text-gray-900 mt-4 mb-2">{children}</h3>,
+                      h4: ({ children }) => <h4 className="text-base font-semibold text-gray-900 mt-3 mb-1">{children}</h4>
+                    }}
+                  >
+                    {aiResults.content}
+                  </ReactMarkdown>
+                </div>
+              )}
+
+              {aiResults.type === 'success' && (
+                <div className="bg-green-50 p-4 rounded-lg prose prose-sm max-w-none">
+                  <ReactMarkdown 
+                    components={{
+                      p: ({ children }) => <p className="mb-2 text-gray-800">{children}</p>,
+                      strong: ({ children }) => <strong className="font-semibold text-gray-900">{children}</strong>
+                    }}
+                  >
+                    {aiResults.content}
+                  </ReactMarkdown>
+                </div>
+              )}
+
+              {aiResults.type === 'error' && (
+                <div className="bg-red-50 p-4 rounded-lg">
+                  <p className="text-red-800">{aiResults.content}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="p-6 border-t border-gray-200">
+              <div className="flex justify-end space-x-3">
+                {aiResults.type === 'enhancement' && (
+                  <button
+                    onClick={() => {
+                      // TODO: Implement apply enhanced achievements
+                      setShowAiModal(false);
+                    }}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  >
+                    Apply Enhanced
+                  </button>
+                )}
+                {aiResults.type === 'suggestions' && (
+                  <button
+                    onClick={() => {
+                      // TODO: Implement add suggested skills
+                      setShowAiModal(false);
+                    }}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Add Skills
+                  </button>
+                )}
+                <button
+                  onClick={() => setShowAiModal(false)}
+                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
