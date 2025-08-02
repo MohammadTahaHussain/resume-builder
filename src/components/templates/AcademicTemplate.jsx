@@ -131,25 +131,14 @@ const AcademicTemplate = ({ data }) => {
           <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
             Skills
           </h2>
-          <div className="space-y-4">
-            {data.skills.map((skillGroup, index) => (
-              <div key={index}>
-                {skillGroup.category && (
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                    {skillGroup.category}
-                  </h3>
-                )}
-                <div className="flex flex-wrap gap-2">
-                  {skillGroup.skills && skillGroup.skills.map((skill, idx) => (
-                    <span
-                      key={idx}
-                      className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
+          <div className="flex flex-wrap gap-2">
+            {data.skills.map((skill, index) => (
+              <span
+                key={index}
+                className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+              >
+                {skill}
+              </span>
             ))}
           </div>
         </div>
@@ -164,7 +153,7 @@ const AcademicTemplate = ({ data }) => {
           <div className="space-y-6">
             {data.projects.map((project, index) => (
               <div key={index} className="border-l-4 border-purple-800 pl-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">
                   {project.name}
                 </h3>
                 <p className="text-gray-700 mb-3 leading-relaxed">

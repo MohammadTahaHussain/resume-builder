@@ -63,12 +63,29 @@ export async function PUT(request, { params }) {
     
     // Transform the data to match our schema
     const transformedData = {
-      personal: body.data?.personal || {},
+      personal: {
+        name: body.data?.name || '',
+        title: body.data?.title || '',
+        email: body.data?.email || '',
+        phone: body.data?.phone || '',
+        location: body.data?.location || '',
+        summary: body.data?.summary || '',
+        linkedin: body.data?.linkedin || '',
+        website: body.data?.website || '',
+      },
       experience: body.data?.experience || [],
       education: body.data?.education || [],
-      skills: transformSkills(body.data?.skills),
+      skills: body.data?.skills || [],
       projects: body.data?.projects || [],
       certifications: body.data?.certifications || [],
+      awards: body.data?.awards || [],
+      achievements: body.data?.achievements || [],
+      publications: body.data?.publications || [],
+      memberships: body.data?.memberships || [],
+      clearance: body.data?.clearance || [],
+      references: body.data?.references || [],
+      teaching: body.data?.teaching || [],
+      additional: body.data?.additional || [],
       languages: body.data?.languages || [],
       interests: body.data?.interests || []
     }
@@ -133,24 +150,4 @@ export async function DELETE(request, { params }) {
       { status: 500 }
     )
   }
-}
-
-// Helper function to transform skills data
-function transformSkills(skills) {
-  if (!skills) return []
-  
-  // If skills is already in the correct format (array of objects)
-  if (Array.isArray(skills) && skills.length > 0 && typeof skills[0] === 'object') {
-    return skills
-  }
-  
-  // If skills is a simple array of strings, convert to our schema format
-  if (Array.isArray(skills) && skills.length > 0 && typeof skills[0] === 'string') {
-    return [{
-      category: 'Technical Skills',
-      skills: skills
-    }]
-  }
-  
-  return []
 } 

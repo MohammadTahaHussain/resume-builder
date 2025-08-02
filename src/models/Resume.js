@@ -47,22 +47,60 @@ const resumeSchema = new mongoose.Schema({
       gpa: String,
       description: String,
     }],
-    skills: [{
-      category: String,
-      skills: [String],
-    }],
+    skills: [String],
     projects: [{
-      title: String,
+      name: String,
       description: String,
       technologies: [String],
-      link: String,
-      github: String,
+      url: String,
     }],
     certifications: [{
       name: String,
       issuer: String,
       date: String,
       link: String,
+    }],
+    awards: [{
+      name: String,
+      issuer: String,
+      date: String,
+    }],
+    achievements: [{
+      title: String,
+      description: String,
+    }],
+    publications: [{
+      title: String,
+      journal: String,
+      date: String,
+      url: String,
+    }],
+    memberships: [{
+      organization: String,
+      role: String,
+      date: String,
+    }],
+    clearance: [{
+      level: String,
+      agency: String,
+      date: String,
+    }],
+    references: [{
+      name: String,
+      title: String,
+      company: String,
+      email: String,
+      phone: String,
+    }],
+    teaching: [{
+      course: String,
+      institution: String,
+      date: String,
+      description: String,
+    }],
+    additional: [{
+      title: String,
+      content: String,
     }],
     languages: [{
       language: String,

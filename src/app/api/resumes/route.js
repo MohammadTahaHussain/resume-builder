@@ -57,12 +57,29 @@ export async function POST(request) {
     
     // Transform the data to match our schema
     const transformedData = {
-      personal: data.personal || {},
+      personal: {
+        name: data.name || '',
+        title: data.title || '',
+        email: data.email || '',
+        phone: data.phone || '',
+        location: data.location || '',
+        summary: data.summary || '',
+        linkedin: data.linkedin || '',
+        website: data.website || '',
+      },
       experience: data.experience || [],
       education: data.education || [],
-      skills: transformSkills(data.skills),
+      skills: data.skills || [],
       projects: data.projects || [],
       certifications: data.certifications || [],
+      awards: data.awards || [],
+      achievements: data.achievements || [],
+      publications: data.publications || [],
+      memberships: data.memberships || [],
+      clearance: data.clearance || [],
+      references: data.references || [],
+      teaching: data.teaching || [],
+      additional: data.additional || [],
       languages: data.languages || [],
       interests: data.interests || []
     }
@@ -84,24 +101,4 @@ export async function POST(request) {
       { status: 500 }
     )
   }
-}
-
-// Helper function to transform skills data
-function transformSkills(skills) {
-  if (!skills) return []
-  
-  // If skills is already in the correct format (array of objects)
-  if (Array.isArray(skills) && skills.length > 0 && typeof skills[0] === 'object') {
-    return skills
-  }
-  
-  // If skills is a simple array of strings, convert to our schema format
-  if (Array.isArray(skills) && skills.length > 0 && typeof skills[0] === 'string') {
-    return [{
-      category: 'Technical Skills',
-      skills: skills
-    }]
-  }
-  
-  return []
 } 

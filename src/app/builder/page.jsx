@@ -40,7 +40,40 @@ function BuilderContent() {
       const response = await fetch(`/api/resumes/${id}`);
       if (response.ok) {
         const resume = await response.json();
-        setResumeData(resume.data);
+        
+        // Transform the nested data structure to flat structure for templates
+        const transformedData = {
+          // Personal info (flatten from data.personal)
+          name: resume.data.personal?.name || '',
+          title: resume.data.personal?.title || '',
+          email: resume.data.personal?.email || '',
+          phone: resume.data.personal?.phone || '',
+          location: resume.data.personal?.location || '',
+          summary: resume.data.personal?.summary || '',
+          linkedin: resume.data.personal?.linkedin || '',
+          website: resume.data.personal?.website || '',
+          
+          // Other sections
+          experience: resume.data.experience || [],
+          education: resume.data.education || [],
+          // Skills are now a simple array
+          skills: resume.data.skills || [],
+          projects: resume.data.projects || [],
+          certifications: resume.data.certifications || [],
+          awards: resume.data.awards || [],
+          achievements: resume.data.achievements || [],
+          publications: resume.data.publications || [],
+          memberships: resume.data.memberships || [],
+          clearance: resume.data.clearance || [],
+          references: resume.data.references || [],
+          teaching: resume.data.teaching || [],
+          additional: resume.data.additional || [],
+          languages: resume.data.languages || [],
+          interests: resume.data.interests || []
+        };
+        
+        setResumeData(transformedData);
+        
         // Update template in URL if it's different
         if (resume.template !== selectedTemplate) {
           const params = new URLSearchParams(searchParams);
@@ -77,6 +110,7 @@ function BuilderContent() {
         url = '/api/resumes';
         method = 'POST';
       }
+      console.log('resumePayload =>', resumePayload)
 
       const response = await fetch(url, {
         method,

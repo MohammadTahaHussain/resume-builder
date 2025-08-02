@@ -377,8 +377,10 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
             />
             <input
               type="text"
-              value={project.technologies || ''}
-              onChange={(e) => handleArrayChange('projects', index, { technologies: e.target.value })}
+              value={Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies || ''}
+              onChange={(e) => handleArrayChange('projects', index, { 
+                technologies: e.target.value.split(',').map(tech => tech.trim()).filter(tech => tech)
+              })}
               className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
               placeholder="Technologies (e.g., React, Node.js, MongoDB)"
             />
@@ -397,7 +399,7 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
           const newProjects = [...(formData.projects || []), {
             name: '',
             description: '',
-            technologies: '',
+            technologies: [],
             url: ''
           }];
           setFormData(prev => ({ ...prev, projects: newProjects }));

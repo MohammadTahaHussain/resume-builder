@@ -35,7 +35,6 @@ export const sampleResumeData = {
       {
         degree: 'Bachelor of Science in Computer Science',
         institution: 'University of Technology',
-        graduationYear: '2020',
         gpa: '3.8'
       }
     ],
@@ -67,73 +66,16 @@ export const sampleResumeData = {
         date: '2022'
       }
     ],
-    awards: [
-      {
-        name: 'Best Developer Award',
-        issuer: 'TechCorp Inc.',
-        date: '2023'
-      },
-      {
-        name: 'Innovation Excellence',
-        issuer: 'StartupXYZ',
-        date: '2021'
-      }
-    ],
-    achievements: [
-      {
-        title: 'Technical Leadership',
-        description: 'Led a team of 8 developers in delivering a critical project ahead of schedule',
-        metrics: '30% faster delivery'
-      },
-      {
-        title: 'System Optimization',
-        description: 'Reduced system response time by 60% through database optimization',
-        metrics: '60% performance improvement'
-      }
-    ],
-    memberships: [
-      {
-        organization: 'IEEE Computer Society',
-        period: '2020 - Present'
-      },
-      {
-        organization: 'ACM - Association for Computing Machinery',
-        period: '2019 - Present'
-      }
-    ],
-    clearance: [
-      {
-        level: 'Secret',
-        agency: 'Department of Defense',
-        date: '2022'
-      }
-    ],
-    references: [
-      {
-        name: 'Sarah Johnson',
-        title: 'Engineering Manager',
-        organization: 'TechCorp Inc.',
-        phone: '+1 (555) 987-6543',
-        email: 'sarah.johnson@techcorp.com'
-      },
-      {
-        name: 'Mike Chen',
-        title: 'CTO',
-        organization: 'StartupXYZ',
-        phone: '+1 (555) 456-7890',
-        email: 'mike.chen@startupxyz.com'
-      }
-    ],
-    additional: [
-      {
-        title: 'Open Source Contributions',
-        content: 'Active contributor to React and Node.js communities with 50+ pull requests merged'
-      },
-      {
-        title: 'Technical Blog',
-        content: 'Regular writer for Medium with 10+ technical articles on software architecture'
-      }
-    ]
+    awards: [],
+    achievements: [],
+    publications: [],
+    memberships: [],
+    clearance: [],
+    references: [],
+    teaching: [],
+    additional: [],
+    languages: [],
+    interests: []
   },
 
   marketingManager: {
