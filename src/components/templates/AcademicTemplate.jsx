@@ -132,14 +132,21 @@ const AcademicTemplate = ({ data }) => {
             Skills
           </h2>
           <div className="flex flex-wrap gap-2">
-            {data.skills.map((skill, index) => (
-              <span
-                key={index}
-                className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
-              >
-                {skill}
-              </span>
-            ))}
+            {(() => {
+              // Safety check: ensure skills is a simple array of strings
+              const skillsArray = Array.isArray(data.skills) 
+                ? data.skills.filter(skill => typeof skill === 'string')
+                : [];
+              
+              return skillsArray.map((skill, index) => (
+                <span
+                  key={index}
+                  className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+                >
+                  {skill}
+                </span>
+              ));
+            })()}
           </div>
         </div>
       )}

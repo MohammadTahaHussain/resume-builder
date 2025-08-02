@@ -7,21 +7,21 @@ export const runtime = 'nodejs'
 
 export async function GET(request, { params }) {
   try {
-    const session = await auth()
+    const session = await auth();
     
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const userId = session.user?.id || session.user?._id
     
     if (!userId) {
-      return NextResponse.json({ error: 'User ID not found in session' }, { status: 400 })
+      return NextResponse.json({ error: 'User ID not found in session' }, { status: 400 });
     }
 
     const { id } = params
 
-    await connectDB()
+    await connectDB();
     
     const resume = await Resume.findOne({ 
       _id: id, 
@@ -29,7 +29,22 @@ export async function GET(request, { params }) {
     })
     
     if (!resume) {
-      return NextResponse.json({ error: 'Resume not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Resume not found' }, { status: 404 });
+    }
+
+    // Migrate old skills format to new format if needed
+    if (resume.data.skills && Array.isArray(resume.data.skills) && resume.data.skills.length > 0) {
+      const firstSkill = resume.data.skills[0];
+      if (typeof firstSkill === 'object' && firstSkill.skills) {
+        // Convert old nested format to new simple array format
+        const migratedSkills = resume.data.skills.flatMap(skillGroup => skillGroup.skills || []);
+        resume.data.skills = migratedSkills;
+        
+        // Save the migrated data
+        await Resume.findByIdAndUpdate(id, { 
+          'data.skills': migratedSkills 
+        });
+      }
     }
     
     return NextResponse.json(resume)

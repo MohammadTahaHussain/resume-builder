@@ -1,11 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
   const [formData, setFormData] = useState(data);
   const [activeSection, setActiveSection] = useState('personal');
   const [newSkill, setNewSkill] = useState('');
+
+  // Debug logging
+  useEffect(() => {
+    console.log('EditDrawer received data:', data);
+    console.log('EditDrawer formData:', formData);
+    console.log('Name in data:', data?.name);
+    console.log('Name in formData:', formData?.name);
+  }, [data, formData]);
+
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -26,6 +38,31 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
   const handleSave = () => {
     onSave(formData);
     onClose();
+  };
+
+  const handleAIGenerateSummary = async () => {
+    if (!formData.name || !formData.title) {
+      alert('Please add your name and title first to generate a summary.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/ai/summary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ resumeData: formData })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        setFormData({ ...formData, summary: data.summary });
+      } else {
+        alert('Failed to generate summary: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      alert('Failed to connect to AI service');
+    }
   };
 
   const addSkill = () => {
@@ -60,7 +97,16 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
   ];
 
   const renderPersonalSection = () => (
-    <div className="space-y-4">
+    <div className="mb-6">
+      <div className="flex justify-between items-center mb-4">
+        {/* <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3> */}
+        <button
+          onClick={handleAIGenerateSummary}
+          className="px-3 py-1 text-sm bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg transition-colors"
+        >
+          ✨ AI Summary
+        </button>
+      </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
         <input
@@ -1031,11 +1077,11 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
 
           {/* Navigation */}
           <div className="flex-1 overflow-y-auto">
-            <div className="p-4 lg:grid grid-cols-2 gap-4">
+            <div className="p-4 gap-4">
               {/* Section Navigation */}
               <div className="mb-6">
                 <h3 className="text-sm font-medium text-gray-700 mb-3">Sections</h3>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="flex overflow-x-auto gap-2 pb-2">
                   {sections.map((section) => (
                     <button
                       key={section.id}
@@ -1046,8 +1092,8 @@ const EditDrawer = ({ isOpen, onClose, data, onSave }) => {
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
-                      <div className="text-lg mb-1">{section.icon}</div>
-                      <div className="text-xs font-medium">{section.name}</div>
+                      <div className="text-lg mb-1 text-center">{section.icon}</div>
+                      <div className="text-xs font-medium text-center text-nowrap">{section.name}</div>
                     </button>
                   ))}
                 </div>

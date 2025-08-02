@@ -141,6 +141,7 @@ resumeSchema.index({ userId: 1 })
 resumeSchema.index({ isPublic: 1 })
 resumeSchema.index({ isTemplate: 1 })
 
-const Resume = mongoose.models.Resume || mongoose.model('Resume', resumeSchema)
+delete mongoose.models.Resume
+const Resume = mongoose.model('Resume', resumeSchema)
 
 export default Resume 

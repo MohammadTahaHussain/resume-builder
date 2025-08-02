@@ -9,6 +9,8 @@ import PDFDownloader from "../../components/PDFDownloader";
 import { sampleResumeData } from "../../constants/sampleData";
 import { templates } from "../../constants/templates";
 import ProtectedRoute from "../../components/ProtectedRoute";
+import AIAssistant from "../../components/AIAssistant";
+import SmartSuggestions from "../../components/SmartSuggestions";
 
 function BuilderContent() {
   const router = useRouter();
@@ -19,6 +21,7 @@ function BuilderContent() {
   const [resumeData, setResumeData] = useState(sampleResumeData.softwareEngineer);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState(null);
+  const [isLoadingResume, setIsLoadingResume] = useState(false);
   const resumeRef = useRef(null);
 
   // Get template from URL params, default to 'modern'
@@ -36,6 +39,7 @@ function BuilderContent() {
 
   // Load resume from database
   const loadResume = async (id) => {
+    setIsLoadingResume(true);
     try {
       const response = await fetch(`/api/resumes/${id}`);
       if (response.ok) {
@@ -56,8 +60,20 @@ function BuilderContent() {
           // Other sections
           experience: resume.data.experience || [],
           education: resume.data.education || [],
-          // Skills are now a simple array
-          skills: resume.data.skills || [],
+          
+          // Handle skills - convert from nested format to simple array if needed
+          skills: (() => {
+            const skills = resume.data.skills || [];
+            // If skills is in old nested format [{category, skills: [...]}], flatten it
+            if (Array.isArray(skills) && skills.length > 0 && typeof skills[0] === 'object' && skills[0].skills) {
+              console.log('Converting old skills format to new format:', skills);
+              return skills.flatMap(skillGroup => skillGroup.skills || []);
+            }
+            // If skills is already a simple array, use it as is
+            console.log('Using skills as simple array:', skills);
+            return skills;
+          })(),
+          
           projects: resume.data.projects || [],
           certifications: resume.data.certifications || [],
           awards: resume.data.awards || [],
@@ -81,9 +97,14 @@ function BuilderContent() {
           router.push(`/builder?id=${id}&${params.toString()}`);
         }
         console.log('Resume loaded successfully!', resume);
+        console.log('Transformed data set:', transformedData);
+        console.log('Name from DB:', resume.data.personal?.name);
+        console.log('Name in transformed data:', transformedData.name);
       }
     } catch (error) {
       console.error('Error loading resume:', error);
+    } finally {
+      setIsLoadingResume(false);
     }
   };
 
@@ -169,8 +190,70 @@ function BuilderContent() {
     setResumeData(updatedData);
   };
 
+  // Function to handle AI suggestions
+  const handleAISuggestion = async (suggestion) => {
+    try {
+      switch (suggestion.action) {
+        case 'generate-summary':
+          const summaryResponse = await fetch('/api/ai/summary', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ resumeData })
+          });
+          const summaryData = await summaryResponse.json();
+          if (summaryResponse.ok) {
+            setResumeData({ ...resumeData, summary: summaryData.summary });
+          }
+          break;
+
+        case 'enhance-achievements':
+          const allAchievements = resumeData.experience.flatMap(exp => exp.achievements || []);
+          const enhanceResponse = await fetch('/api/ai/enhance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ achievements: allAchievements })
+          });
+          const enhanceData = await enhanceResponse.json();
+          if (enhanceResponse.ok) {
+            // Show enhanced achievements in a modal or notification
+            console.log('Enhanced achievements:', enhanceData.enhancedAchievements);
+          }
+          break;
+
+        case 'suggest-skills':
+          const skillsResponse = await fetch('/api/ai/skills', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              jobTitle: resumeData.title, 
+              currentSkills: resumeData.skills || [] 
+            })
+          });
+          const skillsData = await skillsResponse.json();
+          if (skillsResponse.ok) {
+            console.log('Suggested skills:', skillsData.suggestedSkills);
+          }
+          break;
+
+        case 'analyze-resume':
+          const analyzeResponse = await fetch('/api/ai/analyze', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ resumeData })
+          });
+          const analyzeData = await analyzeResponse.json();
+          if (analyzeResponse.ok) {
+            console.log('Resume analysis:', analyzeData.analysis);
+          }
+          break;
+      }
+    } catch (error) {
+      console.error('Error applying AI suggestion:', error);
+    }
+  };
+
   // Get available templates for the builder
-  const availableTemplates = templates;
+  const availableTemplates = templates.slice(0, 3);
 
   // Get current template name
   const currentTemplate = templates.find(t => t.id === selectedTemplate);
@@ -271,9 +354,10 @@ function BuilderContent() {
               <div className="mt-6 space-y-3">
                 <button 
                   onClick={() => setIsEditDrawerOpen(true)}
-                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-200"
+                  disabled={isLoadingResume}
+                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white py-3 px-4 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Edit Information
+                  {isLoadingResume ? 'Loading...' : 'Edit Information'}
                 </button>
                 <PDFDownloader 
                   resumeData={resumeData}
@@ -304,6 +388,12 @@ function BuilderContent() {
                 </div>
               </div>
 
+              {/* AI Suggestions */}
+              <SmartSuggestions 
+                resumeData={resumeData} 
+                onApplySuggestion={handleAISuggestion}
+              />
+
               {/* Template Preview */}
               <div className="rounded-lg overflow-hidden bg-gray-50 lg:p-4">
                 <div ref={resumeRef} data-resume-content>
@@ -320,10 +410,17 @@ function BuilderContent() {
 
       {/* Edit Drawer */}
       <EditDrawer
+        key={resumeIdFromUrl || 'new-resume'} // Force re-render when resume ID changes
         isOpen={isEditDrawerOpen}
         onClose={() => setIsEditDrawerOpen(false)}
         data={resumeData}
         onSave={handleDataUpdate}
+      />
+
+      {/* AI Assistant */}
+      <AIAssistant 
+        resumeData={resumeData}
+        onUpdateData={handleDataUpdate}
       />
     </div>
   );
