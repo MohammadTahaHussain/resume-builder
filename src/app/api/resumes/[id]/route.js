@@ -19,7 +19,7 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'User ID not found in session' }, { status: 400 });
     }
 
-    const { id } = params
+    const { id } = await params
 
     await connectDB();
     

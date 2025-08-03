@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { sampleResumeData } from "../../constants/sampleData";
 import TemplateManager from "../../components/TemplateManager";
@@ -8,7 +8,7 @@ import EditDrawer from "../../components/EditDrawer";
 import PDFDownloader from "../../components/PDFDownloader";
 import AIAssistant from "@/components/AIAssistant";
 
-export default function EditorPage() {
+function EditorContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const templateId = searchParams.get("template") || "modern";
@@ -334,5 +334,20 @@ export default function EditorPage() {
       <AIAssistant />
       
     </div>
+  );
+}
+
+export default function EditorPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading editor...</p>
+        </div>
+      </div>
+    }>
+      <EditorContent />
+    </Suspense>
   );
 }
