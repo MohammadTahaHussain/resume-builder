@@ -1,6 +1,6 @@
 const TechTemplate = ({ data }) => {
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full overflow-x-auto max-lg:p-4">
       <div className="bg-white min-w-[800px] max-w-4xl mx-auto lg:p-8 font-mono">
         {/* Header */}
         <div className="bg-gray-900 text-white p-8 mb-8">
@@ -78,7 +78,7 @@ const TechTemplate = ({ data }) => {
                   {exp.company}
                 </p>
                 <ul className="list-disc list-inside text-gray-700 space-y-1">
-                  {exp.achievements.map((achievement, idx) => (
+                  {exp.achievements && Array.isArray(exp.achievements) && exp.achievements.map((achievement, idx) => (
                     <li key={idx}>{achievement}</li>
                   ))}
                 </ul>

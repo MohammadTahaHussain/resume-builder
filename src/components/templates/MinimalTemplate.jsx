@@ -1,6 +1,6 @@
 const MinimalTemplate = ({ data }) => {
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full overflow-x-auto max-lg:p-4">
       <div className="bg-white min-w-[800px] max-w-3xl mx-auto lg:p-8 font-sans">
         {/* Header */}
         <div className="text-center mb-8">
@@ -49,7 +49,7 @@ const MinimalTemplate = ({ data }) => {
                   </span>
                 </div>
                 <ul className="list-none space-y-1 mt-3">
-                  {exp.achievements.map((achievement, idx) => (
+                  {exp.achievements && Array.isArray(exp.achievements) && exp.achievements.map((achievement, idx) => (
                     <li key={idx} className="text-gray-700 leading-relaxed">
                       • {achievement}
                     </li>

@@ -1,7 +1,7 @@
 const StartupTemplate = ({ data }) => {
   return (
-    <div className="w-full overflow-x-auto">
-      <div className="bg-white min-w-[800px] max-w-4xl mx-auto lg:p-8 font-sans">
+    <div className="w-full overflow-x-auto max-lg:p-4">
+      <div className="bg-white min-w-[800px] max-w-4xl mx-auto lg:p-8 font-sans relative">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 mb-8 rounded-lg">
           <div className="text-center">
@@ -22,86 +22,89 @@ const StartupTemplate = ({ data }) => {
         {/* Dynamic accent elements */}
         <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full opacity-80"></div>
         <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-orange-400 rounded-full opacity-80"></div>
-      </div>
 
-      {/* Vision Statement */}
-      {data.summary && (
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-            <span className="w-8 h-1 bg-gradient-to-r from-red-500 to-orange-500 mr-4"></span>
-            Vision & Mission
-          </h2>
-          <p className="text-gray-700 leading-relaxed text-lg">
-            {data.summary}
-          </p>
-        </div>
-      )}
+        {/* Vision Statement */}
+        {data.summary && (
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+              <span className="w-8 h-1 bg-gradient-to-r from-red-500 to-orange-500 mr-4"></span>
+              Vision & Mission
+            </h2>
+            <p className="text-gray-700 leading-relaxed text-lg">
+              {data.summary}
+            </p>
+          </div>
+        )}
 
-      {/* Entrepreneurial Experience */}
-      {data.experience && data.experience.length > 0 && (
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-            <span className="w-8 h-1 bg-gradient-to-r from-orange-500 to-red-500 mr-4"></span>
-            Entrepreneurial Journey
-          </h2>
-          <div className="space-y-8">
-            {data.experience.map((exp, index) => (
-              <div key={index} className="relative">
-                <div className="absolute left-0 top-0 w-4 h-4 bg-gradient-to-r from-red-500 to-orange-500 rounded-full -ml-2"></div>
-                <div className="ml-8 border-l-2 border-red-200 pl-8">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">
-                        {exp.title}
-                      </h3>
-                      <p className="text-lg text-red-600 font-semibold">
-                        {exp.company}
-                      </p>
+        {/* Entrepreneurial Experience */}
+        {data.experience && data.experience.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+              <span className="w-8 h-1 bg-gradient-to-r from-orange-500 to-red-500 mr-4"></span>
+              Entrepreneurial Journey
+            </h2>
+            <div className="space-y-8">
+              {data.experience.map((exp, index) => (
+                <div key={index} className="relative">
+                  <div className="absolute left-0 top-0 w-4 h-4 bg-gradient-to-r from-red-500 to-orange-500 rounded-full -ml-2"></div>
+                  <div className="ml-8 border-l-2 border-red-200 pl-8">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900">
+                          {exp.title}
+                        </h3>
+                        <p className="text-lg text-red-600 font-semibold">
+                          {exp.company}
+                        </p>
+                      </div>
+                      <span className="text-gray-600 font-medium">
+                        {exp.startDate} - {exp.endDate || 'Present'}
+                      </span>
                     </div>
-                    <span className="text-gray-600 font-medium">
-                      {exp.startDate} - {exp.endDate || 'Present'}
-                    </span>
+                    {exp.achievements && Array.isArray(exp.achievements) && exp.achievements.length > 0 && (
+                      <ul className="list-disc list-inside text-gray-700 space-y-2">
+                        {exp.achievements.map((achievement, idx) => (
+                          <li key={idx} className="leading-relaxed">{achievement}</li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-                  <ul className="list-disc list-inside text-gray-700 space-y-2">
-                    {exp.achievements.map((achievement, idx) => (
-                      <li key={idx} className="leading-relaxed">{achievement}</li>
-                    ))}
-                  </ul>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Key Achievements */}
-      {data.achievements && data.achievements.length > 0 && (
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-            <span className="w-8 h-1 bg-gradient-to-r from-yellow-500 to-orange-500 mr-4"></span>
-            Key Achievements
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {data.achievements.map((achievement, index) => (
-              <div key={index} className="bg-gradient-to-r from-red-50 to-orange-50 p-6 rounded-lg border-l-4 border-red-500">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
-                  {achievement.title}
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  {achievement.description}
-                </p>
-                {achievement.metrics && (
-                  <div className="mt-3">
-                    <span className="text-red-600 font-semibold">
-                      {achievement.metrics}
-                    </span>
-                  </div>
-                )}
-              </div>
-            ))}
+        {/* Key Achievements */}
+        {data.achievements && data.achievements.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+              <span className="w-8 h-1 bg-gradient-to-r from-yellow-500 to-orange-500 mr-4"></span>
+              Key Achievements
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {data.achievements.map((achievement, index) => (
+                <div key={index} className="bg-gradient-to-r from-red-50 to-orange-50 p-6 rounded-lg border-l-4 border-red-500">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    {typeof achievement === 'string' ? achievement : achievement.title || 'Achievement'}
+                  </h3>
+                  {typeof achievement === 'object' && achievement.description && (
+                    <p className="text-gray-700 leading-relaxed">
+                      {achievement.description}
+                    </p>
+                  )}
+                  {typeof achievement === 'object' && achievement.metrics && (
+                    <div className="mt-3">
+                      <span className="text-red-600 font-semibold">
+                        {achievement.metrics}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Skills */}
       {data.skills && data.skills.length > 0 && (
@@ -427,7 +430,8 @@ const StartupTemplate = ({ data }) => {
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default StartupTemplate; 

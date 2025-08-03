@@ -1,6 +1,6 @@
 const ModernTemplate = ({ data }) => {
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full overflow-x-auto max-lg:p-4">
       <div className="bg-white min-w-[800px] max-w-4xl mx-auto lg:p-8 font-sans">
         {/* Header */}
         <div className="border-b-4 border-blue-600 pb-6 mb-8">

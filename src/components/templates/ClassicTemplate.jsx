@@ -1,6 +1,6 @@
 const ClassicTemplate = ({ data }) => {
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full overflow-x-auto max-lg:p-4 max-lg:p-4">
       <div className="bg-white min-w-[800px] max-w-4xl mx-auto lg:p-8 font-serif">
         {/* Header */}
         <div className="text-center border-b-2 border-gray-300 pb-6 mb-8">

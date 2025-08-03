@@ -14,12 +14,6 @@ export const navigationItems = [
     requiresAuth: true
   },
   {
-    name: 'Build Resume',
-    href: '/builder',
-    description: 'Create your resume',
-    requiresAuth: true
-  },
-  {
     name: 'Templates',
     href: '/templates',
     description: 'Browse resume templates'
@@ -39,10 +33,10 @@ export const navigationItems = [
 // Footer links
 export const footerLinks = {
   quickLinks: [
-    { name: 'Build Resume', href: '/builder' },
     { name: 'Templates', href: '/templates' },
     { name: 'AI Suggestions', href: '/ai-suggestions' },
-    { name: 'Pricing', href: '/pricing' }
+    { name: 'Pricing', href: '/pricing' },
+    { name: 'Help Center', href: '/help' }
   ],
   support: [
     { name: 'Help Center', href: '/help' },
