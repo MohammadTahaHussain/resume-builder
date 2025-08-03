@@ -45,7 +45,7 @@ const CreativeTemplate = ({ data }) => {
                 <span className="w-8 h-1 bg-gradient-to-r from-orange-500 to-red-500 mr-4"></span>
                 Featured Work
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid max-sm:grid-cols-1 grid-cols-2 gap-8">
                 {data.projects.map((project, index) => (
                   <div key={index} className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
                     <div className="bg-gradient-to-br from-gray-100 to-gray-200 h-48 flex items-center justify-center">
@@ -101,21 +101,19 @@ const CreativeTemplate = ({ data }) => {
                           <h3 className="text-xl font-bold text-gray-900">
                             {exp.title}
                           </h3>
-                          <p className="text-lg text-purple-600 font-semibold">
+                          <p className="text-purple-600 font-semibold">
                             {exp.company}
                           </p>
                         </div>
-                        <span className="text-gray-600 font-medium">
+                        <span className="text-gray-500 text-sm bg-white px-3 py-1 rounded-full shadow-sm">
                           {exp.startDate} - {exp.endDate || 'Present'}
                         </span>
                       </div>
-                      {exp.achievements && Array.isArray(exp.achievements) && exp.achievements.length > 0 && (
-                        <ul className="list-disc list-inside text-gray-700 space-y-2">
-                          {exp.achievements.map((achievement, idx) => (
-                            <li key={idx} className="leading-relaxed">{achievement}</li>
-                          ))}
-                        </ul>
-                      )}
+                      <ul className="list-disc list-inside text-gray-700 space-y-2">
+                        {exp.achievements.map((achievement, idx) => (
+                          <li key={idx}>{achievement}</li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 ))}
@@ -125,21 +123,24 @@ const CreativeTemplate = ({ data }) => {
 
           {/* Skills */}
           {data.skills && data.skills.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
-                Skills
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                <span className="w-8 h-1 bg-gradient-to-r from-green-500 to-blue-500 mr-4"></span>
+                Skills & Expertise
               </h2>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {(() => {
                   // Safety check: ensure skills is a simple array of strings
                   const skillsArray = Array.isArray(data.skills) 
-                    ? data.skills.filter(skill => typeof skill === 'string')
-                    : [];
+                    ? data.skills 
+                    : typeof data.skills === 'string' 
+                      ? data.skills.split(',').map(s => s.trim()) 
+                      : [];
                   
                   return skillsArray.map((skill, index) => (
                     <span
                       key={index}
-                      className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+                      className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 px-4 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200"
                     >
                       {skill}
                     </span>
@@ -153,152 +154,27 @@ const CreativeTemplate = ({ data }) => {
           {data.education && data.education.length > 0 && (
             <div className="mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-                <span className="w-8 h-1 bg-gradient-to-r from-yellow-500 to-orange-500 mr-4"></span>
+                <span className="w-8 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mr-4"></span>
                 Education
               </h2>
               <div className="space-y-6">
                 {data.education.map((edu, index) => (
-                  <div key={index} className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-lg">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">
-                          {edu.degree}
-                        </h3>
-                        <p className="text-lg text-purple-600 font-semibold">
-                          {edu.institution}
-                        </p>
-                        {edu.gpa && (
-                          <p className="text-gray-600">GPA: {edu.gpa}</p>
-                        )}
-                      </div>
-                      <span className="text-gray-600 font-medium">
-                        {edu.graduationYear}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Awards & Recognition */}
-          {data.awards && data.awards.length > 0 && (
-            <div className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-                <span className="w-8 h-1 bg-gradient-to-r from-red-500 to-pink-500 mr-4"></span>
-                Awards & Recognition
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {data.awards.map((award, index) => (
-                  <div key={index} className="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-lg border-l-4 border-red-500">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">
-                      {award.name}
-                    </h3>
-                    <p className="text-gray-700 mb-2">
-                      {award.issuer}
-                    </p>
-                    <span className="text-gray-600 text-sm">
-                      {award.date}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Teaching Experience */}
-          {data.teaching && data.teaching.length > 0 && (
-            <div className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-                <span className="w-8 h-1 bg-gradient-to-r from-teal-500 to-cyan-500 mr-4"></span>
-                Teaching Experience
-              </h2>
-              <div className="space-y-6">
-                {data.teaching.map((course, index) => (
-                  <div key={index} className="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-lg">
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">
-                          {course.course}
-                        </h3>
-                        <p className="text-lg text-teal-600 font-semibold">
-                          {course.institution}
-                        </p>
-                      </div>
-                      <span className="text-gray-600 font-medium">
-                        {course.date}
-                      </span>
-                    </div>
-                    {course.description && (
-                      <p className="text-gray-700 leading-relaxed text-lg">
-                        {course.description}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Publications */}
-          {data.publications && data.publications.length > 0 && (
-            <div className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-                <span className="w-8 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mr-4"></span>
-                Publications
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {data.publications.map((pub, index) => (
-                  <div key={index} className="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-lg">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">
-                      {pub.title}
-                    </h3>
-                    <p className="text-indigo-600 font-semibold mb-2">
-                      {pub.journal}
-                    </p>
-                    <p className="text-gray-600 mb-3">
-                      {pub.date}
-                    </p>
-                    {pub.url && (
-                      <a
-                        href={pub.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-indigo-600 hover:text-indigo-800 font-medium"
-                      >
-                        View Publication →
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Professional Memberships */}
-          {data.memberships && data.memberships.length > 0 && (
-            <div className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-                <span className="w-8 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mr-4"></span>
-                Professional Memberships
-              </h2>
-              <div className="space-y-4">
-                {data.memberships.map((membership, index) => (
-                  <div key={index} className="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-lg">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">
-                          {membership.organization}
-                        </h3>
-                        {membership.role && (
-                          <p className="text-blue-600 font-semibold">
-                            {membership.role}
+                  <div key={index} className="relative">
+                    <div className="absolute left-0 top-0 w-4 h-4 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full -ml-2"></div>
+                    <div className="ml-8 border-l-2 border-indigo-200 pl-8">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900">
+                            {edu.degree}
+                          </h3>
+                          <p className="text-indigo-600 font-semibold">
+                            {edu.institution}
                           </p>
-                        )}
+                        </div>
+                        <span className="text-gray-500 text-sm bg-white px-3 py-1 rounded-full shadow-sm">
+                          {edu.graduationYear}
+                        </span>
                       </div>
-                      <span className="text-gray-600 font-medium">
-                        {membership.date || membership.period}
-                      </span>
                     </div>
                   </div>
                 ))}
@@ -306,29 +182,25 @@ const CreativeTemplate = ({ data }) => {
             </div>
           )}
 
-          {/* Security Clearance */}
-          {data.clearance && data.clearance.length > 0 && (
+          {/* Certifications */}
+          {data.certifications && data.certifications.length > 0 && (
             <div className="mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-                <span className="w-8 h-1 bg-gradient-to-r from-red-500 to-pink-500 mr-4"></span>
-                Security Clearance
+                <span className="w-8 h-1 bg-gradient-to-r from-yellow-500 to-orange-500 mr-4"></span>
+                Certifications
               </h2>
-              <div className="space-y-4">
-                {data.clearance.map((clearance, index) => (
-                  <div key={index} className="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-lg border-l-4 border-red-500">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">
-                          {clearance.level}
-                        </h3>
-                        <p className="text-red-600 font-semibold">
-                          {clearance.agency}
-                        </p>
-                      </div>
-                      <span className="text-gray-600 font-medium">
-                        {clearance.date}
-                      </span>
-                    </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {data.certifications.map((cert, index) => (
+                  <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      {cert.name}
+                    </h3>
+                    <p className="text-orange-600 font-semibold mb-2">
+                      {cert.issuer}
+                    </p>
+                    <span className="text-gray-500 text-sm">
+                      {cert.date}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -339,57 +211,26 @@ const CreativeTemplate = ({ data }) => {
           {data.references && data.references.length > 0 && (
             <div className="mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
-                <span className="w-8 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mr-4"></span>
+                <span className="w-8 h-1 bg-gradient-to-r from-teal-500 to-green-500 mr-4"></span>
                 References
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {data.references.map((reference, index) => (
-                  <div key={index} className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">
-                      {reference.name}
+                {data.references.map((ref, index) => (
+                  <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      {ref.name}
                     </h3>
-                    <p className="text-green-600 font-semibold mb-2">
-                      {reference.title}
+                    <p className="text-teal-600 font-semibold mb-2">
+                      {ref.title} at {ref.company}
                     </p>
-                    <p className="text-gray-700 mb-3">
-                      {reference.company || reference.organization}
+                    <p className="text-gray-600 text-sm">
+                      {ref.email} • {ref.phone}
                     </p>
-                    <div className="text-sm text-gray-600 space-y-1">
-                      {reference.email && (
-                        <p>Email: {reference.email}</p>
-                      )}
-                      {reference.phone && (
-                        <p>Phone: {reference.phone}</p>
-                      )}
-                    </div>
                   </div>
                 ))}
               </div>
             </div>
           )}
-
-          {/* Contact/Footer */}
-          <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-4 lg:p-8 rounded-lg text-white text-center">
-            <h3 className="text-2xl font-bold mb-4">Let's Create Something Amazing Together</h3>
-            <p className="text-gray-300 mb-6">
-              Ready to bring your vision to life? Let's discuss your next project.
-            </p>
-            <div className="flex justify-center space-x-6">
-              <span className="flex items-center">
-                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                </svg>
-                {data.email || 'email@example.com'}
-              </span>
-              <span className="flex items-center">
-                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                </svg>
-                {data.phone || '+1 (555) 123-4567'}
-              </span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
