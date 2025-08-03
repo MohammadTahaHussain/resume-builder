@@ -182,7 +182,7 @@ function DashboardContent() {
                   </p>
                   <div className="flex space-x-2">
                     <Link
-                      href={`/builder?id=${resume._id}`}
+                      href={`/editor?id=${resume._id}`}
                       className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                     >
                       Edit
