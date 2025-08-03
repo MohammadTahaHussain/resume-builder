@@ -12,20 +12,20 @@ export async function GET() {
       name: 'Google',
       type: 'oauth',
       signinUrl: '/api/auth/signin/google',
-      callbackUrl: '/api/auth/callback/google'
+      callbackUrl: '/api/auth/callback/google',
     }
   }
   
   // Check if GitHub provider is configured
-  if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
-    providers.github = {
-      id: 'github',
-      name: 'GitHub',
-      type: 'oauth',
-      signinUrl: '/api/auth/signin/github',
-      callbackUrl: '/api/auth/callback/github'
-    }
-  }
+  // if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
+  //   providers.github = {
+  //     id: 'github',
+  //     name: 'GitHub',
+  //     type: 'oauth',
+  //     signinUrl: '/api/auth/signin/github',
+  //     callbackUrl: '/api/auth/callback/github'
+  //   }
+  // }
   
   return NextResponse.json(providers)
 } 
