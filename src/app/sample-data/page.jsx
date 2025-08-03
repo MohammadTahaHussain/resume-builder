@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { sampleResumeData } from '../../constants/sampleData';
 
-export default function SampleDataPage() {
+function SampleDataContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const templateId = searchParams.get('template');
@@ -128,5 +128,20 @@ export default function SampleDataPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SampleDataPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading sample data page...</p>
+        </div>
+      </div>
+    }>
+      <SampleDataContent />
+    </Suspense>
   );
 } 
