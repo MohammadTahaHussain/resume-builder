@@ -229,15 +229,15 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
   return (
     <>
       {/* Floating AI Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
+          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
         >
           {isLoading ? (
-            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
           ) : (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
           )}
@@ -246,97 +246,95 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
 
       {/* AI Assistant Panel */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-96 h-96 bg-white rounded-lg shadow-2xl border border-gray-200 z-50">
-          <div className="flex flex-col h-full">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 rounded-t-lg">
-              <div className="flex justify-between items-center">
-                <h3 className="font-semibold">AI Assistant</h3>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-white hover:text-gray-200"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
+        <div className="fixed inset-4 sm:bottom-24 sm:right-6 sm:inset-auto sm:w-96 sm:h-96 bg-white rounded-lg shadow-2xl border border-gray-200 z-50 flex flex-col">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-3 sm:p-4 rounded-t-lg flex-shrink-0">
+            <div className="flex justify-between items-center">
+              <h3 className="font-semibold text-sm sm:text-base">AI Assistant</h3>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-white hover:text-gray-200 p-1"
+              >
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
+          </div>
 
-            {/* Content */}
-            <div className="flex-1 overflow-hidden">
-              {messages.length === 0 ? (
-                /* AI Actions Grid */
-                <div className="p-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">What would you like me to help you with?</h4>
-                  <div className="grid grid-cols-2 gap-3">
-                    {aiActions.map((action) => (
-                      <button
-                        key={action.id}
-                        onClick={action.action}
-                        disabled={isLoading}
-                        className="p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-colors disabled:opacity-50"
-                      >
-                        <div className="text-2xl mb-1">{action.icon}</div>
-                        <div className="text-sm font-medium text-gray-900">{action.title}</div>
-                        <div className="text-xs text-gray-600">{action.description}</div>
-                      </button>
-                    ))}
-                  </div>
+          {/* Content */}
+          <div className="flex-1 overflow-hidden">
+            {messages.length === 0 ? (
+              /* AI Actions Grid */
+              <div className="p-3 sm:p-4">
+                <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-3">What would you like me to help you with?</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                  {aiActions.map((action) => (
+                    <button
+                      key={action.id}
+                      onClick={action.action}
+                      disabled={isLoading}
+                      className="p-2 sm:p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-colors disabled:opacity-50"
+                    >
+                      <div className="text-xl sm:text-2xl mb-1">{action.icon}</div>
+                      <div className="text-xs sm:text-sm font-medium text-gray-900">{action.title}</div>
+                      <div className="text-xs text-gray-600 hidden sm:block">{action.description}</div>
+                    </button>
+                  ))}
                 </div>
-              ) : (
-                /* Messages */
-                <div className="flex flex-col h-full">
-                  <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                    {messages.map((message) => (
-                      <div
-                        key={message.id}
-                        className={`p-3 rounded-lg ${
-                          message.type === 'ai' 
-                            ? 'bg-blue-50 text-blue-900' 
-                            : message.type === 'success'
-                            ? 'bg-green-50 text-green-900'
-                            : message.type === 'error'
-                            ? 'bg-red-50 text-red-900'
-                            : 'bg-gray-50 text-gray-900'
-                        }`}
+              </div>
+            ) : (
+              /* Messages */
+              <div className="flex flex-col h-full">
+                <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2 sm:space-y-3">
+                  {messages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`p-2 sm:p-3 rounded-lg text-sm sm:text-base ${
+                        message.type === 'ai' 
+                          ? 'bg-blue-50 text-blue-900' 
+                          : message.type === 'success'
+                          ? 'bg-green-50 text-green-900'
+                          : message.type === 'error'
+                          ? 'bg-red-50 text-red-900'
+                          : 'bg-gray-50 text-gray-900'
+                      }`}
+                    >
+                      <ReactMarkdown 
+                        components={{
+                          ul: ({ children }) => <ul className="list-disc pl-3 sm:pl-4 space-y-1 mt-2">{children}</ul>,
+                          li: ({ children }) => <li className="text-xs sm:text-sm">{children}</li>,
+                          strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                          p: ({ children }) => <p className="mb-2">{children}</p>,
+                          h3: ({ children }) => <h3 className="text-sm sm:text-base font-semibold mt-3 mb-2">{children}</h3>,
+                          h4: ({ children }) => <h4 className="text-xs sm:text-sm font-semibold mt-2 mb-1">{children}</h4>
+                        }}
                       >
-                        <ReactMarkdown 
-                          components={{
-                            ul: ({ children }) => <ul className="list-disc pl-4 space-y-1 mt-2">{children}</ul>,
-                            li: ({ children }) => <li className="text-sm">{children}</li>,
-                            strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
-                            p: ({ children }) => <p className="mb-2">{children}</p>,
-                            h3: ({ children }) => <h3 className="text-base font-semibold mt-3 mb-2">{children}</h3>,
-                            h4: ({ children }) => <h4 className="text-sm font-semibold mt-2 mb-1">{children}</h4>
-                          }}
-                        >
-                          {message.text}
-                        </ReactMarkdown>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {/* Action Buttons */}
-                  <div className="p-4 border-t border-gray-200">
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => setMessages([])}
-                        className="flex-1 px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-                      >
-                        Clear Chat
-                      </button>
-                      <button
-                        onClick={() => setIsOpen(false)}
-                        className="flex-1 px-3 py-2 text-sm bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
-                      >
-                        Close
-                      </button>
+                        {message.text}
+                      </ReactMarkdown>
                     </div>
+                  ))}
+                </div>
+                
+                {/* Action Buttons */}
+                <div className="p-3 sm:p-4 border-t border-gray-200 flex-shrink-0">
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => setMessages([])}
+                      className="flex-1 px-2 sm:px-3 py-2 text-xs sm:text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                    >
+                      Clear Chat
+                    </button>
+                    <button
+                      onClick={() => setIsOpen(false)}
+                      className="flex-1 px-2 sm:px-3 py-2 text-xs sm:text-sm bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+                    >
+                      Close
+                    </button>
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       )}
