@@ -37,10 +37,10 @@ export default function SignIn() {
 
   if (session) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Redirecting...</p>
+          <p className="mt-2 text-muted-foreground">Redirecting...</p>
         </div>
       </div>
     )
@@ -49,19 +49,19 @@ export default function SignIn() {
   const hasProviders = Object.keys(providers).length > 0
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <div className="mx-auto h-12 w-12 bg-blue-600 rounded-lg flex items-center justify-center">
-            <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          <div className="mx-auto h-12 w-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+            <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Welcome to Resume Builder
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-card-foreground">
+            Sign in to ResumeAI
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Sign in to create and manage your professional resumes
+          <p className="mt-2 text-center text-sm text-muted-foreground">
+            Create professional resumes with AI-powered suggestions
           </p>
         </div>
         
@@ -71,7 +71,7 @@ export default function SignIn() {
               <button
                 onClick={() => handleSignIn('google')}
                 disabled={isLoading}
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                className="group relative w-full flex justify-center py-3 px-4 border border-border text-sm font-medium rounded-md text-card-foreground bg-card hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
               >
                 <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                   <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -129,18 +129,18 @@ export default function SignIn() {
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
+              <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-500">
-                Create professional resumes instantly
+              <span className="px-2 bg-gradient-to-br from-blue-50 to-indigo-100 text-muted-foreground">
+                Or continue with
               </span>
             </div>
           </div>
         </div>
 
         <div className="text-center">
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             By signing in, you agree to our Terms of Service and Privacy Policy
           </p>
         </div>

@@ -38,27 +38,27 @@ export default function SampleDataPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-background py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-card-foreground mb-4">
             Choose Your Sample Data
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Select a profession to pre-fill your resume with relevant sample data, or start with a blank template
           </p>
         </div>
 
         {/* Selected Template Info */}
         {templateId && (
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="bg-card rounded-lg shadow-md p-6 mb-8 border border-border">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-lg font-semibold text-card-foreground">
                   Selected Template: {templateId.charAt(0).toUpperCase() + templateId.slice(1)}
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-muted-foreground">
                   You can change this later in the editor
                 </p>
               </div>
@@ -77,10 +77,10 @@ export default function SampleDataPage() {
           {professions.map((profession) => (
             <div
               key={profession.id}
-              className={`bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer border-2 ${
+              className={`bg-card rounded-lg shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer border-2 ${
                 selectedProfession === profession.id 
                   ? 'border-blue-500 bg-blue-50' 
-                  : 'border-gray-200 hover:border-gray-300'
+                  : 'border-border hover:border-accent'
               }`}
               onClick={() => handleProfessionSelect(profession.id)}
             >
@@ -88,10 +88,10 @@ export default function SampleDataPage() {
                 <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${profession.color}`}>
                   <span className="text-2xl">{profession.icon}</span>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-card-foreground mb-2">
                   {profession.name}
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   {sampleResumeData[profession.id]?.summary?.substring(0, 80) || 'Sample data for this profession...'}...
                 </p>
               </div>
@@ -111,14 +111,14 @@ export default function SampleDataPage() {
           
           <button
             onClick={handleStartEmpty}
-            className="bg-white hover:bg-gray-50 text-gray-900 px-8 py-3 rounded-lg font-medium border-2 border-gray-300 transition-all duration-200 transform hover:scale-105"
+            className="bg-card hover:bg-accent text-card-foreground hover:text-accent-foreground px-8 py-3 rounded-lg font-medium border-2 border-border transition-all duration-200 transform hover:scale-105"
           >
             Start with Empty Template
           </button>
         </div>
 
         {/* Info Section */}
-        <div className="mt-12 bg-blue-50 rounded-lg p-6">
+        <div className="mt-12 bg-blue-50 rounded-lg p-6 border border-border">
           <h3 className="text-lg font-semibold text-blue-900 mb-2">
             💡 Pro Tip
           </h3>

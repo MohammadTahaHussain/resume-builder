@@ -124,7 +124,7 @@ export default function EditorPage() {
   };
 
   // Save resume to database
-  const saveResume = async (title = "My Resume") => {
+  const saveResume = async (title = resumeData.name || "My Resume") => {
     setIsSaving(true);
     try {
       const resumePayload = {
@@ -181,16 +181,16 @@ export default function EditorPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-card shadow-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-3 sm:h-16 gap-3 sm:gap-0">
             <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
-              <h1 className="text-lg sm:text-xl font-semibold text-gray-900">
+              <h1 className="text-lg sm:text-xl font-semibold text-card-foreground">
                 Resume Editor
               </h1>
-              <span className="text-xs sm:text-sm text-gray-500">
+              <span className="text-xs sm:text-sm text-muted-foreground">
                 Template:{" "}
                 {templateId.charAt(0).toUpperCase() + templateId.slice(1)}
               </span>
@@ -198,7 +198,7 @@ export default function EditorPage() {
             
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
               {lastSaved && (
-                <span className="text-xs sm:text-sm text-gray-500 text-center sm:text-left">
+                <span className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
                   Last saved: {lastSaved.toLocaleTimeString()}
                 </span>
               )}
@@ -227,19 +227,18 @@ export default function EditorPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Resume Preview - Takes 2/3 of the width */}
           <div className="lg:col-span-2">
-            {/* <div className="bg-white rounded-lg shadow-lg"> */}
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-card-foreground">
                 Resume Preview
               </h2>
               <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-500">Live Preview</span>
+                <span className="text-sm text-muted-foreground">Live Preview</span>
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               </div>
             </div>
 
             {/* Full Resume Display */}
-            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div className="bg-card shadow-lg rounded-lg overflow-hidden border border-border">
               {/* <div className="bg-gray-50 py-2 border-b">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700">
@@ -255,14 +254,13 @@ export default function EditorPage() {
                 <TemplateManager templateType={templateId} data={resumeData} />
               </div>
             </div>
-            {/* </div> */}
           </div>
 
           {/* Quick Actions & PDF Download - Takes 1/3 of the width */}
           <div className="space-y-6">
             {/* Quick Stats */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
+              <h3 className="text-lg font-semibold text-card-foreground mb-4">
                 Resume Stats
               </h3>
               <div className="grid grid-cols-2 gap-4">
@@ -270,32 +268,32 @@ export default function EditorPage() {
                   <div className="text-2xl font-bold text-blue-600">
                     {resumeData.experience?.length || 0}
                   </div>
-                  <div className="text-sm text-gray-600">Experience</div>
+                  <div className="text-sm text-muted-foreground">Experience</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-green-600">
                     {resumeData.skills?.length || 0}
                   </div>
-                  <div className="text-sm text-gray-600">Skills</div>
+                  <div className="text-sm text-muted-foreground">Skills</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-purple-600">
                     {resumeData.projects?.length || 0}
                   </div>
-                  <div className="text-sm text-gray-600">Projects</div>
+                  <div className="text-sm text-muted-foreground">Projects</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-orange-600">
                     {resumeData.education?.length || 0}
                   </div>
-                  <div className="text-sm text-gray-600">Education</div>
+                  <div className="text-sm text-muted-foreground">Education</div>
                 </div>
               </div>
             </div>
 
             {/* PDF Download */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
+              <h3 className="text-lg font-semibold text-card-foreground mb-4">
                 Download PDF
               </h3>
               <PDFDownloader
@@ -308,7 +306,7 @@ export default function EditorPage() {
             </div>
 
             {/* Quick Tips */}
-            <div className="bg-blue-50 rounded-lg p-6">
+            <div className="bg-blue-50 rounded-lg p-6 border border-border">
               <h3 className="text-lg font-semibold text-blue-900 mb-2">
                 💡 Quick Tips
               </h3>

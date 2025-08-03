@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { navigationItems } from '../constants/app';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -62,6 +63,7 @@ const Navbar = () => {
 
           {/* Auth & CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <ThemeToggle />
             {status === 'loading' ? (
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
             ) : session ? (
@@ -90,28 +92,28 @@ const Navbar = () => {
                 </button>
 
                 {isProfileOpen && (
-                  <div className="absolute right-0 mt-2 w-fit px-2 bg-white rounded-md shadow-lg py-1 z-50">
-                    <div className="px-4 py-2 text-sm text-gray-700 border-b">
+                  <div className="absolute right-0 mt-2 w-fit px-2 bg-card rounded-md shadow-lg py-1 z-50 border border-border">
+                    <div className="px-4 py-2 text-sm text-card-foreground border-b border-border">
                       <p className="font-medium">{session.user?.name}</p>
-                      <p className="text-gray-500">{session.user?.email}</p>
+                      <p className="text-muted-foreground">{session.user?.email}</p>
                     </div>
                     <Link
                       href="/dashboard"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block px-4 py-2 text-sm text-card-foreground hover:bg-accent hover:text-accent-foreground"
                       onClick={() => setIsProfileOpen(false)}
                     >
                       Dashboard
                     </Link>
                     <Link
                       href="/builder"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block px-4 py-2 text-sm text-card-foreground hover:bg-accent hover:text-accent-foreground"
                       onClick={() => setIsProfileOpen(false)}
                     >
                       Create Resume
                     </Link>
                     <button
                       onClick={handleSignOut}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block w-full text-left px-4 py-2 text-sm text-card-foreground hover:bg-accent hover:text-accent-foreground"
                     >
                       Sign Out
                     </button>
@@ -137,7 +139,8 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            <ThemeToggle />
             <button
               onClick={toggleMenu}
               className="text-white hover:text-blue-200 focus:outline-none focus:text-blue-200"

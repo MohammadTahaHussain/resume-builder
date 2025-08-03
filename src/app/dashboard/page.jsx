@@ -63,7 +63,7 @@ function DashboardContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,7 +77,7 @@ function DashboardContent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* User Profile Card */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
             <div className="flex items-center space-x-4 mb-4">
               {session?.user?.image ? (
                 <img
@@ -93,8 +93,8 @@ function DashboardContent() {
                 </div>
               )}
               <div>
-                <h2 className="text-xl font-bold text-gray-900">{session?.user?.name}</h2>
-                <p className="text-gray-600">{session?.user?.email}</p>
+                <h2 className="text-xl font-bold text-card-foreground">{session?.user?.name}</h2>
+                <p className="text-muted-foreground">{session?.user?.email}</p>
               </div>
             </div>
             <button
@@ -106,8 +106,8 @@ function DashboardContent() {
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
+          <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
+            <h3 className="text-lg font-bold text-card-foreground mb-4">Quick Actions</h3>
             <div className="space-y-3">
               <Link
                 href="/builder"
@@ -131,19 +131,19 @@ function DashboardContent() {
           </div>
 
           {/* Statistics */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Your Activity</h3>
+          <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
+            <h3 className="text-lg font-bold text-card-foreground mb-4">Your Activity</h3>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-gray-600">Resumes Created</span>
+                <span className="text-muted-foreground">Resumes Created</span>
                 <span className="text-2xl font-bold text-blue-600">{stats.totalResumes}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-600">Templates Used</span>
+                <span className="text-muted-foreground">Templates Used</span>
                 <span className="text-2xl font-bold text-green-600">{stats.templatesUsed}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-600">PDF Downloads</span>
+                <span className="text-muted-foreground">PDF Downloads</span>
                 <span className="text-2xl font-bold text-purple-600">{stats.totalDownloads}</span>
               </div>
             </div>
@@ -151,9 +151,9 @@ function DashboardContent() {
         </div>
 
         {/* Recent Resumes */}
-        <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
+        <div className="mt-8 bg-card rounded-lg shadow-lg p-6 border border-border">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-bold text-gray-900">Your Resumes</h3>
+            <h3 className="text-lg font-bold text-card-foreground">Your Resumes</h3>
             <Link
               href="/builder"
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
@@ -165,19 +165,19 @@ function DashboardContent() {
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="mt-2 text-gray-600">Loading resumes...</p>
+              <p className="mt-2 text-muted-foreground">Loading resumes...</p>
             </div>
           ) : resumes.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {resumes.map((resume) => (
-                <div key={resume._id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div key={resume._id} className="border border-border rounded-lg p-4 hover:shadow-md transition-shadow bg-card">
                   <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-semibold text-gray-900">{resume.title}</h4>
+                    <h4 className="font-semibold text-card-foreground">{resume.title}</h4>
                     <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
                       {resume.template}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mb-3">
+                  <p className="text-sm text-muted-foreground mb-3">
                     Last modified: {new Date(resume.updatedAt).toLocaleDateString()}
                   </p>
                   <div className="flex space-x-2">
@@ -199,11 +199,11 @@ function DashboardContent() {
             </div>
           ) : (
             <div className="text-center py-8">
-              <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-12 h-12 text-muted-foreground mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <p className="text-gray-500">No resumes yet</p>
-              <p className="text-sm text-gray-400">Start by creating your first resume!</p>
+              <p className="text-muted-foreground">No resumes yet</p>
+              <p className="text-sm text-muted-foreground">Start by creating your first resume!</p>
             </div>
           )}
         </div>

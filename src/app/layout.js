@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import AuthProvider from "../components/SessionProvider";
+import { ThemeProvider } from "../components/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,13 +32,15 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${poppins.className} ${geistMono.variable} ${poppins.variable} antialiased min-h-screen flex flex-col`}
       >
-        <AuthProvider>
-          <Navbar />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <Navbar />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

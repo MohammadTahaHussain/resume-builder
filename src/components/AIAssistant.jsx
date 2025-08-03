@@ -246,7 +246,7 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
 
       {/* AI Assistant Panel */}
       {isOpen && (
-        <div className="fixed inset-4 sm:bottom-24 sm:right-6 sm:inset-auto sm:w-96 sm:h-96 bg-white rounded-lg shadow-2xl border border-gray-200 z-50 flex flex-col">
+        <div className="fixed inset-4 sm:bottom-24 sm:right-6 sm:inset-auto sm:w-96 sm:h-96 bg-card rounded-lg shadow-2xl border border-border z-50 flex flex-col">
           {/* Header */}
           <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-3 sm:p-4 rounded-t-lg flex-shrink-0">
             <div className="flex justify-between items-center">
@@ -267,18 +267,18 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
             {messages.length === 0 ? (
               /* AI Actions Grid */
               <div className="p-3 sm:p-4">
-                <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-3">What would you like me to help you with?</h4>
+                <h4 className="text-xs sm:text-sm font-medium text-card-foreground mb-3">What would you like me to help you with?</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   {aiActions.map((action) => (
                     <button
                       key={action.id}
                       onClick={action.action}
                       disabled={isLoading}
-                      className="p-2 sm:p-3 text-left bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-colors disabled:opacity-50"
+                      className="p-2 sm:p-3 text-left bg-secondary hover:bg-accent rounded-lg border border-border transition-colors disabled:opacity-50"
                     >
                       <div className="text-xl sm:text-2xl mb-1">{action.icon}</div>
-                      <div className="text-xs sm:text-sm font-medium text-gray-900">{action.title}</div>
-                      <div className="text-xs text-gray-600 hidden sm:block">{action.description}</div>
+                      <div className="text-xs sm:text-sm font-medium text-secondary-foreground">{action.title}</div>
+                      <div className="text-xs text-muted-foreground hidden sm:block">{action.description}</div>
                     </button>
                   ))}
                 </div>
@@ -297,7 +297,7 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
                           ? 'bg-green-50 text-green-900'
                           : message.type === 'error'
                           ? 'bg-red-50 text-red-900'
-                          : 'bg-gray-50 text-gray-900'
+                          : 'bg-secondary text-secondary-foreground'
                       }`}
                     >
                       <ReactMarkdown 
@@ -317,11 +317,11 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
                 </div>
                 
                 {/* Action Buttons */}
-                <div className="p-3 sm:p-4 border-t border-gray-200 flex-shrink-0">
+                <div className="p-3 sm:p-4 border-t border-border flex-shrink-0">
                   <div className="flex space-x-2">
                     <button
                       onClick={() => setMessages([])}
-                      className="flex-1 px-2 sm:px-3 py-2 text-xs sm:text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                      className="flex-1 px-2 sm:px-3 py-2 text-xs sm:text-sm bg-secondary hover:bg-accent text-secondary-foreground hover:text-accent-foreground rounded-lg transition-colors"
                     >
                       Clear Chat
                     </button>

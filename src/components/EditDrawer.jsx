@@ -151,74 +151,74 @@ const EditDrawer = ({
         </div>
         <div className="flex flex-col gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-card-foreground mb-1">
               Full Name
             </label>
             <input
               type="text"
               value={formData.name || ""}
               onChange={(e) => handleInputChange("name", e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
               placeholder="John Doe"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-card-foreground mb-1">
               Professional Title
             </label>
             <input
               type="text"
               value={formData.title || ""}
               onChange={(e) => handleInputChange("title", e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
               placeholder="Senior Software Engineer"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-card-foreground mb-1">
               Email
             </label>
             <input
               type="email"
               value={formData.email || ""}
               onChange={(e) => handleInputChange("email", e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
               placeholder="john.doe@email.com"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-card-foreground mb-1">
               Phone
             </label>
             <input
               type="tel"
               value={formData.phone || ""}
               onChange={(e) => handleInputChange("phone", e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
               placeholder="+1 (555) 123-4567"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-card-foreground mb-1">
               Location
             </label>
             <input
               type="text"
               value={formData.location || ""}
               onChange={(e) => handleInputChange("location", e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
               placeholder="San Francisco, CA"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-card-foreground mb-1">
               Professional Summary
             </label>
             <textarea
               value={formData.summary || ""}
               onChange={(e) => handleInputChange("summary", e.target.value)}
               rows={4}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
               placeholder="Brief description of your professional background..."
             />
           </div>
@@ -232,9 +232,9 @@ const EditDrawer = ({
     () => (
       <div className="space-y-4">
         {formData.experience?.map((exp, index) => (
-          <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div key={index} className="border border-border rounded-lg p-4 bg-card">
             <div className="flex justify-between items-center mb-3">
-              <h4 className="font-medium text-gray-900">
+              <h4 className="font-medium text-card-foreground">
                 Experience {index + 1}
               </h4>
               <button
@@ -249,71 +249,53 @@ const EditDrawer = ({
                 type="text"
                 value={exp.title || ""}
                 onChange={(e) =>
-                  handleArrayChange("experience", index, {
-                    title: e.target.value,
-                  })
+                  handleArrayChange("experience", index, { title: e.target.value })
                 }
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 placeholder="Job Title"
               />
               <input
                 type="text"
                 value={exp.company || ""}
                 onChange={(e) =>
-                  handleArrayChange("experience", index, {
-                    company: e.target.value,
-                  })
+                  handleArrayChange("experience", index, { company: e.target.value })
                 }
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                placeholder="Company"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="Company Name"
               />
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 <input
-                  type="text"
+                  type="date"
                   value={exp.startDate || ""}
                   onChange={(e) =>
-                    handleArrayChange("experience", index, {
-                      startDate: e.target.value,
-                    })
+                    handleArrayChange("experience", index, { startDate: e.target.value })
                   }
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                  placeholder="Start Date"
+                  className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 />
                 <input
-                  type="text"
+                  type="date"
                   value={exp.endDate || ""}
                   onChange={(e) =>
-                    handleArrayChange("experience", index, {
-                      endDate: e.target.value,
-                    })
+                    handleArrayChange("experience", index, { endDate: e.target.value })
                   }
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                  placeholder="End Date"
+                  className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 />
               </div>
               <textarea
-                value={
-                  Array.isArray(exp.achievements)
-                    ? exp.achievements.join("\n")
-                    : exp.achievements || ""
-                }
+                value={exp.achievements || ""}
                 onChange={(e) =>
-                  handleArrayChange("experience", index, {
-                    achievements: e.target.value
-                      .split("\n")
-                      .filter((item) => item.trim()),
-                  })
+                  handleArrayChange("experience", index, { achievements: e.target.value })
                 }
                 rows={3}
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                placeholder="Achievements (one per line)"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="Describe your achievements and responsibilities..."
               />
             </div>
           </div>
         ))}
         <button
           onClick={() => handleArrayChange("experience", 0, "add")}
-          className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+          className="w-full p-3 border-2 border-dashed border-border rounded-lg text-muted-foreground hover:border-accent hover:text-accent-foreground"
         >
           + Add Experience
         </button>
@@ -327,7 +309,7 @@ const EditDrawer = ({
       <div className="space-y-4">
         {/* Add New Skill */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-card-foreground mb-2">
             Add New Skill
           </label>
           <div className="flex gap-2">
@@ -341,7 +323,7 @@ const EditDrawer = ({
                   addSkill();
                 }
               }}
-              className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1 p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
               placeholder="Enter a skill (e.g., JavaScript)"
             />
             <button
@@ -355,7 +337,7 @@ const EditDrawer = ({
 
         {/* Current Skills */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-card-foreground mb-2">
             Current Skills
           </label>
           {Array.isArray(formData.skills) && formData.skills.length > 0 ? (
@@ -363,9 +345,9 @@ const EditDrawer = ({
               {formData.skills.map((skill, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between bg-gray-50 p-3 rounded-lg gap-2"
+                  className="flex items-center justify-between bg-secondary p-3 rounded-lg gap-2"
                 >
-                  <span className="text-gray-900">{skill}</span>
+                  <span className="text-secondary-foreground">{skill}</span>
                   <button
                     onClick={() => removeSkill(index)}
                     className="text-red-500 hover:text-red-700 text-lg font-bold"
@@ -376,7 +358,7 @@ const EditDrawer = ({
               ))}
             </div>
           ) : (
-            <div className="text-center text-gray-500 py-4 border-2 border-dashed border-gray-300 rounded-lg">
+            <div className="text-center text-muted-foreground py-4 border-2 border-dashed border-border rounded-lg">
               <p>No skills added yet</p>
               <p className="text-sm">Add your first skill above</p>
             </div>
@@ -385,7 +367,7 @@ const EditDrawer = ({
 
         {/* Quick Add Common Skills */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-card-foreground mb-2">
             Quick Add Common Skills
           </label>
           <div className="flex flex-wrap gap-2">
@@ -409,7 +391,7 @@ const EditDrawer = ({
                     handleInputChange("skills", [...currentSkills, skill]);
                   }
                 }}
-                className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors"
+                className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-full hover:bg-accent hover:text-accent-foreground transition-colors"
               >
                 + {skill}
               </button>
@@ -425,9 +407,9 @@ const EditDrawer = ({
     () => (
       <div className="space-y-4">
         {formData.education?.map((edu, index) => (
-          <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div key={index} className="border border-border rounded-lg p-4 bg-card">
             <div className="flex justify-between items-center mb-3">
-              <h4 className="font-medium text-gray-900">
+              <h4 className="font-medium text-card-foreground">
                 Education {index + 1}
               </h4>
               <button
@@ -446,7 +428,7 @@ const EditDrawer = ({
                     degree: e.target.value,
                   })
                 }
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 placeholder="Degree (e.g., Bachelor of Science in Computer Science)"
               />
               <input
@@ -457,10 +439,10 @@ const EditDrawer = ({
                     institution: e.target.value,
                   })
                 }
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 placeholder="Institution (e.g., University of California)"
               />
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 <input
                   type="text"
                   value={edu.graduationYear || ""}
@@ -469,7 +451,7 @@ const EditDrawer = ({
                       graduationYear: e.target.value,
                     })
                   }
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                   placeholder="Graduation Year"
                 />
                 <input
@@ -480,7 +462,7 @@ const EditDrawer = ({
                       gpa: e.target.value,
                     })
                   }
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                   placeholder="GPA (optional)"
                 />
               </div>
@@ -489,7 +471,7 @@ const EditDrawer = ({
         ))}
         <button
           onClick={() => handleArrayChange("education", 0, "add")}
-          className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+          className="w-full p-3 border-2 border-dashed border-border rounded-lg text-muted-foreground hover:border-accent hover:text-accent-foreground"
         >
           + Add Education
         </button>
@@ -502,9 +484,9 @@ const EditDrawer = ({
     () => (
       <div className="space-y-4">
         {formData.projects?.map((project, index) => (
-          <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div key={index} className="border border-border rounded-lg p-4 bg-card">
             <div className="flex justify-between items-center mb-3">
-              <h4 className="font-medium text-gray-900">Project {index + 1}</h4>
+              <h4 className="font-medium text-card-foreground">Project {index + 1}</h4>
               <button
                 onClick={() => handleArrayChange("projects", index, "remove")}
                 className="text-red-500 hover:text-red-700 text-sm"
@@ -519,7 +501,7 @@ const EditDrawer = ({
                 onChange={(e) =>
                   handleArrayChange("projects", index, { name: e.target.value })
                 }
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 placeholder="Project Name"
               />
               <textarea
@@ -530,7 +512,7 @@ const EditDrawer = ({
                   })
                 }
                 rows={3}
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 placeholder="Project Description"
               />
               <input
@@ -548,7 +530,7 @@ const EditDrawer = ({
                       .filter((tech) => tech),
                   })
                 }
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 placeholder="Technologies (e.g., React, Node.js, MongoDB)"
               />
               <input
@@ -557,7 +539,7 @@ const EditDrawer = ({
                 onChange={(e) =>
                   handleArrayChange("projects", index, { url: e.target.value })
                 }
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 placeholder="Project URL (optional)"
               />
             </div>
@@ -565,7 +547,7 @@ const EditDrawer = ({
         ))}
         <button
           onClick={() => handleArrayChange("projects", 0, "add")}
-          className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+          className="w-full p-3 border-2 border-dashed border-border rounded-lg text-muted-foreground hover:border-accent hover:text-accent-foreground"
         >
           + Add Project
         </button>
@@ -578,9 +560,9 @@ const EditDrawer = ({
     () => (
       <div className="space-y-4">
         {formData.certifications?.map((cert, index) => (
-          <div key={index} className="border border-gray-200 rounded-lg p-4">
+          <div key={index} className="border border-border rounded-lg p-4 bg-card">
             <div className="flex justify-between items-center mb-3">
-              <h4 className="font-medium text-gray-900">
+              <h4 className="font-medium text-card-foreground">
                 Certification {index + 1}
               </h4>
               <button
@@ -601,7 +583,7 @@ const EditDrawer = ({
                     name: e.target.value,
                   })
                 }
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 placeholder="Certification Name"
               />
               <input
@@ -612,7 +594,7 @@ const EditDrawer = ({
                     issuer: e.target.value,
                   })
                 }
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 placeholder="Issuing Organization"
               />
               <input
@@ -623,7 +605,7 @@ const EditDrawer = ({
                     date: e.target.value,
                   })
                 }
-                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 placeholder="Date Obtained"
               />
             </div>
@@ -631,7 +613,7 @@ const EditDrawer = ({
         ))}
         <button
           onClick={() => handleArrayChange("certifications", 0, "add")}
-          className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-gray-400 hover:text-gray-600"
+          className="w-full p-3 border-2 border-dashed border-border rounded-lg text-muted-foreground hover:border-accent hover:text-accent-foreground"
         >
           + Add Certification
         </button>
@@ -1221,7 +1203,7 @@ const EditDrawer = ({
         return renderAdditionalSection();
       default:
         return (
-          <div className="text-center text-gray-500 py-8">
+          <div className="text-center text-muted-foreground py-8">
             <p>Section coming soon...</p>
           </div>
         );
@@ -1254,7 +1236,7 @@ const EditDrawer = ({
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Overlay */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
@@ -1264,85 +1246,63 @@ const EditDrawer = ({
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-full min-w-[300px] max-w-[640px] lg:w-1/2 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
+        className={`fixed top-0 right-0 h-full w-full min-w-[300px] max-w-[640px] lg:w-1/2 bg-card shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="h-full flex flex-col">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900">Edit Resume</h2>
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b border-border">
+          <h2 className="text-xl font-bold text-card-foreground">Edit Resume</h2>
+          <button
+            onClick={onClose}
+            className="text-muted-foreground hover:text-card-foreground"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="h-full overflow-y-auto">
+          <div className="p-4 space-y-6">
+            {/* Navigation */}
+            <div className="flex flex-wrap gap-2">
+              {sections.map((section) => (
+                <button
+                  key={section.id}
+                  onClick={() => onSectionChange(section.id)}
+                  className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                    activeSection === section.id
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground"
+                  }`}
+                >
+                  {section.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Section Content */}
+            <div className="space-y-6">
+              <h3 className="text-lg font-medium text-card-foreground mb-4">
+                {sections.find(s => s.id === activeSection)?.name}
+              </h3>
+              {renderSection()}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="p-6 border-t border-border">
+          <div className="flex space-x-3">
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600"
+              className="flex-1 px-4 py-2 border border-border rounded-lg text-card-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              Cancel
             </button>
-          </div>
-
-          {/* Navigation */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="p-4 gap-4">
-              {/* Section Navigation */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-700 mb-3">
-                  Sections
-                </h3>
-                <div className="flex overflow-x-auto gap-2 pb-2">
-                  {sections.map((section) => (
-                    <button
-                      key={section.id}
-                      onClick={() => onSectionChange(section.id)}
-                      className={`p-3 text-left rounded-lg border transition-colors ${
-                        activeSection === section.id
-                          ? "border-blue-500 bg-blue-50 text-blue-700"
-                          : "border-gray-200 hover:border-gray-300"
-                      }`}
-                    >
-                      <div className="text-lg mb-1 text-center">
-                        {section.icon}
-                      </div>
-                      <div className="text-xs font-medium text-center text-nowrap">
-                        {section.name}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Section Content */}
-              <div className="max-lg:border-t border-gray-200 max-lg:pt-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                  {sections.find((s) => s.id === activeSection)?.name}
-                </h3>
-                {renderSection()}
-              </div>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="p-6 border-t border-gray-200">
-            <div className="flex space-x-3">
-              <button
-                onClick={onClose}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-              {/* Removed Save Changes button as per new_code */}
-            </div>
+            {/* Removed Save Changes button as per new_code */}
           </div>
         </div>
       </div>
