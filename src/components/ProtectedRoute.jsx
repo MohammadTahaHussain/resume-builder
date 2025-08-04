@@ -1,11 +1,11 @@
 'use client'
 
 import { useAuth } from '@/hooks/useAuth'
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { useRouter } from 'next/navigation'
 import { usePathname, useSearchParams} from 'next/navigation'
 
-export default function ProtectedRoute({ children, fallback = null }) {
+function ProtectedRouteContent({ children, fallback = null }) {
   const { session, status, isAuthenticated } = useAuth()
   const pathname = usePathname()
   const router = useRouter()
@@ -47,4 +47,23 @@ export default function ProtectedRoute({ children, fallback = null }) {
 
   // User is authenticated, show the protected content
   return children
+}
+
+function ProtectedRouteSkeleton() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+        <p className="mt-2 text-gray-600">Loading authentication...</p>
+      </div>
+    </div>
+  )
+}
+
+export default function ProtectedRoute({ children, fallback = null }) {
+  return (
+    <Suspense fallback={<ProtectedRouteSkeleton />}>
+      <ProtectedRouteContent children={children} fallback={fallback} />
+    </Suspense>
+  )
 } 
