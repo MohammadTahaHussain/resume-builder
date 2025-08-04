@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { navigationItems } from '../constants/app';
 import ThemeToggle from './ThemeToggle';
+import ProtectedLink from './ProtectedLink';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -128,12 +129,13 @@ const Navbar = () => {
                 >
                   Sign In
                 </Link>
-                <Link 
+                <ProtectedLink 
                   href="/editor" 
+                  onClick={() => {}}
                   className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   Start Building
-                </Link>
+                </ProtectedLink>
               </>
             )}
           </div>
@@ -214,13 +216,15 @@ const Navbar = () => {
                   >
                     Sign In
                   </Link>
-                  <Link 
+                  <ProtectedLink 
                     href="/editor" 
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
                     className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-200 block text-center"
-                    onClick={() => setIsMenuOpen(false)}
                   >
                     Start Building
-                  </Link>
+                  </ProtectedLink>
                 </div>
               )}
             </div>

@@ -23,17 +23,17 @@ export function useAuth() {
     }
   }
 
-  const requireAuth = (callback) => {
-    if (status === 'loading') {
-      return null // Still loading
-    }
-    
+  // Simple function to get protected href
+  const getProtectedHref = (targetPath) => {
+    if (status === 'loading') return '#'
+    return status === 'authenticated' ? targetPath : '/auth/signin'
+  }
+
+  // Function to handle protected navigation with redirect storage
+  const handleProtectedNavigation = (targetPath) => {
     if (status === 'unauthenticated') {
-      router.push('/auth/signin')
-      return null
+      localStorage.setItem('redirectAfterSignin', targetPath)
     }
-    
-    return callback ? callback(session) : session
   }
 
   return {
@@ -43,6 +43,7 @@ export function useAuth() {
     isLoading: status === 'loading',
     login,
     logout,
-    requireAuth,
+    getProtectedHref,
+    handleProtectedNavigation,
   }
 } 

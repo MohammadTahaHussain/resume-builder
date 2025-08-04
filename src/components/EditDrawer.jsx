@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 const EditDrawer = ({
   isOpen,
@@ -12,11 +12,46 @@ const EditDrawer = ({
 }) => {
   const [formData, setFormData] = useState(data);
   const [newSkill, setNewSkill] = useState("");
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const scrollContainerRef = useRef(null);
 
   // Update formData when data prop changes
   useEffect(() => {
     setFormData(data);
   }, [data]);
+
+  // Check scroll position
+  const checkScrollPosition = useCallback(() => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  }, []);
+
+  // Scroll functions
+  const scrollLeft = useCallback(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -200, behavior: 'smooth' });
+    }
+  }, []);
+
+  const scrollRight = useCallback(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+    }
+  }, []);
+
+  // Add scroll event listener
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', checkScrollPosition);
+      checkScrollPosition();
+      return () => container.removeEventListener('scroll', checkScrollPosition);
+    }
+  }, [checkScrollPosition]);
 
   // Debounced update to parent component
   useEffect(() => {
@@ -1246,12 +1281,12 @@ const EditDrawer = ({
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-full min-w-[300px] max-w-[640px] lg:w-1/2 bg-card shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
+        className={`fixed top-0 right-0 h-full w-full min-w-[300px] max-w-[640px] lg:w-1/2 bg-card shadow-xl transform transition-transform duration-300 ease-in-out z-50 flex flex-col ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border">
+        <div className="flex items-center justify-between p-4 border-b border-border flex-shrink-0">
           <h2 className="text-xl font-bold text-card-foreground">Edit Resume</h2>
           <button
             onClick={onClose}
@@ -1264,23 +1299,55 @@ const EditDrawer = ({
         </div>
 
         {/* Content */}
-        <div className="h-full overflow-y-auto">
-          <div className="p-4 space-y-6">
+        <div className="flex-1 overflow-y-auto min-h-0">
+          <div className="p-4 space-y-6 pb-6">
             {/* Navigation */}
-            <div className="flex flex-wrap gap-2">
-              {sections.map((section) => (
+            <div className="relative">
+              {/* Left Scroll Button */}
+              {canScrollLeft && (
                 <button
-                  key={section.id}
-                  onClick={() => onSectionChange(section.id)}
-                  className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                    activeSection === section.id
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground"
-                  }`}
+                  onClick={scrollLeft}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-card border border-border rounded-full shadow-lg flex items-center justify-center text-card-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-200"
+                  aria-label="Scroll left"
                 >
-                  {section.name}
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
                 </button>
-              ))}
+              )}
+
+              {/* Right Scroll Button */}
+              {canScrollRight && (
+                <button
+                  onClick={scrollRight}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-card border border-border rounded-full shadow-lg flex items-center justify-center text-card-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-200"
+                  aria-label="Scroll right"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              )}
+
+              <div 
+                ref={scrollContainerRef}
+                className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 px-2"
+              >
+                {sections.map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => onSectionChange(section.id)}
+                    className={`flex items-center gap-2 px-4 py-2 text-sm rounded-lg transition-all duration-200 whitespace-nowrap min-w-fit ${
+                      activeSection === section.id
+                        ? "bg-primary text-primary-foreground shadow-md scale-105"
+                        : "bg-secondary text-secondary-foreground hover:bg-accent hover:text-accent-foreground hover:scale-105"
+                    }`}
+                  >
+                    <span className="text-base">{section.icon}</span>
+                    <span className="font-medium">{section.name}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Section Content */}
@@ -1294,7 +1361,7 @@ const EditDrawer = ({
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-border">
+        <div className="p-6 border-t border-border flex-shrink-0">
           <div className="flex space-x-3">
             <button
               onClick={onClose}

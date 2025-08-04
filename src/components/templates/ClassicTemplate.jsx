@@ -17,11 +17,11 @@ const ClassicTemplate = ({ data }) => {
           </div>
         </div>
 
-        {/* Summary */}
+        {/* Professional Summary */}
         {data.summary && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2">
-              Executive Summary
+              Professional Summary
             </h2>
             <p className="text-gray-700 leading-relaxed text-lg">
               {data.summary}
@@ -29,7 +29,7 @@ const ClassicTemplate = ({ data }) => {
           </div>
         )}
 
-        {/* Experience */}
+        {/* Professional Experience */}
         {data.experience && data.experience.length > 0 && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
@@ -51,11 +51,16 @@ const ClassicTemplate = ({ data }) => {
                       {exp.startDate} - {exp.endDate || 'Present'}
                     </span>
                   </div>
-                  <ul className="list-disc list-inside text-gray-700 space-y-2 text-lg">
-                    {exp.achievements.map((achievement, idx) => (
-                      <li key={idx} className="leading-relaxed">{achievement}</li>
-                    ))}
-                  </ul>
+                  {exp.achievements && (
+                    <ul className="list-disc list-inside text-gray-700 space-y-2 text-lg">
+                      {Array.isArray(exp.achievements) ? 
+                        exp.achievements.map((achievement, idx) => (
+                          <li key={idx} className="leading-relaxed">{achievement}</li>
+                        )) : 
+                        <li className="leading-relaxed">{exp.achievements}</li>
+                      }
+                    </ul>
+                  )}
                 </div>
               ))}
             </div>
@@ -95,7 +100,7 @@ const ClassicTemplate = ({ data }) => {
         {data.skills && data.skills.length > 0 && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
-              Skills
+              Technical Skills
             </h2>
             <div className="flex flex-wrap gap-2">
               {(() => {
@@ -117,21 +122,42 @@ const ClassicTemplate = ({ data }) => {
           </div>
         )}
 
-        {/* Leadership & Achievements */}
-        {data.leadership && data.leadership.length > 0 && (
+        {/* Projects */}
+        {data.projects && data.projects.length > 0 && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
-              Leadership & Achievements
+              Key Projects
             </h2>
-            <div className="space-y-4">
-              {data.leadership.map((item, index) => (
+            <div className="space-y-6">
+              {data.projects.map((project, index) => (
                 <div key={index} className="border-l-4 border-gray-800 pl-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {item.description}
-                  </p>
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">
+                        {project.name}
+                      </h3>
+                      {project.technologies && (
+                        <p className="text-lg text-gray-700 font-semibold">
+                          {Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies}
+                        </p>
+                      )}
+                    </div>
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 font-medium"
+                      >
+                        View Project →
+                      </a>
+                    )}
+                  </div>
+                  {project.description && (
+                    <p className="text-gray-700 leading-relaxed text-lg">
+                      {project.description}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
@@ -164,53 +190,56 @@ const ClassicTemplate = ({ data }) => {
           </div>
         )}
 
-        {/* Additional Information */}
-        {data.additional && (
+        {/* Awards */}
+        {data.awards && data.awards.length > 0 && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
-              Additional Information
+              Awards & Recognition
             </h2>
             <div className="space-y-4">
-              {data.additional.map((item, index) => (
-                <div key={index}>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {item.content}
-                  </p>
+              {data.awards.map((award, index) => (
+                <div key={index} className="flex justify-between items-center">
+                  <div>
+                    <span className="text-lg font-bold text-gray-900">
+                      {award.name}
+                    </span>
+                    <p className="text-gray-700 font-medium">
+                      {award.issuer}
+                    </p>
+                  </div>
+                  <span className="text-gray-600 font-medium">
+                    {award.date}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* Teaching Experience */}
-        {data.teaching && data.teaching.length > 0 && (
+        {/* Achievements */}
+        {data.achievements && data.achievements.length > 0 && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
-              Teaching Experience
+              Key Achievements
             </h2>
-            <div className="space-y-6">
-              {data.teaching.map((course, index) => (
+            <div className="space-y-4">
+              {data.achievements.map((achievement, index) => (
                 <div key={index} className="border-l-4 border-gray-800 pl-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">
-                        {course.course}
-                      </h3>
-                      <p className="text-lg text-gray-700 font-semibold">
-                        {course.institution}
-                      </p>
-                    </div>
-                    <span className="text-gray-600 font-medium">
-                      {course.date}
-                    </span>
-                  </div>
-                  {course.description && (
+                  {typeof achievement === 'string' ? (
                     <p className="text-gray-700 leading-relaxed text-lg">
-                      {course.description}
+                      {achievement}
                     </p>
+                  ) : (
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">
+                        {achievement.title}
+                      </h3>
+                      {achievement.description && (
+                        <p className="text-gray-700 leading-relaxed">
+                          {achievement.description}
+                        </p>
+                      )}
+                    </div>
                   )}
                 </div>
               ))}
@@ -284,6 +313,39 @@ const ClassicTemplate = ({ data }) => {
           </div>
         )}
 
+        {/* Teaching Experience */}
+        {data.teaching && data.teaching.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+              Teaching Experience
+            </h2>
+            <div className="space-y-6">
+              {data.teaching.map((course, index) => (
+                <div key={index} className="border-l-4 border-gray-800 pl-6">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">
+                        {course.course}
+                      </h3>
+                      <p className="text-lg text-gray-700 font-semibold">
+                        {course.institution}
+                      </p>
+                    </div>
+                    <span className="text-gray-600 font-medium">
+                      {course.date}
+                    </span>
+                  </div>
+                  {course.description && (
+                    <p className="text-gray-700 leading-relaxed text-lg">
+                      {course.description}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Security Clearance */}
         {data.clearance && data.clearance.length > 0 && (
           <div className="mb-8">
@@ -316,7 +378,7 @@ const ClassicTemplate = ({ data }) => {
         {data.references && data.references.length > 0 && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
-              References
+              Professional References
             </h2>
             <div className="space-y-6">
               {data.references.map((reference, index) => (
@@ -342,6 +404,37 @@ const ClassicTemplate = ({ data }) => {
                       <p>Phone: {reference.phone}</p>
                     )}
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Additional Information - Always at the end */}
+        {data.additional && data.additional.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+              Additional Information
+            </h2>
+            <div className="space-y-4">
+              {data.additional.map((item, index) => (
+                <div key={index}>
+                  {typeof item === 'string' ? (
+                    <p className="text-gray-700 leading-relaxed text-lg">
+                      {item}
+                    </p>
+                  ) : (
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">
+                        {item.title}
+                      </h3>
+                      {item.content && (
+                        <p className="text-gray-700 leading-relaxed">
+                          {item.content}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
