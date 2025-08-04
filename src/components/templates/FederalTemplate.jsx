@@ -1,30 +1,58 @@
 const FederalTemplate = ({ data }) => {
+  // Extract personal data with fallback to old structure for backward compatibility
+  const personal = data.personal || data;
+
   return (
     <div className="w-full overflow-x-auto max-lg:p-4">
-      <div className="bg-white min-w-[800px] max-w-4xl mx-auto lg:p-8 font-sans">
+      <div className="bg-white min-w-[700px] max-w-4xl mx-auto lg:p-8 font-sans">
         {/* Header */}
         <div className="text-center border-b-2 border-gray-800 pb-6 mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            {data.name || 'Your Name'}
+            {personal.name || 'Your Name'}
           </h1>
           <p className="text-xl text-gray-700 font-semibold mb-4">
-            {data.title || 'Federal Professional'}
+            {personal.title || 'Federal Professional'}
           </p>
           <div className="flex justify-center space-x-6 text-gray-600">
-            <span>{data.email || 'email@example.com'}</span>
-            <span>{data.phone || '+1 (555) 123-4567'}</span>
-            <span>{data.location || 'City, State'}</span>
+            <span>{personal.email || 'email@example.com'}</span>
+            <span>{personal.phone || '+1 (555) 123-4567'}</span>
+            <span>{personal.location || 'City, State'}</span>
           </div>
+          {/* LinkedIn and Website links */}
+          {(personal.linkedin || personal.website) && (
+            <div className="flex justify-center space-x-6 text-gray-600 mt-2">
+              {personal.linkedin && (
+                <a 
+                  href={`https://${personal.linkedin}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  LinkedIn
+                </a>
+              )}
+              {personal.website && (
+                <a 
+                  href={`https://${personal.website}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  Website
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Summary */}
-        {data.summary && (
+        {personal.summary && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2">
               Professional Summary
             </h2>
             <p className="text-gray-700 leading-relaxed text-lg">
-              {data.summary}
+              {personal.summary}
             </p>
           </div>
         )}
@@ -117,6 +145,150 @@ const FederalTemplate = ({ data }) => {
           </div>
         )}
 
+        {/* Projects */}
+        {data.projects && data.projects.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+              Key Projects
+            </h2>
+            <div className="space-y-6">
+              {data.projects.map((project, index) => (
+                <div key={index} className="border-l-4 border-gray-800 pl-6">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">
+                        {project.name}
+                      </h3>
+                      {project.technologies && (
+                        <p className="text-lg text-gray-700 font-semibold">
+                          {Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies}
+                        </p>
+                      )}
+                    </div>
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 font-medium"
+                      >
+                        View Project →
+                      </a>
+                    )}
+                  </div>
+                  {project.description && (
+                    <p className="text-gray-700 leading-relaxed text-lg">
+                      {project.description}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Achievements */}
+        {data.achievements && data.achievements.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+              Key Achievements
+            </h2>
+            <div className="space-y-4">
+              {data.achievements.map((achievement, index) => (
+                <div key={index} className="border-l-4 border-gray-800 pl-6">
+                  {typeof achievement === 'string' ? (
+                    <p className="text-gray-700 leading-relaxed text-lg">
+                      {achievement}
+                    </p>
+                  ) : (
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">
+                        {achievement.title}
+                      </h3>
+                      {achievement.description && (
+                        <p className="text-gray-700 leading-relaxed">
+                          {achievement.description}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Publications */}
+        {data.publications && data.publications.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+              Publications
+            </h2>
+            <div className="space-y-4">
+              {data.publications.map((pub, index) => (
+                <div key={index} className="border-l-4 border-gray-800 pl-6">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">
+                        {pub.title}
+                      </h3>
+                      <p className="text-lg text-gray-700 font-semibold">
+                        {pub.journal}
+                      </p>
+                    </div>
+                    <span className="text-gray-600 font-medium">
+                      {pub.date}
+                    </span>
+                  </div>
+                  {pub.url && (
+                    <a
+                      href={pub.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      View Publication →
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Teaching Experience */}
+        {data.teaching && data.teaching.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+              Teaching Experience
+            </h2>
+            <div className="space-y-6">
+              {data.teaching.map((course, index) => (
+                <div key={index} className="border-l-4 border-gray-800 pl-6">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">
+                        {course.course}
+                      </h3>
+                      <p className="text-lg text-gray-700 font-semibold">
+                        {course.institution}
+                      </p>
+                    </div>
+                    <span className="text-gray-600 font-medium">
+                      {course.date}
+                    </span>
+                  </div>
+                  {course.description && (
+                    <p className="text-gray-700 leading-relaxed text-lg">
+                      {course.description}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Certifications & Licenses */}
         {data.certifications && data.certifications.length > 0 && (
           <div className="mb-8">
@@ -186,7 +358,7 @@ const FederalTemplate = ({ data }) => {
         )}
 
         {/* Security Clearance */}
-        {data.clearance && (
+        {data.clearance && data.clearance.length > 0 && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
               Security Clearance
@@ -211,8 +383,46 @@ const FederalTemplate = ({ data }) => {
           </div>
         )}
 
+        {/* Languages */}
+        {data.languages && data.languages.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+              Languages
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {data.languages.map((language, index) => (
+                <span
+                  key={index}
+                  className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
+                >
+                  {typeof language === 'string' ? language : `${language.name}${language.proficiency ? ` (${language.proficiency})` : ''}`}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Interests */}
+        {data.interests && data.interests.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+              Professional Interests
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {data.interests.map((interest, index) => (
+                <span
+                  key={index}
+                  className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"
+                >
+                  {interest}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Additional Information */}
-        {data.additional && (
+        {data.additional && data.additional.length > 0 && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
               Additional Information
@@ -220,12 +430,22 @@ const FederalTemplate = ({ data }) => {
             <div className="space-y-4">
               {data.additional.map((item, index) => (
                 <div key={index}>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {item.content}
-                  </p>
+                  {typeof item === 'string' ? (
+                    <p className="text-gray-700 leading-relaxed text-lg">
+                      {item}
+                    </p>
+                  ) : (
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">
+                        {item.title}
+                      </h3>
+                      {item.content && (
+                        <p className="text-gray-700 leading-relaxed">
+                          {item.content}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

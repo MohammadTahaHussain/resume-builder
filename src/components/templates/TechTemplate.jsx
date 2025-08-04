@@ -1,7 +1,7 @@
 const TechTemplate = ({ data }) => {
   return (
     <div className="w-full overflow-x-auto max-lg:p-4">
-      <div className="bg-white min-w-[800px] max-w-4xl mx-auto lg:p-8 font-mono">
+      <div className="bg-white min-w-[700px] max-w-4xl mx-auto lg:p-8 font-mono">
         {/* Header */}
         <div className="bg-gray-900 text-white p-8 mb-8">
           <div className="text-center">

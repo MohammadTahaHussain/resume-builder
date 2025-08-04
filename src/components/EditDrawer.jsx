@@ -71,6 +71,17 @@ const EditDrawer = ({
     }));
   }, []);
 
+  // Handle personal object updates
+  const handlePersonalChange = useCallback((field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      personal: {
+        ...prev.personal,
+        [field]: value,
+      },
+    }));
+  }, []);
+
   const handleArrayChange = useCallback((field, index, value) => {
     setFormData((prev) => {
       const currentArray = prev[field] || [];
@@ -80,7 +91,7 @@ const EditDrawer = ({
         // Add new item to the end
         return {
           ...prev,
-          [field]: [...currentArray, {}],
+          [field]: [...currentArray, ""],
         };
       } else if (value === "remove") {
         // Remove item at index
@@ -98,9 +109,15 @@ const EditDrawer = ({
           [field]: newArray,
         };
       } else {
-        // Update specific field of an item
+        // Update specific field of an item or replace entire item
         const newArray = [...currentArray];
-        newArray[index] = { ...newArray[index], ...value };
+        if (typeof value === 'string') {
+          // For simple string values (languages, interests)
+          newArray[index] = value;
+        } else {
+          // For object values (other sections)
+          newArray[index] = { ...newArray[index], ...value };
+        }
         return {
           ...prev,
           [field]: newArray,
@@ -110,7 +127,8 @@ const EditDrawer = ({
   }, []);
 
   const handleAIGenerateSummary = async () => {
-    if (!formData.name || !formData.title) {
+    const personal = formData.personal || {};
+    if (!personal.name || !personal.title) {
       alert("Please add your name and title first to generate a summary.");
       return;
     }
@@ -125,7 +143,7 @@ const EditDrawer = ({
       const data = await response.json();
 
       if (response.ok) {
-        setFormData({ ...formData, summary: data.summary });
+        handlePersonalChange("summary", data.summary);
       } else {
         alert("Failed to generate summary: " + (data.error || "Unknown error"));
       }
@@ -169,98 +187,127 @@ const EditDrawer = ({
     { id: "clearance", name: "Clearance", icon: "🔒" },
     { id: "references", name: "References", icon: "📞" },
     { id: "teaching", name: "Teaching", icon: "📖" },
+    { id: "languages", name: "Languages", icon: "🌍" },
+    { id: "interests", name: "Interests", icon: "🎯" },
     { id: "additional", name: "Additional", icon: "➕" },
   ];
 
   const renderPersonalSection = useCallback(
-    () => (
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-4">
-          {/* <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3> */}
-          <button
-            onClick={handleAIGenerateSummary}
-            className="px-3 py-1 text-sm bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg transition-colors"
-          >
-            ✨ AI Summary
-          </button>
+    () => {
+      const personal = formData.personal || {};
+      
+      return (
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <button
+              onClick={handleAIGenerateSummary}
+              className="px-3 py-1 text-sm bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg transition-colors"
+            >
+              ✨ AI Summary
+            </button>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div>
+              <label className="block text-sm font-medium text-card-foreground mb-1">
+                Full Name
+              </label>
+              <input
+                type="text"
+                value={personal.name || ""}
+                onChange={(e) => handlePersonalChange("name", e.target.value)}
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="John Doe"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-card-foreground mb-1">
+                Professional Title
+              </label>
+              <input
+                type="text"
+                value={personal.title || ""}
+                onChange={(e) => handlePersonalChange("title", e.target.value)}
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="Senior Software Engineer"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-card-foreground mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                value={personal.email || ""}
+                onChange={(e) => handlePersonalChange("email", e.target.value)}
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="john.doe@email.com"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-card-foreground mb-1">
+                Phone
+              </label>
+              <input
+                type="tel"
+                value={personal.phone || ""}
+                onChange={(e) => handlePersonalChange("phone", e.target.value)}
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="+1 (555) 123-4567"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-card-foreground mb-1">
+                Location
+              </label>
+              <input
+                type="text"
+                value={personal.location || ""}
+                onChange={(e) => handlePersonalChange("location", e.target.value)}
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="San Francisco, CA"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-card-foreground mb-1">
+                LinkedIn Profile
+              </label>
+              <input
+                type="text"
+                value={personal.linkedin || ""}
+                onChange={(e) => handlePersonalChange("linkedin", e.target.value)}
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="linkedin.com/in/johndoe"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-card-foreground mb-1">
+                Website
+              </label>
+              <input
+                type="text"
+                value={personal.website || ""}
+                onChange={(e) => handlePersonalChange("website", e.target.value)}
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="johndoe.dev"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-card-foreground mb-1">
+                Professional Summary
+              </label>
+              <textarea
+                value={personal.summary || ""}
+                onChange={(e) => handlePersonalChange("summary", e.target.value)}
+                rows={4}
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="Brief description of your professional background..."
+              />
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <div>
-            <label className="block text-sm font-medium text-card-foreground mb-1">
-              Full Name
-            </label>
-            <input
-              type="text"
-              value={formData.name || ""}
-              onChange={(e) => handleInputChange("name", e.target.value)}
-              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
-              placeholder="John Doe"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-card-foreground mb-1">
-              Professional Title
-            </label>
-            <input
-              type="text"
-              value={formData.title || ""}
-              onChange={(e) => handleInputChange("title", e.target.value)}
-              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
-              placeholder="Senior Software Engineer"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-card-foreground mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              value={formData.email || ""}
-              onChange={(e) => handleInputChange("email", e.target.value)}
-              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
-              placeholder="john.doe@email.com"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-card-foreground mb-1">
-              Phone
-            </label>
-            <input
-              type="tel"
-              value={formData.phone || ""}
-              onChange={(e) => handleInputChange("phone", e.target.value)}
-              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
-              placeholder="+1 (555) 123-4567"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-card-foreground mb-1">
-              Location
-            </label>
-            <input
-              type="text"
-              value={formData.location || ""}
-              onChange={(e) => handleInputChange("location", e.target.value)}
-              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
-              placeholder="San Francisco, CA"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-card-foreground mb-1">
-              Professional Summary
-            </label>
-            <textarea
-              value={formData.summary || ""}
-              onChange={(e) => handleInputChange("summary", e.target.value)}
-              rows={4}
-              className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
-              placeholder="Brief description of your professional background..."
-            />
-          </div>
-        </div>
-      </div>
-    ),
-    [formData, handleInputChange, handleAIGenerateSummary]
+      );
+    },
+    [formData.personal, handlePersonalChange, handleAIGenerateSummary]
   );
 
   const renderExperienceSection = useCallback(
@@ -1148,6 +1195,86 @@ const EditDrawer = ({
     [formData, handleArrayChange]
   );
 
+  const renderLanguagesSection = useCallback(
+    () => (
+      <div className="space-y-4">
+        {formData.languages?.map((language, index) => (
+          <div key={index} className="border border-border rounded-lg p-4 bg-background">
+            <div className="flex justify-between items-center mb-3">
+              <h4 className="font-medium text-card-foreground">
+                Language {index + 1}
+              </h4>
+              <button
+                onClick={() => handleArrayChange("languages", index, "remove")}
+                className="text-red-500 hover:text-red-700 text-sm"
+              >
+                Remove
+              </button>
+            </div>
+            <div className="space-y-3">
+              <input
+                type="text"
+                value={typeof language === 'string' ? language : (language.name || "")}
+                onChange={(e) =>
+                  handleArrayChange("languages", index, e.target.value)
+                }
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="Language (e.g., English, Spanish, French)"
+              />
+            </div>
+          </div>
+        ))}
+        <button
+          onClick={() => handleArrayChange("languages", 0, "add")}
+          className="w-full p-3 border-2 border-dashed border-border rounded-lg text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+        >
+          + Add Language
+        </button>
+      </div>
+    ),
+    [formData, handleArrayChange]
+  );
+
+  const renderInterestsSection = useCallback(
+    () => (
+      <div className="space-y-4">
+        {formData.interests?.map((interest, index) => (
+          <div key={index} className="border border-border rounded-lg p-4 bg-background">
+            <div className="flex justify-between items-center mb-3">
+              <h4 className="font-medium text-card-foreground">
+                Interest {index + 1}
+              </h4>
+              <button
+                onClick={() => handleArrayChange("interests", index, "remove")}
+                className="text-red-500 hover:text-red-700 text-sm"
+              >
+                Remove
+              </button>
+            </div>
+            <div className="space-y-3">
+              <input
+                type="text"
+                value={typeof interest === 'string' ? interest : (interest.name || "")}
+                onChange={(e) =>
+                  handleArrayChange("interests", index, e.target.value)
+                }
+                className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                placeholder="Interest or Hobby (e.g., Photography, Hiking, Reading)"
+              />
+            </div>
+          </div>
+        ))}
+        <button
+          onClick={() => handleArrayChange("interests", 0, "add")}
+          className="w-full p-3 border-2 border-dashed border-border rounded-lg text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+        >
+          + Add Interest
+        </button>
+      </div>
+    ),
+    [formData, handleArrayChange]
+  );
+
   const renderAdditionalSection = useCallback(
     () => (
       <div className="space-y-4">
@@ -1234,6 +1361,10 @@ const EditDrawer = ({
         return renderReferencesSection();
       case "teaching":
         return renderTeachingSection();
+      case "languages":
+        return renderLanguagesSection();
+      case "interests":
+        return renderInterestsSection();
       case "additional":
         return renderAdditionalSection();
       default:
@@ -1258,6 +1389,8 @@ const EditDrawer = ({
     renderClearanceSection,
     renderReferencesSection,
     renderTeachingSection,
+    renderLanguagesSection,
+    renderInterestsSection,
     renderAdditionalSection,
   ]);
 

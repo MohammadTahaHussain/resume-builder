@@ -1,39 +1,67 @@
 const CreativeTemplate = ({ data }) => {
+  // Extract personal data with fallback to old structure for backward compatibility
+  const personal = data.personal || data;
+
   return (
-    <div className="w-full overflow-x-auto">
-      <div className="bg-gradient-to-br from-purple-50 to-pink-50 min-w-[800px] max-w-4xl mx-auto font-sans relative">
+    <div className="w-full overflow-x-auto max-lg:p-4">
+      <div className="bg-gradient-to-br from-purple-50 to-pink-50 w-full max-w-4xl mx-auto font-sans relative">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-8 mb-8 rounded-none">
+        <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 lg:p-8 mb-8 rounded-none">
           <div className="text-center">
-            <h1 className="text-4xl font-bold mb-2">
-              {data.name || 'Your Name'}
+            <h1 className="text-3xl lg:text-4xl font-bold mb-2">
+              {personal.name || 'Your Name'}
             </h1>
-            <p className="text-xl font-semibold mb-4 opacity-90">
-              {data.title || 'Creative Professional'}
+            <p className="text-lg lg:text-xl font-semibold mb-4 opacity-90">
+              {personal.title || 'Creative Professional'}
             </p>
-            <div className="flex justify-center space-x-6 text-purple-100">
-              <span>{data.email || 'email@example.com'}</span>
-              <span>{data.phone || '+1 (555) 123-4567'}</span>
-              <span>{data.location || 'City, State'}</span>
+            <div className="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-6 text-purple-100 text-sm lg:text-base">
+              <span>{personal.email || 'email@example.com'}</span>
+              <span>{personal.phone || '+1 (555) 123-4567'}</span>
+              <span>{personal.location || 'City, State'}</span>
             </div>
+            {/* LinkedIn and Website links */}
+            {(personal.linkedin || personal.website) && (
+              <div className="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-6 text-purple-100 mt-2 text-sm lg:text-base">
+                {personal.linkedin && (
+                  <a 
+                    href={`https://${personal.linkedin}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors"
+                  >
+                    LinkedIn
+                  </a>
+                )}
+                {personal.website && (
+                  <a 
+                    href={`https://${personal.website}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors"
+                  >
+                    Website
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
         
         {/* Creative accent elements */}
-        <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full opacity-80"></div>
-        <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-pink-400 rounded-full opacity-80"></div>
+        <div className="absolute -top-2 -right-2 w-6 h-6 lg:w-8 lg:h-8 bg-yellow-400 rounded-full opacity-80"></div>
+        <div className="absolute -bottom-2 -left-2 w-4 h-4 lg:w-6 lg:h-6 bg-pink-400 rounded-full opacity-80"></div>
 
         {/* Content Container */}
-        <div className="px-8 pb-8">
+        <div className="px-4 sm:px-6 lg:px-8 pb-8">
           {/* About/Summary */}
-          {data.summary && (
+          {personal.summary && (
             <div className="mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
                 <span className="w-8 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mr-4"></span>
                 About Me
               </h2>
               <p className="text-gray-700 leading-relaxed text-lg">
-                {data.summary}
+                {personal.summary}
               </p>
             </div>
           )}
@@ -189,7 +217,7 @@ const CreativeTemplate = ({ data }) => {
                 <span className="w-8 h-1 bg-gradient-to-r from-yellow-500 to-orange-500 mr-4"></span>
                 Certifications
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid max-sm:grid-cols-1 grid-cols-2 gap-6">
                 {data.certifications.map((cert, index) => (
                   <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
                     <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -207,6 +235,165 @@ const CreativeTemplate = ({ data }) => {
             </div>
           )}
 
+          {/* Awards */}
+          {data.awards && data.awards.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                <span className="w-8 h-1 bg-gradient-to-r from-yellow-500 to-orange-500 mr-4"></span>
+                Awards & Recognition
+              </h2>
+              <div className="grid max-sm:grid-cols-1 grid-cols-2 gap-6">
+                {data.awards.map((award, index) => (
+                  <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      {award.name}
+                    </h3>
+                    <p className="text-orange-600 font-semibold mb-2">
+                      {award.issuer}
+                    </p>
+                    <span className="text-gray-500 text-sm">
+                      {award.date}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Achievements */}
+          {data.achievements && data.achievements.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                <span className="w-8 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mr-4"></span>
+                Key Achievements
+              </h2>
+              <div className="space-y-4">
+                {data.achievements.map((achievement, index) => (
+                  <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                    {typeof achievement === 'string' ? (
+                      <p className="text-gray-700 leading-relaxed text-lg">
+                        {achievement}
+                      </p>
+                    ) : (
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">
+                          {achievement.title}
+                        </h3>
+                        {achievement.description && (
+                          <p className="text-gray-700 leading-relaxed">
+                            {achievement.description}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Publications */}
+          {data.publications && data.publications.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                <span className="w-8 h-1 bg-gradient-to-r from-green-500 to-blue-500 mr-4"></span>
+                Publications
+              </h2>
+              <div className="grid max-sm:grid-cols-1 grid-cols-2 gap-6">
+                {data.publications.map((pub, index) => (
+                  <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      {pub.title}
+                    </h3>
+                    <p className="text-green-600 font-semibold mb-2">
+                      {pub.journal}
+                    </p>
+                    <span className="text-gray-500 text-sm">
+                      {pub.date}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Teaching Experience */}
+          {data.teaching && data.teaching.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                <span className="w-8 h-1 bg-gradient-to-r from-teal-500 to-green-500 mr-4"></span>
+                Teaching Experience
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {data.teaching.map((course, index) => (
+                  <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      {course.course}
+                    </h3>
+                    <p className="text-teal-600 font-semibold mb-2">
+                      {course.institution}
+                    </p>
+                    <span className="text-gray-500 text-sm">
+                      {course.date}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Professional Memberships */}
+          {data.memberships && data.memberships.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                <span className="w-8 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mr-4"></span>
+                Professional Memberships
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {data.memberships.map((membership, index) => (
+                  <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      {membership.organization}
+                    </h3>
+                    {membership.role && (
+                      <p className="text-indigo-600 font-semibold mb-2">
+                        {membership.role}
+                      </p>
+                    )}
+                    <span className="text-gray-500 text-sm">
+                      {membership.date || membership.period}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Security Clearance */}
+          {data.clearance && data.clearance.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                <span className="w-8 h-1 bg-gradient-to-r from-red-500 to-orange-500 mr-4"></span>
+                Security Clearance
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {data.clearance.map((clearance, index) => (
+                  <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      {clearance.level}
+                    </h3>
+                    <p className="text-red-600 font-semibold mb-2">
+                      {clearance.agency}
+                    </p>
+                    <span className="text-gray-500 text-sm">
+                      {clearance.date}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* References */}
           {data.references && data.references.length > 0 && (
             <div className="mb-12">
@@ -214,7 +401,7 @@ const CreativeTemplate = ({ data }) => {
                 <span className="w-8 h-1 bg-gradient-to-r from-teal-500 to-green-500 mr-4"></span>
                 References
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid max-sm:grid-cols-1 grid-cols-2 gap-6">
                 {data.references.map((ref, index) => (
                   <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
                     <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -227,6 +414,78 @@ const CreativeTemplate = ({ data }) => {
                       {ref.email} • {ref.phone}
                     </p>
                   </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Additional Information */}
+          {data.additional && data.additional.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                <span className="w-8 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mr-4"></span>
+                Additional Information
+              </h2>
+              <div className="space-y-4">
+                {data.additional.map((item, index) => (
+                  <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+                    {typeof item === 'string' ? (
+                      <p className="text-gray-700 leading-relaxed text-lg">
+                        {item}
+                      </p>
+                    ) : (
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">
+                          {item.title}
+                        </h3>
+                        {item.content && (
+                          <p className="text-gray-700 leading-relaxed">
+                            {item.content}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Languages */}
+          {data.languages && data.languages.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                <span className="w-8 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 mr-4"></span>
+                Languages
+              </h2>
+              <div className="flex flex-wrap gap-3">
+                {data.languages.map((language, index) => (
+                  <span
+                    key={index}
+                    className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 px-4 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200"
+                  >
+                    {typeof language === 'string' ? language : `${language.name}${language.proficiency ? ` (${language.proficiency})` : ''}`}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Interests */}
+          {data.interests && data.interests.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                <span className="w-8 h-1 bg-gradient-to-r from-pink-500 to-red-500 mr-4"></span>
+                Creative Interests
+              </h2>
+              <div className="flex flex-wrap gap-3">
+                {data.interests.map((interest, index) => (
+                  <span
+                    key={index}
+                    className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 px-4 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200"
+                  >
+                    {interest}
+                  </span>
                 ))}
               </div>
             </div>

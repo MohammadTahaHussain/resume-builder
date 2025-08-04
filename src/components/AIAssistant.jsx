@@ -13,15 +13,15 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
   const [currentAction, setCurrentAction] = useState('');
 
   // Debug session information
-  console.log('AIAssistant session:', {
-    hasSession: !!session,
-    sessionUser: session?.user,
-    sessionUserId: session?.user?.id,
-    sessionEmail: session?.user?.email,
-    sessionKeys: session ? Object.keys(session) : null,
-    status: session?.status,
-    sessionToken: session?.sessionToken
-  });
+  // console.log('AIAssistant session:', {
+  //   hasSession: !!session,
+  //   sessionUser: session?.user,
+  //   sessionUserId: session?.user?.id,
+  //   sessionEmail: session?.user?.email,
+  //   sessionKeys: session ? Object.keys(session) : null,
+  //   status: session?.status,
+  //   sessionToken: session?.sessionToken
+  // });
 
   const aiActions = [
     {

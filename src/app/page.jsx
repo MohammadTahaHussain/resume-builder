@@ -53,7 +53,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <div className="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 hover:shadow-lg transition-all duration-200 border border-border">
+            <div className="text-center p-6 rounded-xl bg-card hover:shadow-lg transition-all duration-200 border border-border">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
                   className="w-8 h-8 text-white"
@@ -79,7 +79,7 @@ export default function Home() {
             </div>
 
             {/* Feature 2 */}
-            <div className="text-center p-6 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 hover:shadow-lg transition-all duration-200 border border-border">
+            <div className="text-center p-6 rounded-xl bg-card hover:shadow-lg transition-all duration-200 border border-border">
               <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
                   className="w-8 h-8 text-white"
@@ -105,7 +105,7 @@ export default function Home() {
             </div>
 
             {/* Feature 3 */}
-            <div className="text-center p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 hover:shadow-lg transition-all duration-200 border border-border">
+            <div className="text-center p-6 rounded-xl bg-card hover:shadow-lg transition-all duration-200 border border-border">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
                   className="w-8 h-8 text-white"

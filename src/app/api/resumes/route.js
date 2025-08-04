@@ -52,6 +52,7 @@ export async function POST(request) {
     }
 
     const body = await request.json()
+    console.log('body=>',body);
     const { title, template, data } = body
 
     await connectDB()
@@ -59,14 +60,7 @@ export async function POST(request) {
     // Transform the data to match our schema
     const transformedData = {
       personal: {
-        name: data.name || '',
-        title: data.title || '',
-        email: data.email || '',
-        phone: data.phone || '',
-        location: data.location || '',
-        summary: data.summary || '',
-        linkedin: data.linkedin || '',
-        website: data.website || '',
+        ...data.personal
       },
       experience: data.experience || [],
       education: data.education || [],

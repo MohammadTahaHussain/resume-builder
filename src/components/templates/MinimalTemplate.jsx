@@ -1,7 +1,7 @@
 const MinimalTemplate = ({ data }) => {
   return (
     <div className="w-full overflow-x-auto max-lg:p-4">
-      <div className="bg-white min-w-[800px] max-w-3xl mx-auto lg:p-8 font-sans">
+      <div className="bg-white min-w-[700px] max-w-3xl mx-auto lg:p-8 font-sans">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-light text-gray-900 mb-2">

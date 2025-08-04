@@ -27,6 +27,8 @@ export async function GET(request, { params }) {
       _id: id, 
       userId 
     })
+
+    console.log('resume=>',resume);
     
     if (!resume) {
       return NextResponse.json({ error: 'Resume not found' }, { status: 404 });

@@ -1,13 +1,15 @@
-import { NextResponse } from 'next/server';
-import playwright from 'playwright-core';
-import sparticuzChromium from '@sparticuz/chromium';
+import { NextResponse } from "next/server";
+import playwright from "playwright-core";
+import sparticuzChromium from "@sparticuz/chromium";
 
 export async function POST(request) {
   try {
-    const { htmlContent, resumeData, templateType, watermarkOptions } = await request.json();
+    const { htmlContent, resumeData, templateType, watermarkOptions } =
+      await request.json();
 
     let browser;
-    const isProduction = process.env.NODE_ENV === 'production';
+    console.log("resumeData", resumeData);
+    const isProduction = process.env.NODE_ENV === "production";
 
     if (isProduction) {
       // ✅ PRODUCTION (VERCEL) LOGIC
@@ -30,9 +32,9 @@ export async function POST(request) {
 
     // Watermark configuration from client
     const showWatermark = true;
-    const watermarkText = 'Resume Builder by Taha';
-    const watermarkOpacity = '0.2'; // Very light watermark
-    const watermarkColor = '#000000'; // Black color
+    const watermarkText = "Resume Builder by Taha";
+    const watermarkOpacity = "0.2"; // Very light watermark
+    const watermarkColor = "#000000"; // Black color
 
     // CDN ke saath aapka HTML content with watermark
     const completeHtmlContent = `
@@ -40,7 +42,10 @@ export async function POST(request) {
       <html>
       <head>
         <meta charset="UTF-8">
-        <title>Resume - ${resumeData?.name || 'Your Name'}</title>
+        <title>Resume - ${
+          (resumeData?.personal?.name || resumeData?.name || 'Resume') + 
+          (resumeData?.personal?.title ? ` - ${resumeData.personal.title}` : '')
+        }</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <style>
           body { 
@@ -94,8 +99,12 @@ export async function POST(request) {
       <body>
         ${htmlContent}
         
-        ${showWatermark ? `<!-- Bottom Right Watermark -->
-        <div class="watermark">${watermarkText}</div>` : ''}
+        ${
+          showWatermark
+            ? `<!-- Bottom Right Watermark -->
+        <div class="watermark">${watermarkText}</div>`
+            : ""
+        }
         
         <!-- Optional: Diagonal Watermark (uncomment to use) -->
         <!-- <div class="watermark-diagonal">${watermarkText}</div> -->
@@ -104,20 +113,20 @@ export async function POST(request) {
     `;
 
     await page.setContent(completeHtmlContent, {
-      waitUntil: 'networkidle',
+      waitUntil: "networkidle",
     });
 
     // Set viewport for better PDF generation
     await page.setViewportSize({ width: 794, height: 1123 }); // A4 dimensions
 
     const pdfBuffer = await page.pdf({
-      format: 'A4',
+      format: "A4",
       printBackground: true,
       margin: {
-        top: '0.25in',
-        right: '0.25in',
-        bottom: '0.25in',
-        left: '0.25in',
+        top: "0.25in",
+        right: "0.25in",
+        bottom: "0.25in",
+        left: "0.25in",
       },
     });
 
@@ -125,13 +134,16 @@ export async function POST(request) {
 
     return new Response(pdfBuffer, {
       headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${resumeData?.name || 'resume'}.pdf"`,
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${
+          (resumeData?.personal?.name || resumeData?.name || 'Resume') + 
+          (resumeData?.personal?.title ? ` - ${resumeData.personal.title}` : '') + 
+          '.pdf'
+        }"`,
       },
     });
-
   } catch (error) {
-    console.error('PDF generation failed:', error);
+    console.error("PDF generation failed:", error);
     return NextResponse.json(
       { error: `PDF generation failed: ${error.message}` },
       { status: 500 }

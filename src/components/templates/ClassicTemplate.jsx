@@ -1,30 +1,59 @@
 const ClassicTemplate = ({ data }) => {
+  // Extract personal data with fallback to old structure for backward compatibility
+  const personal = data.personal || data;
+
+  
   return (
-    <div className="w-full overflow-x-auto max-lg:p-4 ">
-      <div className="bg-white min-w-[800px] max-w-4xl mx-auto lg:p-8 font-serif">
+    <div className="w-full overflow-x-auto max-lg:p-4">
+      <div className="bg-white min-w-[700px] max-w-4xl mx-auto lg:p-8 font-serif">
         {/* Header */}
         <div className="text-center border-b-2 border-gray-300 pb-6 mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            {data.name || 'Your Name'}
+            {personal.name || 'Your Name'}
           </h1>
           <p className="text-xl text-gray-700 font-semibold mb-4">
-            {data.title || 'Professional Title'}
+            {personal.title || 'Professional Title'}
           </p>
           <div className="flex justify-center space-x-6 text-gray-600">
-            <span>{data.email || 'email@example.com'}</span>
-            <span>{data.phone || '+1 (555) 123-4567'}</span>
-            <span>{data.location || 'City, State'}</span>
+            <span>{personal.email || 'email@example.com'}</span>
+            <span>{personal.phone || '+1 (555) 123-4567'}</span>
+            <span>{personal.location || 'City, State'}</span>
           </div>
+          {/* LinkedIn and Website links */}
+          {(personal.linkedin || personal.website) && (
+            <div className="flex justify-center space-x-6 text-gray-600 mt-2">
+              {personal.linkedin && (
+                <a 
+                  href={`https://${personal.linkedin}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  LinkedIn
+                </a>
+              )}
+              {personal.website && (
+                <a 
+                  href={`https://${personal.website}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  Website
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Professional Summary */}
-        {data.summary && (
+        {personal.summary && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 uppercase tracking-wide border-b border-gray-300 pb-2">
               Professional Summary
             </h2>
-            <p className="text-gray-700 leading-relaxed text-lg">
-              {data.summary}
+            <p className="text-gray-700 leading-relaxed text-lg break-words">
+              {personal.summary}
             </p>
           </div>
         )}
@@ -38,16 +67,16 @@ const ClassicTemplate = ({ data }) => {
             <div className="space-y-8">
               {data.experience.map((exp, index) => (
                 <div key={index} className="border-l-4 border-gray-800 pl-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-bold text-gray-900 break-words">
                         {exp.title}
                       </h3>
-                      <p className="text-lg text-gray-700 font-semibold">
+                      <p className="text-lg text-gray-700 font-semibold break-words">
                         {exp.company}
                       </p>
                     </div>
-                    <span className="text-gray-600 font-medium">
+                    <span className="text-gray-600 font-medium whitespace-nowrap">
                       {exp.startDate} - {exp.endDate || 'Present'}
                     </span>
                   </div>
@@ -55,9 +84,9 @@ const ClassicTemplate = ({ data }) => {
                     <ul className="list-disc list-inside text-gray-700 space-y-2 text-lg">
                       {Array.isArray(exp.achievements) ? 
                         exp.achievements.map((achievement, idx) => (
-                          <li key={idx} className="leading-relaxed">{achievement}</li>
+                          <li key={idx} className="leading-relaxed break-words">{achievement}</li>
                         )) : 
-                        <li className="leading-relaxed">{exp.achievements}</li>
+                        <li className="leading-relaxed break-words">{exp.achievements}</li>
                       }
                     </ul>
                   )}
@@ -75,19 +104,19 @@ const ClassicTemplate = ({ data }) => {
             </h2>
             <div className="space-y-6">
               {data.education.map((edu, index) => (
-                <div key={index} className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">
+                <div key={index} className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xl font-bold text-gray-900 break-words">
                       {edu.degree}
                     </h3>
-                    <p className="text-lg text-gray-700 font-semibold">
+                    <p className="text-lg text-gray-700 font-semibold break-words">
                       {edu.institution}
                     </p>
                     {edu.gpa && (
                       <p className="text-gray-600">GPA: {edu.gpa}</p>
                     )}
                   </div>
-                  <span className="text-gray-600 font-medium text-lg">
+                  <span className="text-gray-600 font-medium text-lg whitespace-nowrap">
                     {edu.graduationYear}
                   </span>
                 </div>
@@ -131,13 +160,13 @@ const ClassicTemplate = ({ data }) => {
             <div className="space-y-6">
               {data.projects.map((project, index) => (
                 <div key={index} className="border-l-4 border-gray-800 pl-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-bold text-gray-900 break-words">
                         {project.name}
                       </h3>
                       {project.technologies && (
-                        <p className="text-lg text-gray-700 font-semibold">
+                        <p className="text-lg text-gray-700 font-semibold break-words">
                           {Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies}
                         </p>
                       )}
@@ -147,14 +176,14 @@ const ClassicTemplate = ({ data }) => {
                         href={project.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 font-medium"
+                        className="text-blue-600 hover:text-blue-800 font-medium whitespace-nowrap"
                       >
                         View Project →
                       </a>
                     )}
                   </div>
                   {project.description && (
-                    <p className="text-gray-700 leading-relaxed text-lg">
+                    <p className="text-gray-700 leading-relaxed text-lg break-words">
                       {project.description}
                     </p>
                   )}
@@ -172,16 +201,16 @@ const ClassicTemplate = ({ data }) => {
             </h2>
             <div className="space-y-4">
               {data.certifications.map((cert, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <div>
-                    <span className="text-lg font-bold text-gray-900">
+                <div key={index} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                  <div className="flex-1 min-w-0">
+                    <span className="text-lg font-bold text-gray-900 break-words">
                       {cert.name}
                     </span>
-                    <p className="text-gray-700 font-medium">
+                    <p className="text-gray-700 font-medium break-words">
                       {cert.issuer}
                     </p>
                   </div>
-                  <span className="text-gray-600 font-medium">
+                  <span className="text-gray-600 font-medium whitespace-nowrap">
                     {cert.date}
                   </span>
                 </div>
@@ -198,16 +227,16 @@ const ClassicTemplate = ({ data }) => {
             </h2>
             <div className="space-y-4">
               {data.awards.map((award, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <div>
-                    <span className="text-lg font-bold text-gray-900">
+                <div key={index} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                  <div className="flex-1 min-w-0">
+                    <span className="text-lg font-bold text-gray-900 break-words">
                       {award.name}
                     </span>
-                    <p className="text-gray-700 font-medium">
+                    <p className="text-gray-700 font-medium break-words">
                       {award.issuer}
                     </p>
                   </div>
-                  <span className="text-gray-600 font-medium">
+                  <span className="text-gray-600 font-medium whitespace-nowrap">
                     {award.date}
                   </span>
                 </div>
@@ -226,16 +255,16 @@ const ClassicTemplate = ({ data }) => {
               {data.achievements.map((achievement, index) => (
                 <div key={index} className="border-l-4 border-gray-800 pl-6">
                   {typeof achievement === 'string' ? (
-                    <p className="text-gray-700 leading-relaxed text-lg">
+                    <p className="text-gray-700 leading-relaxed text-lg break-words">
                       {achievement}
                     </p>
                   ) : (
                     <div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      <h3 className="text-lg font-bold text-gray-900 mb-2 break-words">
                         {achievement.title}
                       </h3>
                       {achievement.description && (
-                        <p className="text-gray-700 leading-relaxed">
+                        <p className="text-gray-700 leading-relaxed break-words">
                           {achievement.description}
                         </p>
                       )}
@@ -256,16 +285,16 @@ const ClassicTemplate = ({ data }) => {
             <div className="space-y-4">
               {data.publications.map((pub, index) => (
                 <div key={index} className="border-l-4 border-gray-800 pl-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-bold text-gray-900 break-words">
                         {pub.title}
                       </h3>
-                      <p className="text-lg text-gray-700 font-semibold">
+                      <p className="text-lg text-gray-700 font-semibold break-words">
                         {pub.journal}
                       </p>
                     </div>
-                    <span className="text-gray-600 font-medium">
+                    <span className="text-gray-600 font-medium whitespace-nowrap">
                       {pub.date}
                     </span>
                   </div>
@@ -274,7 +303,7 @@ const ClassicTemplate = ({ data }) => {
                       href={pub.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 font-medium"
+                      className="text-blue-600 hover:text-blue-800 font-medium whitespace-nowrap"
                     >
                       View Publication →
                     </a>
@@ -293,18 +322,18 @@ const ClassicTemplate = ({ data }) => {
             </h2>
             <div className="space-y-4">
               {data.memberships.map((membership, index) => (
-                <div key={index} className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">
+                <div key={index} className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xl font-bold text-gray-900 break-words">
                       {membership.organization}
                     </h3>
                     {membership.role && (
-                      <p className="text-lg text-gray-700 font-semibold">
+                      <p className="text-lg text-gray-700 font-semibold break-words">
                         {membership.role}
                       </p>
                     )}
                   </div>
-                  <span className="text-gray-600 font-medium text-lg">
+                  <span className="text-gray-600 font-medium text-lg whitespace-nowrap">
                     {membership.date || membership.period}
                   </span>
                 </div>
@@ -322,21 +351,21 @@ const ClassicTemplate = ({ data }) => {
             <div className="space-y-6">
               {data.teaching.map((course, index) => (
                 <div key={index} className="border-l-4 border-gray-800 pl-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-bold text-gray-900 break-words">
                         {course.course}
                       </h3>
-                      <p className="text-lg text-gray-700 font-semibold">
+                      <p className="text-lg text-gray-700 font-semibold break-words">
                         {course.institution}
                       </p>
                     </div>
-                    <span className="text-gray-600 font-medium">
+                    <span className="text-gray-600 font-medium whitespace-nowrap">
                       {course.date}
                     </span>
                   </div>
                   {course.description && (
-                    <p className="text-gray-700 leading-relaxed text-lg">
+                    <p className="text-gray-700 leading-relaxed text-lg break-words">
                       {course.description}
                     </p>
                   )}
@@ -355,16 +384,16 @@ const ClassicTemplate = ({ data }) => {
             <div className="space-y-6">
               {data.clearance.map((clearance, index) => (
                 <div key={index} className="border-l-4 border-gray-800 pl-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-bold text-gray-900 break-words">
                         {clearance.level}
                       </h3>
-                      <p className="text-lg text-gray-700 font-semibold">
+                      <p className="text-lg text-gray-700 font-semibold break-words">
                         {clearance.agency}
                       </p>
                     </div>
-                    <span className="text-gray-600 font-medium text-lg">
+                    <span className="text-gray-600 font-medium text-lg whitespace-nowrap">
                       {clearance.date}
                     </span>
                   </div>
@@ -383,28 +412,66 @@ const ClassicTemplate = ({ data }) => {
             <div className="space-y-6">
               {data.references.map((reference, index) => (
                 <div key={index} className="border-l-4 border-gray-800 pl-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-bold text-gray-900 break-words">
                         {reference.name}
                       </h3>
-                      <p className="text-lg text-gray-700 font-semibold">
+                      <p className="text-lg text-gray-700 font-semibold break-words">
                         {reference.title}
                       </p>
-                      <p className="text-lg text-gray-700 font-semibold">
+                      <p className="text-lg text-gray-700 font-semibold break-words">
                         {reference.company || reference.organization}
                       </p>
                     </div>
                   </div>
                   <div className="text-lg text-gray-700 space-y-1">
                     {reference.email && (
-                      <p>Email: {reference.email}</p>
+                      <p className="break-words">Email: {reference.email}</p>
                     )}
                     {reference.phone && (
-                      <p>Phone: {reference.phone}</p>
+                      <p className="break-words">Phone: {reference.phone}</p>
                     )}
                   </div>
                 </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Languages */}
+        {data.languages && data.languages.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+              Languages
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {data.languages.map((language, index) => (
+                <span
+                  key={index}
+                  className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
+                >
+                  {typeof language === 'string' ? language : `${language.name}${language.proficiency ? ` (${language.proficiency})` : ''}`}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Interests */}
+        {data.interests && data.interests.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase tracking-wide border-b border-gray-300 pb-2">
+              Interests & Hobbies
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {data.interests.map((interest, index) => (
+                <span
+                  key={index}
+                  className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"
+                >
+                  {interest}
+                </span>
               ))}
             </div>
           </div>
@@ -420,16 +487,16 @@ const ClassicTemplate = ({ data }) => {
               {data.additional.map((item, index) => (
                 <div key={index}>
                   {typeof item === 'string' ? (
-                    <p className="text-gray-700 leading-relaxed text-lg">
+                    <p className="text-gray-700 leading-relaxed text-lg break-words">
                       {item}
                     </p>
                   ) : (
                     <div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      <h3 className="text-lg font-bold text-gray-900 mb-2 break-words">
                         {item.title}
                       </h3>
                       {item.content && (
-                        <p className="text-gray-700 leading-relaxed">
+                        <p className="text-gray-700 leading-relaxed break-words">
                           {item.content}
                         </p>
                       )}

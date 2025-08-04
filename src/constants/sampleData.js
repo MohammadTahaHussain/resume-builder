@@ -1,12 +1,16 @@
 // Sample resume data for different professions
 export const sampleResumeData = {
   softwareEngineer: {
-    name: 'John Doe',
-    title: 'Senior Software Engineer',
-    email: 'john.doe@email.com',
-    phone: '+1 (555) 123-4567',
-    location: 'San Francisco, CA',
-    summary: 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud technologies. Proven track record of delivering scalable solutions and leading development teams.',
+    personal: {
+      name: 'John Doe',
+      title: 'Senior Software Engineer',
+      email: 'john.doe@email.com',
+      phone: '+1 (555) 123-4567',
+      location: 'San Francisco, CA',
+      summary: 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud technologies. Proven track record of delivering scalable solutions and leading development teams.',
+      linkedin: 'linkedin.com/in/johndoe',
+      website: 'johndoe.dev'
+    },
     experience: [
       {
         title: 'Senior Software Engineer',
@@ -79,12 +83,16 @@ export const sampleResumeData = {
   },
 
   marketingManager: {
-    name: 'Sarah Johnson',
-    title: 'Senior Marketing Manager',
-    email: 'sarah.johnson@email.com',
-    phone: '+1 (555) 987-6543',
-    location: 'New York, NY',
-    summary: 'Strategic marketing professional with 7+ years of experience in digital marketing, brand management, and campaign optimization. Proven track record of increasing brand awareness and driving revenue growth.',
+    personal: {
+      name: 'Sarah Johnson',
+      title: 'Senior Marketing Manager',
+      email: 'sarah.johnson@email.com',
+      phone: '+1 (555) 987-6543',
+      location: 'New York, NY',
+      summary: 'Strategic marketing professional with 7+ years of experience in digital marketing, brand management, and campaign optimization. Proven track record of increasing brand awareness and driving revenue growth.',
+      linkedin: 'linkedin.com/in/sarahjohnson',
+      website: 'sarahjohnson.com'
+    },
     experience: [
       {
         title: 'Senior Marketing Manager',
@@ -193,12 +201,16 @@ export const sampleResumeData = {
   },
 
   entrepreneur: {
-    name: 'Alex Thompson',
-    title: 'Founder & CEO',
-    email: 'alex.thompson@startup.com',
-    phone: '+1 (555) 456-7890',
-    location: 'Austin, TX',
-    summary: 'Serial entrepreneur with 10+ years of experience building and scaling technology startups. Successfully founded and sold 2 companies, with expertise in product development, fundraising, and team building.',
+    personal: {
+      name: 'Alex Thompson',
+      title: 'Founder & CEO',
+      email: 'alex.thompson@startup.com',
+      phone: '+1 (555) 456-7890',
+      location: 'Austin, TX',
+      summary: 'Serial entrepreneur with 10+ years of experience building and scaling technology startups. Successfully founded and sold 2 companies, with expertise in product development, fundraising, and team building.',
+      linkedin: 'linkedin.com/in/alexthompson',
+      website: 'alexthompson.com'
+    },
     experience: [
       {
         title: 'Founder & CEO',
@@ -291,12 +303,16 @@ export const sampleResumeData = {
   },
 
   consultant: {
-    name: 'David Chen',
-    title: 'Senior Business Consultant',
-    email: 'david.chen@consulting.com',
-    phone: '+1 (555) 789-0123',
-    location: 'Chicago, IL',
-    summary: 'Experienced business consultant with 8+ years of expertise in strategic planning, process optimization, and organizational transformation. Proven track record of delivering measurable results for Fortune 500 companies.',
+    personal: {
+      name: 'David Chen',
+      title: 'Senior Business Consultant',
+      email: 'david.chen@consulting.com',
+      phone: '+1 (555) 789-0123',
+      location: 'Chicago, IL',
+      summary: 'Experienced business consultant with 8+ years of expertise in strategic planning, process optimization, and organizational transformation. Proven track record of delivering measurable results for Fortune 500 companies.',
+      linkedin: 'linkedin.com/in/davidchen',
+      website: 'davidchenconsulting.com'
+    },
     experience: [
       {
         title: 'Senior Business Consultant',
@@ -405,12 +421,16 @@ export const sampleResumeData = {
   },
 
   teacher: {
-    name: 'Dr. Maria Rodriguez',
-    title: 'Associate Professor of Education',
-    email: 'maria.rodriguez@university.edu',
-    phone: '+1 (555) 234-5678',
-    location: 'Boston, MA',
-    summary: 'Dedicated educator with 12+ years of experience in higher education, specializing in curriculum development, student engagement, and educational research. Committed to fostering inclusive learning environments and advancing educational innovation.',
+    personal: {
+      name: 'Dr. Maria Rodriguez',
+      title: 'Associate Professor of Education',
+      email: 'maria.rodriguez@university.edu',
+      phone: '+1 (555) 234-5678',
+      location: 'Boston, MA',
+      summary: 'Dedicated educator with 12+ years of experience in higher education, specializing in curriculum development, student engagement, and educational research. Committed to fostering inclusive learning environments and advancing educational innovation.',
+      linkedin: 'linkedin.com/in/mariarodriguez',
+      website: 'mariarodriguez.edu'
+    },
     experience: [
       {
         title: 'Associate Professor of Education',
@@ -557,12 +577,16 @@ export const sampleResumeData = {
   },
 
   federal: {
-    name: 'Michael Thompson',
-    title: 'Senior Policy Analyst',
-    email: 'michael.thompson@federal.gov',
-    phone: '+1 (555) 345-6789',
-    location: 'Washington, DC',
-    summary: 'Experienced federal government professional with 10+ years of expertise in policy analysis, regulatory compliance, and program management. Proven track record of developing and implementing policies that serve the public interest.',
+    personal: {
+      name: 'Michael Thompson',
+      title: 'Senior Policy Analyst',
+      email: 'michael.thompson@federal.gov',
+      phone: '+1 (555) 345-6789',
+      location: 'Washington, DC',
+      summary: 'Experienced federal government professional with 10+ years of expertise in policy analysis, regulatory compliance, and program management. Proven track record of developing and implementing policies that serve the public interest.',
+      linkedin: 'linkedin.com/in/michaelthompson',
+      website: 'michaelthompson.gov'
+    },
     experience: [
       {
         title: 'Senior Policy Analyst',
@@ -709,12 +733,16 @@ export const validationRules = {
 export const sampleData = {
   'software-engineer': sampleResumeData.softwareEngineer,
   'data-scientist': {
-    name: 'Emily Chen',
-    title: 'Senior Data Scientist',
-    email: 'emily.chen@data.com',
-    phone: '+1 (555) 123-4567',
-    location: 'San Francisco, CA',
-    summary: 'Experienced data scientist with 6+ years of expertise in machine learning, statistical analysis, and big data processing. Proven track record of delivering data-driven insights that drive business decisions.',
+    personal: {
+      name: 'Emily Chen',
+      title: 'Senior Data Scientist',
+      email: 'emily.chen@data.com',
+      phone: '+1 (555) 123-4567',
+      location: 'San Francisco, CA',
+      summary: 'Experienced data scientist with 6+ years of expertise in machine learning, statistical analysis, and big data processing. Proven track record of delivering data-driven insights that drive business decisions.',
+      linkedin: 'linkedin.com/in/emilychen',
+      website: 'emilychen.ai'
+    },
     experience: [
       {
         title: 'Senior Data Scientist',
@@ -753,12 +781,16 @@ export const sampleData = {
     interests: []
   },
   'product-manager': {
-    name: 'Alex Johnson',
-    title: 'Senior Product Manager',
-    email: 'alex.johnson@product.com',
-    phone: '+1 (555) 987-6543',
-    location: 'New York, NY',
-    summary: 'Strategic product manager with 7+ years of experience in product strategy, user research, and cross-functional leadership. Proven track record of launching successful products and driving user growth.',
+    personal: {
+      name: 'Alex Johnson',
+      title: 'Senior Product Manager',
+      email: 'alex.johnson@product.com',
+      phone: '+1 (555) 987-6543',
+      location: 'New York, NY',
+      summary: 'Strategic product manager with 7+ years of experience in product strategy, user research, and cross-functional leadership. Proven track record of launching successful products and driving user growth.',
+      linkedin: 'linkedin.com/in/alexjohnson',
+      website: 'alexjohnson.com'
+    },
     experience: [
       {
         title: 'Senior Product Manager',
@@ -798,12 +830,16 @@ export const sampleData = {
     interests: []
   },
   'designer': {
-    name: 'Sarah Kim',
-    title: 'Senior UI/UX Designer',
-    email: 'sarah.kim@design.com',
-    phone: '+1 (555) 456-7890',
-    location: 'Los Angeles, CA',
-    summary: 'Creative UI/UX designer with 8+ years of experience in user-centered design, visual design, and design systems. Proven track record of creating intuitive and beautiful user experiences.',
+    personal: {
+      name: 'Sarah Kim',
+      title: 'Senior UI/UX Designer',
+      email: 'sarah.kim@design.com',
+      phone: '+1 (555) 456-7890',
+      location: 'Los Angeles, CA',
+      summary: 'Creative UI/UX designer with 8+ years of experience in user-centered design, visual design, and design systems. Proven track record of creating intuitive and beautiful user experiences.',
+      linkedin: 'linkedin.com/in/sarahkim',
+      website: 'sarahkim.design'
+    },
     experience: [
       {
         title: 'Senior UI/UX Designer',
