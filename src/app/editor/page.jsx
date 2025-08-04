@@ -7,6 +7,7 @@ import TemplateManager from "../../components/TemplateManager";
 import EditDrawer from "../../components/EditDrawer";
 import PDFDownloader from "../../components/PDFDownloader";
 import AIAssistant from "@/components/AIAssistant";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 function EditorContent() {
   const searchParams = useSearchParams();
@@ -14,7 +15,7 @@ function EditorContent() {
   const templateId = searchParams.get("template") || "modern";
   const professionId = searchParams.get("profession") || "softwareEngineer";
   const resumeId = searchParams.get("id"); // For editing existing resume
-  
+
   const [resumeData, setResumeData] = useState({});
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("personal");
@@ -67,34 +68,39 @@ function EditorContent() {
       const response = await fetch(`/api/resumes/${id}`);
       if (response.ok) {
         const resume = await response.json();
-        
+
         // Transform the nested data structure to flat structure for templates
         const transformedData = {
           // Personal info (flatten from data.personal)
-          name: resume.data.personal?.name || '',
-          title: resume.data.personal?.title || '',
-          email: resume.data.personal?.email || '',
-          phone: resume.data.personal?.phone || '',
-          location: resume.data.personal?.location || '',
-          summary: resume.data.personal?.summary || '',
-          linkedin: resume.data.personal?.linkedin || '',
-          website: resume.data.personal?.website || '',
-          
+          name: resume.data.personal?.name || "",
+          title: resume.data.personal?.title || "",
+          email: resume.data.personal?.email || "",
+          phone: resume.data.personal?.phone || "",
+          location: resume.data.personal?.location || "",
+          summary: resume.data.personal?.summary || "",
+          linkedin: resume.data.personal?.linkedin || "",
+          website: resume.data.personal?.website || "",
+
           // Other sections
           experience: resume.data.experience || [],
           education: resume.data.education || [],
-          
+
           // Handle skills - convert from nested format to simple array if needed
           skills: (() => {
             const skills = resume.data.skills || [];
             // If skills is in old nested format [{category, skills: [...]}], flatten it
-            if (Array.isArray(skills) && skills.length > 0 && typeof skills[0] === 'object' && skills[0].skills) {
-              return skills.flatMap(skillGroup => skillGroup.skills || []);
+            if (
+              Array.isArray(skills) &&
+              skills.length > 0 &&
+              typeof skills[0] === "object" &&
+              skills[0].skills
+            ) {
+              return skills.flatMap((skillGroup) => skillGroup.skills || []);
             }
             // If skills is already a simple array, use it as is
             return skills;
           })(),
-          
+
           projects: resume.data.projects || [],
           certifications: resume.data.certifications || [],
           awards: resume.data.awards || [],
@@ -106,11 +112,11 @@ function EditorContent() {
           teaching: resume.data.teaching || [],
           additional: resume.data.additional || [],
           languages: resume.data.languages || [],
-          interests: resume.data.interests || []
+          interests: resume.data.interests || [],
         };
-        
+
         setResumeData(transformedData);
-        
+
         // Update template in URL if it's different
         if (resume.template !== templateId) {
           const params = new URLSearchParams(searchParams);
@@ -119,7 +125,7 @@ function EditorContent() {
         }
       }
     } catch (error) {
-      console.error('Error loading resume:', error);
+      console.error("Error loading resume:", error);
     }
   };
 
@@ -134,21 +140,21 @@ function EditorContent() {
       };
 
       let url, method;
-      
+
       if (resumeId) {
         // Update existing resume
         url = `/api/resumes/${resumeId}`;
-        method = 'PUT';
+        method = "PUT";
       } else {
         // Create new resume
-        url = '/api/resumes';
-        method = 'POST';
+        url = "/api/resumes";
+        method = "POST";
       }
 
       const response = await fetch(url, {
         method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(resumePayload),
       });
@@ -156,21 +162,21 @@ function EditorContent() {
       if (response.ok) {
         const savedResume = await response.json();
         setLastSaved(new Date());
-        
+
         // If this was a new resume, update the URL with the ID
         if (!resumeId && savedResume._id) {
           const params = new URLSearchParams(searchParams);
           params.set("id", savedResume._id);
           router.push(`/editor?${params.toString()}`);
         }
-        
+
         // alert('Resume saved successfully!');
       } else {
-        alert('Failed to save resume. Please try again.');
+        alert("Failed to save resume. Please try again.");
       }
     } catch (error) {
-      console.error('Error saving resume:', error);
-      alert('Failed to save resume. Please try again.');
+      console.error("Error saving resume:", error);
+      alert("Failed to save resume. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -195,7 +201,7 @@ function EditorContent() {
                 {templateId.charAt(0).toUpperCase() + templateId.slice(1)}
               </span>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
               {lastSaved && (
                 <span className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
@@ -208,7 +214,7 @@ function EditorContent() {
                   disabled={isSaving}
                   className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50"
                 >
-                  {isSaving ? 'Saving...' : 'Save Resume'}
+                  {isSaving ? "Saving..." : "Save Resume"}
                 </button>
                 <button
                   onClick={() => setIsEditDrawerOpen(true)}
@@ -232,7 +238,9 @@ function EditorContent() {
                 Resume Preview
               </h2>
               <div className="flex items-center space-x-2">
-                <span className="text-sm text-muted-foreground">Live Preview</span>
+                <span className="text-sm text-muted-foreground">
+                  Live Preview
+                </span>
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               </div>
             </div>
@@ -268,7 +276,9 @@ function EditorContent() {
                   <div className="text-2xl font-bold text-blue-600">
                     {resumeData.experience?.length || 0}
                   </div>
-                  <div className="text-sm text-muted-foreground">Experience</div>
+                  <div className="text-sm text-muted-foreground">
+                    Experience
+                  </div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-green-600">
@@ -332,22 +342,25 @@ function EditorContent() {
       />
 
       <AIAssistant />
-      
     </div>
   );
 }
 
 export default function EditorPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading editor...</p>
-        </div>
-      </div>
-    }>
-      <EditorContent />
-    </Suspense>
+    <ProtectedRoute>
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-background flex items-center justify-center">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Loading editor...</p>
+            </div>
+          </div>
+        }
+      >
+        <EditorContent />
+      </Suspense>
+    </ProtectedRoute>
   );
 }

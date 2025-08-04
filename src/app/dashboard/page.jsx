@@ -110,19 +110,19 @@ function DashboardContent() {
             <h3 className="text-lg font-bold text-card-foreground mb-4">Quick Actions</h3>
             <div className="space-y-3">
               <Link
-                href="/builder"
+                href="/editor"
                 className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 text-center"
               >
                 Create New Resume
               </Link>
               <Link
-                href="/builder?template=modern"
+                href="/editor?template=modern"
                 className="block w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 text-center"
               >
                 Modern Template
               </Link>
               <Link
-                href="/builder?template=classic"
+                href="/editor?template=classic"
                 className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 text-center"
               >
                 Classic Template
@@ -155,7 +155,7 @@ function DashboardContent() {
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-bold text-card-foreground">Your Resumes</h3>
             <Link
-              href="/builder"
+              href="/editor"
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
             >
               Create New

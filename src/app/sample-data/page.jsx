@@ -79,7 +79,7 @@ function SampleDataContent() {
               key={profession.id}
               className={`bg-card rounded-lg shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer border-2 ${
                 selectedProfession === profession.id 
-                  ? 'border-blue-500 bg-blue-50' 
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
                   : 'border-border hover:border-accent'
               }`}
               onClick={() => handleProfessionSelect(profession.id)}
@@ -118,11 +118,11 @@ function SampleDataContent() {
         </div>
 
         {/* Info Section */}
-        <div className="mt-12 bg-blue-50 rounded-lg p-6 border border-border">
-          <h3 className="text-lg font-semibold text-blue-900 mb-2">
+        <div className="mt-12 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 border border-border">
+          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
             💡 Pro Tip
           </h3>
-          <p className="text-blue-800">
+          <p className="text-blue-800 dark:text-blue-200">
             Choose sample data to see how your resume will look with real content. You can edit all the information in the next step!
           </p>
         </div>

@@ -105,7 +105,7 @@ const Navbar = () => {
                       Dashboard
                     </Link>
                     <Link
-                      href="/builder"
+                      href="/editor"
                       className="block px-4 py-2 text-sm text-card-foreground hover:bg-accent hover:text-accent-foreground"
                       onClick={() => setIsProfileOpen(false)}
                     >
@@ -129,7 +129,7 @@ const Navbar = () => {
                   Sign In
                 </Link>
                 <Link 
-                  href="/builder" 
+                  href="/editor" 
                   className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   Start Building
@@ -189,7 +189,7 @@ const Navbar = () => {
                     Dashboard
                   </Link>
                   <Link 
-                    href="/builder" 
+                    href="/editor" 
                     className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-200 block text-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -215,7 +215,7 @@ const Navbar = () => {
                     Sign In
                   </Link>
                   <Link 
-                    href="/builder" 
+                    href="/editor" 
                     className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-200 block text-center"
                     onClick={() => setIsMenuOpen(false)}
                   >

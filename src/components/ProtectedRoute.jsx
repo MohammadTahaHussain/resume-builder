@@ -3,17 +3,23 @@
 import { useAuth } from '@/hooks/useAuth'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { usePathname, useSearchParams} from 'next/navigation'
 
 export default function ProtectedRoute({ children, fallback = null }) {
   const { session, status, isAuthenticated } = useAuth()
+  const pathname = usePathname()
   const router = useRouter()
+  const params = useSearchParams()
 
   useEffect(() => {
     // Only redirect if we're sure the user is not authenticated
     if (status === 'unauthenticated') {
+      // Store the current pathname in localStorage before redirecting
+      const currentPath = pathname + (params.toString() ? `?${params.toString()}` : '')
+      localStorage.setItem('redirectAfterSignin', currentPath)
       router.push('/auth/signin')
     }
-  }, [status, router])
+  }, [status, router, pathname, params])
 
   // Show loading while checking authentication
   if (status === 'loading') {
