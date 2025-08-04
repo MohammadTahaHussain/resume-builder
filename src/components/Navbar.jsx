@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { navigationItems } from '../constants/app';
@@ -10,7 +10,30 @@ import ProtectedLink from './ProtectedLink';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const { data: session, status } = useSession();
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show navbar when scrolling up or at the top
+      if (currentScrollY < lastScrollY || currentScrollY < 100) {
+        setIsVisible(true);
+      } 
+      // Hide navbar when scrolling down (but not at the very top)
+      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -33,7 +56,9 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 shadow-lg border-b border-blue-500/20">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${
+      isVisible ? 'translate-y-0' : '-translate-y-full'
+    } bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 shadow-lg border-b border-blue-500/20`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
