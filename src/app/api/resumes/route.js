@@ -8,8 +8,9 @@ export const runtime = 'nodejs'
 export async function GET(request) {
   try {
     const session = await auth()
+    console.log('session getting resumes=>',session);
     
-    if (!session) {
+    if (!session) { 
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

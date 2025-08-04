@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import ReactMarkdown from 'react-markdown';
+import Link from 'next/link';
 
 const AIAssistant = ({ resumeData, onUpdateData }) => {
   const { session } = useAuth();
@@ -10,6 +11,17 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [currentAction, setCurrentAction] = useState('');
+
+  // Debug session information
+  console.log('AIAssistant session:', {
+    hasSession: !!session,
+    sessionUser: session?.user,
+    sessionUserId: session?.user?.id,
+    sessionEmail: session?.user?.email,
+    sessionKeys: session ? Object.keys(session) : null,
+    status: session?.status,
+    sessionToken: session?.sessionToken
+  });
 
   const aiActions = [
     {
@@ -54,12 +66,16 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('/api/ai/test');
+      const response = await fetch('/api/ai/test', {
+        credentials: 'include'
+      });
       const data = await response.json();
       
       if (response.ok) {
         addMessage('✅ AI API is working!', 'success');
         addMessage(`Response: ${data.response}`, 'ai');
+      } else if (response.status === 401) {
+        handleUnauthorizedError();
       } else {
         addMessage(`❌ API Test Failed: ${data.error}`, 'error');
         if (data.details) {
@@ -87,7 +103,8 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
       const response = await fetch('/api/ai/summary', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ resumeData })
+        body: JSON.stringify({ resumeData }),
+        credentials: 'include'
       });
 
       const data = await response.json();
@@ -98,6 +115,8 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
         
         // Update the resume data
         onUpdateData({ ...resumeData, summary: data.summary });
+      } else if (response.status === 401) {
+        handleUnauthorizedError();
       } else {
         addMessage(data.error || 'Failed to generate summary', 'error');
       }
@@ -130,7 +149,8 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
       const response = await fetch('/api/ai/enhance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ achievements: allAchievements })
+        body: JSON.stringify({ achievements: allAchievements }),
+        credentials: 'include'
       });
 
       const data = await response.json();
@@ -138,6 +158,8 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
       if (response.ok) {
         addMessage('🚀 Enhanced your achievements!', 'success');
         addMessage(data.enhancedAchievements, 'ai');
+      } else if (response.status === 401) {
+        handleUnauthorizedError();
       } else {
         addMessage(data.error || 'Failed to enhance achievements', 'error');
       }
@@ -165,7 +187,8 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
         body: JSON.stringify({ 
           jobTitle: resumeData.title, 
           currentSkills: resumeData.skills || [] 
-        })
+        }),
+        credentials: 'include'
       });
 
       const data = await response.json();
@@ -173,6 +196,8 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
       if (response.ok) {
         addMessage('💡 Here are some skill suggestions for you!', 'success');
         addMessage(data.suggestedSkills, 'ai');
+      } else if (response.status === 401) {
+        handleUnauthorizedError();
       } else {
         addMessage(data.error || 'Failed to suggest skills', 'error');
       }
@@ -197,7 +222,8 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
       const response = await fetch('/api/ai/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ resumeData })
+        body: JSON.stringify({ resumeData }),
+        credentials: 'include'
       });
 
       const data = await response.json();
@@ -205,6 +231,8 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
       if (response.ok) {
         addMessage('📊 Here\'s your resume analysis!', 'success');
         addMessage(data.analysis, 'ai');
+      } else if (response.status === 401) {
+        handleUnauthorizedError();
       } else {
         addMessage(data.error || 'Failed to analyze resume', 'error');
       }
@@ -217,11 +245,18 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
   }
 
   function addMessage(text, type = 'user') {
-    setMessages(prev => [...prev, { id: Date.now(), text, type }]);
+    const uniqueId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    setMessages(prev => [...prev, { id: uniqueId, text, type }]);
   }
 
   function clearMessages() {
     setMessages([]);
+  }
+
+  function handleUnauthorizedError() {
+    addMessage('🔐 Please login to use AI features', 'error');
+    addMessage('You need to be logged in to access AI-powered resume assistance. Click the login button below to get started.', 'error');
+    addMessage('login_button', 'login_prompt');
   }
 
   if (!session) return null;
@@ -297,21 +332,37 @@ const AIAssistant = ({ resumeData, onUpdateData }) => {
                           ? 'bg-green-50 text-green-900'
                           : message.type === 'error'
                           ? 'bg-red-50 text-red-900'
+                          : message.type === 'login_prompt'
+                          ? 'bg-yellow-50 text-yellow-900'
                           : 'bg-secondary text-secondary-foreground'
                       }`}
                     >
-                      <ReactMarkdown 
-                        components={{
-                          ul: ({ children }) => <ul className="list-disc pl-3 sm:pl-4 space-y-1 mt-2">{children}</ul>,
-                          li: ({ children }) => <li className="text-xs sm:text-sm">{children}</li>,
-                          strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
-                          p: ({ children }) => <p className="mb-2">{children}</p>,
-                          h3: ({ children }) => <h3 className="text-sm sm:text-base font-semibold mt-3 mb-2">{children}</h3>,
-                          h4: ({ children }) => <h4 className="text-xs sm:text-sm font-semibold mt-2 mb-1">{children}</h4>
-                        }}
-                      >
-                        {message.text}
-                      </ReactMarkdown>
+                      {message.type === 'login_prompt' ? (
+                        <div className="text-center">
+                          <Link
+                            href="/auth/signin"
+                            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                          >
+                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                            </svg>
+                            Login to Use AI Features
+                          </Link>
+                        </div>
+                      ) : (
+                        <ReactMarkdown 
+                          components={{
+                            ul: ({ children }) => <ul className="list-disc pl-3 sm:pl-4 space-y-1 mt-2">{children}</ul>,
+                            li: ({ children }) => <li className="text-xs sm:text-sm">{children}</li>,
+                            strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                            p: ({ children }) => <p className="mb-2">{children}</p>,
+                            h3: ({ children }) => <h3 className="text-sm sm:text-base font-semibold mt-3 mb-2">{children}</h3>,
+                            h4: ({ children }) => <h4 className="text-xs sm:text-sm font-semibold mt-2 mb-1">{children}</h4>
+                          }}
+                        >
+                          {message.text}
+                        </ReactMarkdown>
+                      )}
                     </div>
                   ))}
                 </div>

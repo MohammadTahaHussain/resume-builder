@@ -1,154 +1,13 @@
-// class ResumeAI {
-//   constructor() {
-//     this.apiKey = process.env.GEMINI_API_KEY;
-//     this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-1.5-flash:generateContent';
-//   }
-
-//   async generate(prompt, context = '') {
-//     if (!this.apiKey) {
-//       throw new Error('Gemini API key not configured');
-//     }
-
-//     try {
-//       const response = await fetch(this.baseUrl, {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'Authorization': `Bearer ${this.apiKey}`
-//         },
-//         body: JSON.stringify({
-//           contents: [{
-//             parts: [{
-//               text: `${context}\n\n${prompt}`
-//             }]
-//           }],
-//           generationConfig: {
-//             temperature: 0.7,
-//             topK: 40,
-//             topP: 0.95,
-//             maxOutputTokens: 1024,
-//           }
-//         })
-//       });
-
-//       if (!response.ok) {
-//         throw new Error(`API request failed: ${response.status}`);
-//       }
-
-//       const data = await response.json();
-//       return data.candidates[0]?.content?.parts[0]?.text || '';
-//     } catch (error) {
-//       console.error('AI generation failed:', error);
-//       throw new Error('AI service temporarily unavailable');
-//     }
-//   }
-
-//   // Generate professional summary
-//   async generateSummary(resumeData) {
-//     const prompt = `Create a compelling professional summary for ${resumeData.name || 'a professional'}, a ${resumeData.title || 'professional'} with experience in ${resumeData.skills?.slice(0, 5).join(', ') || 'various technologies'}.
-
-//     Focus on:
-//     - Key achievements and impact
-//     - Years of experience
-//     - Core competencies
-//     - Career objectives
-
-//     Keep it concise (2-3 sentences) and professional.`;
-
-//     return await this.generate(prompt);
-//   }
-
-//   // Enhance achievements
-//   async enhanceAchievements(achievements) {
-//     const prompt = `Transform these job achievements to be more impactful and quantifiable. Use specific numbers, percentages, and results where possible:
-
-//     Original achievements:
-//     ${achievements.join('\n')}
-
-//     Provide 3-4 enhanced achievements that are:
-//     - Quantifiable with numbers
-//     - Action-oriented
-//     - Results-focused
-//     - Professional and concise`;
-
-//     return await this.generate(prompt);
-//   }
-
-//   // Suggest skills based on job title
-//   async suggestSkills(jobTitle, currentSkills = []) {
-//     const prompt = `Suggest 5-8 additional relevant skills for a ${jobTitle} position.
-
-//     Current skills: ${currentSkills.join(', ')}
-
-//     Provide skills that are:
-//     - Industry-relevant
-//     - Complementary to existing skills
-//     - In-demand for this role
-//     - Both technical and soft skills`;
-
-//     return await this.generate(prompt);
-//   }
-
-//   // Grammar and style check
-//   async checkGrammar(text) {
-//     const prompt = `Review and improve this text for grammar, style, and professionalism. Provide the corrected version:
-
-//     Text to review:
-//     ${text}
-
-//     Return only the corrected text, maintaining the same meaning but improving clarity and professionalism.`;
-
-//     return await this.generate(prompt);
-//   }
-
-//   // Generate cover letter
-//   async generateCoverLetter(resumeData, jobTitle, companyName) {
-//     const prompt = `Create a compelling cover letter for ${resumeData.name} applying for a ${jobTitle} position at ${companyName}.
-
-//     Resume highlights:
-//     - Title: ${resumeData.title}
-//     - Skills: ${resumeData.skills?.slice(0, 5).join(', ')}
-//     - Experience: ${resumeData.experience?.length || 0} positions
-
-//     Make it:
-//     - Professional and enthusiastic
-//     - Tailored to the specific role
-//     - Highlight relevant experience
-//     - Include a call to action
-//     - Keep it concise (3-4 paragraphs)`;
-
-//     return await this.generate(prompt);
-//   }
-
-//   // Resume scoring and feedback
-//   async analyzeResume(resumeData) {
-//     const prompt = `Analyze this resume and provide feedback on a scale of 1-10:
-
-//     Resume data:
-//     - Name: ${resumeData.name}
-//     - Title: ${resumeData.title}
-//     - Skills: ${resumeData.skills?.join(', ')}
-//     - Experience: ${resumeData.experience?.length || 0} positions
-//     - Education: ${resumeData.education?.length || 0} degrees
-
-//     Provide:
-//     1. Overall score (1-10)
-//     2. 3 specific strengths
-//     3. 3 areas for improvement
-//     4. 2 actionable suggestions`;
-
-//     return await this.generate(prompt);
-//   }
-// }
-
-// // Create singleton instance
-// const aiService = new ResumeAI();
-
-// export default aiService;
-
 class ResumeAI {
   constructor() {
     this.apiKey = process.env.GEMINI_API_KEY;
+    
+    // Fallback for development - remove in production
+    if (!this.apiKey && process.env.NODE_ENV === 'development') {
+      console.warn('No GEMINI_API_KEY found, using fallback for development');
+      this.apiKey = 'AIzaSyBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // Replace with your actual API key
+    }
+    
     this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent';
   }
 
@@ -158,66 +17,56 @@ class ResumeAI {
    * @param {string} [context=''] - Optional context to prepend to the prompt.
    * @returns {Promise<string>} The generated text from the AI.
    */
-  async generate(prompt, context = "") {
+  async generate(prompt, options = {}) {
     if (!this.apiKey) {
       console.error('Gemini API key not configured');
-      throw new Error('Gemini API key not configured');
+      throw new Error('API key not configured');
     }
 
-    try {
-      console.log('Making AI request with API key:', this.apiKey.substring(0, 10) + '...');
-      console.log('Request URL:', this.baseUrl);
-      console.log('Prompt:', prompt);
+    // Debug API key
+    console.log('API Key configured:', !!this.apiKey);
+    console.log('API Key length:', this.apiKey ? this.apiKey.length : 0);
+    console.log('API Key preview:', this.apiKey ? this.apiKey.substring(0, 10) + '...' : 'Not set');
 
+    try {
       const response = await fetch(this.baseUrl, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "X-goog-api-key": this.apiKey
+          'Content-Type': 'application/json',
+          'X-goog-api-key': this.apiKey
         },
         body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: `${context}\n\n${prompt}`,
-                },
-              ],
-            },
-          ],
+          contents: [{
+            parts: [{
+              text: prompt
+            }]
+          }],
           generationConfig: {
-            temperature: 0.7,
-            topK: 40,
-            topP: 0.95,
-            maxOutputTokens: 1024,
-          },
-        }),
+            temperature: options.temperature || 0.7,
+            topK: options.topK || 40,
+            topP: options.topP || 0.95,
+            maxOutputTokens: options.maxTokens || 2048,
+          }
+        })
       });
-
-      console.log('Response status:', response.status);
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
         const errorText = await response.text();
         console.error('API response error:', errorText);
-        throw new Error(`API request failed with status ${response.status}: ${errorText}`);
+        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log('API response data:', data);
       
-      const result = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      console.log('Extracted result:', result);
-      
+      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+        throw new Error('Invalid response format from AI API');
+      }
+
+      const result = data.candidates[0].content.parts[0].text;
       return result;
     } catch (error) {
       console.error('AI generation failed:', error);
-      console.error('Error details:', {
-        message: error.message,
-        stack: error.stack,
-        apiKey: this.apiKey ? 'Present' : 'Missing'
-      });
-      throw new Error(`AI service temporarily unavailable: ${error.message}`);
+      throw error;
     }
   }
 

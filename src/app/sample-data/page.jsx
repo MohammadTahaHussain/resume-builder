@@ -1,146 +1,160 @@
 "use client";
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, Suspense } from 'react';
-import { sampleResumeData } from '../../constants/sampleData';
+import { useState, useEffect, Suspense } from 'react';
+import { sampleData } from '@/constants/sampleData';
 
 function SampleDataContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const templateId = searchParams.get('template');
-  const [selectedProfession, setSelectedProfession] = useState(null);
+  const [selectedProfession, setSelectedProfession] = useState('');
+  const [selectedTemplate, setSelectedTemplate] = useState('modern');
 
-  const professions = [
-    { id: 'softwareEngineer', name: 'Software Engineer', icon: '💻', color: 'bg-blue-500' },
-    { id: 'dataScientist', name: 'Data Scientist', icon: '📊', color: 'bg-purple-500' },
-    { id: 'productManager', name: 'Product Manager', icon: '📋', color: 'bg-green-500' },
-    { id: 'designer', name: 'UI/UX Designer', icon: '🎨', color: 'bg-pink-500' },
-    { id: 'marketingManager', name: 'Marketing Manager', icon: '📈', color: 'bg-orange-500' },
-    { id: 'entrepreneur', name: 'Entrepreneur', icon: '🚀', color: 'bg-red-500' },
-    { id: 'consultant', name: 'Business Consultant', icon: '💼', color: 'bg-indigo-500' },
-    { id: 'teacher', name: 'Teacher/Professor', icon: '📚', color: 'bg-teal-500' },
-  ];
-
-  const handleProfessionSelect = (professionId) => {
-    setSelectedProfession(professionId);
-  };
-
-  const handleContinue = () => {
-    if (selectedProfession && templateId) {
-      router.push(`/editor?template=${templateId}&profession=${selectedProfession}`);
+  useEffect(() => {
+    const template = searchParams.get('template');
+    if (template) {
+      setSelectedTemplate(template);
     }
+  }, [searchParams]);
+
+  const handleProfessionSelect = (profession) => {
+    setSelectedProfession(profession);
+    router.push(`/editor?template=${selectedTemplate}&profession=${profession}`);
   };
 
-  const handleStartEmpty = () => {
-    if (templateId) {
-      router.push(`/editor?template=${templateId}&profession=empty`);
-    }
-  };
+  const professions = Object.keys(sampleData);
 
   return (
     <div className="min-h-screen bg-background py-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-card-foreground mb-4">
-            Choose Your Sample Data
+            Choose Your Profession
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Select a profession to pre-fill your resume with relevant sample data, or start with a blank template
+            Select your profession to get started with sample data tailored to your field
           </p>
         </div>
 
-        {/* Selected Template Info */}
-        {templateId && (
-          <div className="bg-card rounded-lg shadow-md p-6 mb-8 border border-border">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-semibold text-card-foreground">
-                  Selected Template: {templateId.charAt(0).toUpperCase() + templateId.slice(1)}
-                </h2>
-                <p className="text-muted-foreground">
-                  You can change this later in the editor
-                </p>
-              </div>
+        {/* Template Selection */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-card-foreground mb-4">Select Template</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            {['modern', 'classic', 'creative', 'minimal', 'tech', 'academic', 'startup', 'federal'].map((template) => (
               <button
-                onClick={() => router.push('/templates')}
-                className="text-blue-600 hover:text-blue-800 font-medium"
+                key={template}
+                onClick={() => setSelectedTemplate(template)}
+                className={`p-4 rounded-lg border-2 transition-all duration-200 ${
+                  selectedTemplate === template
+                    ? 'border-blue-500 bg-blue-50 text-blue-700'
+                    : 'border-border hover:border-blue-300'
+                }`}
               >
-                Change Template
+                <div className="text-2xl mb-2">{getTemplateIcon(template)}</div>
+                <div className="text-sm font-medium capitalize">{template}</div>
               </button>
-            </div>
+            ))}
           </div>
-        )}
+        </div>
 
         {/* Professions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {professions.map((profession) => (
             <div
-              key={profession.id}
-              className={`bg-card rounded-lg shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer border-2 ${
-                selectedProfession === profession.id 
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
-                  : 'border-border hover:border-accent'
-              }`}
-              onClick={() => handleProfessionSelect(profession.id)}
+              key={profession}
+              className="bg-card rounded-lg shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer group transform hover:-translate-y-2 border border-border"
+              onClick={() => handleProfessionSelect(profession)}
             >
-              <div className="p-6 text-center">
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${profession.color}`}>
-                  <span className="text-2xl">{profession.icon}</span>
-                </div>
-                <h3 className="text-lg font-semibold text-card-foreground mb-2">
-                  {profession.name}
+              <div className="p-6">
+                <div className="text-4xl mb-4">{getProfessionIcon(profession)}</div>
+                <h3 className="text-xl font-bold text-card-foreground mb-2 capitalize">
+                  {profession.replace('-', ' ')}
                 </h3>
-                <p className="text-sm text-muted-foreground">
-                  {sampleResumeData[profession.id]?.summary?.substring(0, 80) || 'Sample data for this profession...'}...
+                <p className="text-muted-foreground mb-4">
+                  {getProfessionDescription(profession)}
                 </p>
+                <div className="flex items-center text-blue-600 group-hover:text-blue-700 transition-colors">
+                  <span className="font-medium">Get Started</span>
+                  <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button
-            onClick={handleContinue}
-            disabled={!selectedProfession}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 disabled:transform-none"
-          >
-            Continue with Sample Data
-          </button>
-          
-          <button
-            onClick={handleStartEmpty}
-            className="bg-card hover:bg-accent text-card-foreground hover:text-accent-foreground px-8 py-3 rounded-lg font-medium border-2 border-border transition-all duration-200 transform hover:scale-105"
-          >
-            Start with Empty Template
-          </button>
-        </div>
-
-        {/* Info Section */}
-        <div className="mt-12 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 border border-border">
-          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
-            💡 Pro Tip
-          </h3>
-          <p className="text-blue-800 dark:text-blue-200">
-            Choose sample data to see how your resume will look with real content. You can edit all the information in the next step!
-          </p>
         </div>
       </div>
     </div>
   );
 }
 
-export default function SampleDataPage() {
+function SampleDataSkeleton() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading sample data page...</p>
+    <div className="min-h-screen bg-background py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <div className="h-10 bg-gray-200 rounded mb-4 animate-pulse"></div>
+          <div className="h-6 bg-gray-200 rounded w-2/3 mx-auto animate-pulse"></div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <div key={i} className="bg-card rounded-lg shadow-lg p-6 border border-border animate-pulse">
+              <div className="h-12 bg-gray-200 rounded mb-4"></div>
+              <div className="h-6 bg-gray-200 rounded mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded mb-4"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+            </div>
+          ))}
         </div>
       </div>
-    }>
+    </div>
+  );
+}
+
+function getTemplateIcon(template) {
+  const icons = {
+    modern: '🎨',
+    classic: '📄',
+    creative: '✨',
+    minimal: '⚪',
+    tech: '💻',
+    academic: '🎓',
+    startup: '🚀',
+    federal: '🏛️'
+  };
+  return icons[template] || '📄';
+}
+
+function getProfessionIcon(profession) {
+  const icons = {
+    'software-engineer': '💻',
+    'data-scientist': '📊',
+    'product-manager': '📋',
+    'designer': '🎨',
+    'consultant': '💼',
+    'teacher': '📚',
+    'federal': '🏛️'
+  };
+  return icons[profession] || '👤';
+}
+
+function getProfessionDescription(profession) {
+  const descriptions = {
+    'software-engineer': 'Full-stack development, system architecture, and technical leadership',
+    'data-scientist': 'Data analysis, machine learning, and statistical modeling',
+    'product-manager': 'Product strategy, user research, and cross-functional leadership',
+    'designer': 'UI/UX design, creative direction, and user experience',
+    'consultant': 'Business strategy, process optimization, and client management',
+    'teacher': 'Educational leadership, curriculum development, and student engagement',
+    'federal': 'Government policy, regulatory compliance, and public service'
+  };
+  return descriptions[profession] || 'Professional experience and achievements';
+}
+
+export default function SampleDataPage() {
+  return (
+    <Suspense fallback={<SampleDataSkeleton />}>
       <SampleDataContent />
     </Suspense>
   );

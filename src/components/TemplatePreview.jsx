@@ -1,8 +1,6 @@
 import React from 'react';
 
-const TemplatePreview = ({ templateId, sampleData }) => {
-  console.log('TemplatePreview rendered with templateId:', templateId);
-  
+const TemplatePreview = ({ templateId, data }) => {
   const renderTemplatePreview = () => {
     switch (templateId) {
       case 'modern':

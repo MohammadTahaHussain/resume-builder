@@ -7,6 +7,7 @@ export const runtime = 'nodejs';
 export async function POST(request) {
   try {
     const session = await auth();
+    console.log('summary session=>',session);
     
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

@@ -3,7 +3,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import Link from 'next/link'
 import ProtectedRoute from '@/components/ProtectedRoute'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 
 function DashboardContent() {
   const { session, logout } = useAuth()
@@ -99,113 +99,164 @@ function DashboardContent() {
             </div>
             <button
               onClick={logout}
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200"
+              className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
             >
               Sign Out
             </button>
           </div>
 
+          {/* Stats Cards */}
+          <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
+            <h3 className="text-lg font-semibold text-card-foreground mb-4">Your Stats</h3>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Total Resumes</span>
+                <span className="font-semibold text-card-foreground">{stats.totalResumes}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Total Downloads</span>
+                <span className="font-semibold text-card-foreground">{stats.totalDownloads}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Templates Used</span>
+                <span className="font-semibold text-card-foreground">{stats.templatesUsed}</span>
+              </div>
+            </div>
+          </div>
+
           {/* Quick Actions */}
           <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
-            <h3 className="text-lg font-bold text-card-foreground mb-4">Quick Actions</h3>
+            <h3 className="text-lg font-semibold text-card-foreground mb-4">Quick Actions</h3>
             <div className="space-y-3">
               <Link
                 href="/editor"
-                className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 text-center"
+                className="block w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-center"
               >
                 Create New Resume
               </Link>
               <Link
-                href="/editor?template=modern"
-                className="block w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 text-center"
+                href="/templates"
+                className="block w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-center"
               >
-                Modern Template
+                Browse Templates
               </Link>
               <Link
-                href="/editor?template=classic"
-                className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 text-center"
+                href="/sample-data"
+                className="block w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-center"
               >
-                Classic Template
+                Sample Data
               </Link>
-            </div>
-          </div>
-
-          {/* Statistics */}
-          <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
-            <h3 className="text-lg font-bold text-card-foreground mb-4">Your Activity</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Resumes Created</span>
-                <span className="text-2xl font-bold text-blue-600">{stats.totalResumes}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Templates Used</span>
-                <span className="text-2xl font-bold text-green-600">{stats.templatesUsed}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">PDF Downloads</span>
-                <span className="text-2xl font-bold text-purple-600">{stats.totalDownloads}</span>
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Recent Resumes */}
-        <div className="mt-8 bg-card rounded-lg shadow-lg p-6 border border-border">
+        {/* Resumes List */}
+        <div className="mt-8">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-bold text-card-foreground">Your Resumes</h3>
+            <h2 className="text-2xl font-bold text-card-foreground">Your Resumes</h2>
             <Link
               href="/editor"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               Create New
             </Link>
           </div>
-          
+
           {loading ? (
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="mt-2 text-muted-foreground">Loading resumes...</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-card rounded-lg shadow-lg p-6 border border-border animate-pulse">
+                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-3 bg-gray-200 rounded mb-4"></div>
+                  <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                </div>
+              ))}
             </div>
-          ) : resumes.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          ) : resumes.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-card-foreground mb-2">No resumes yet</h3>
+              <p className="text-muted-foreground mb-4">Create your first resume to get started</p>
+              <Link
+                href="/editor"
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Create Your First Resume
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {resumes.map((resume) => (
-                <div key={resume._id} className="border border-border rounded-lg p-4 hover:shadow-md transition-shadow bg-card">
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-semibold text-card-foreground">{resume.title}</h4>
-                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                      {resume.template}
-                    </span>
+                <div key={resume._id} className="bg-card rounded-lg shadow-lg p-6 border border-border hover:shadow-xl transition-shadow">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-card-foreground">{resume.title}</h3>
+                      <p className="text-sm text-muted-foreground capitalize">{resume.template} Template</p>
+                    </div>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleDeleteResume(resume._id)}
+                        className="p-1 text-red-500 hover:text-red-700 transition-colors"
+                        title="Delete resume"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    Last modified: {new Date(resume.updatedAt).toLocaleDateString()}
-                  </p>
+                  
+                  <div className="flex justify-between items-center text-sm text-muted-foreground mb-4">
+                    <span>Created: {new Date(resume.createdAt).toLocaleDateString()}</span>
+                    <span>{resume.downloads || 0} downloads</span>
+                  </div>
+                  
                   <div className="flex space-x-2">
                     <Link
                       href={`/editor?id=${resume._id}`}
-                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      className="flex-1 px-3 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors text-center"
                     >
                       Edit
                     </Link>
-                    <button
-                      onClick={() => handleDeleteResume(resume._id)}
-                      className="text-red-600 hover:text-red-800 text-sm font-medium"
+                    <Link
+                      href={`/preview?id=${resume._id}`}
+                      className="flex-1 px-3 py-2 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors text-center"
                     >
-                      Delete
-                    </button>
+                      Preview
+                    </Link>
                   </div>
                 </div>
               ))}
             </div>
-          ) : (
-            <div className="text-center py-8">
-              <svg className="w-12 h-12 text-muted-foreground mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <p className="text-muted-foreground">No resumes yet</p>
-              <p className="text-sm text-muted-foreground">Start by creating your first resume!</p>
-            </div>
           )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function DashboardSkeleton() {
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-8 bg-blue-500 rounded mb-2 animate-pulse"></div>
+          <div className="h-4 bg-blue-400 rounded w-1/3 animate-pulse"></div>
+        </div>
+      </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-card rounded-lg shadow-lg p-6 border border-border animate-pulse">
+              <div className="h-4 bg-gray-200 rounded mb-2"></div>
+              <div className="h-3 bg-gray-200 rounded mb-4"></div>
+              <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -215,7 +266,9 @@ function DashboardContent() {
 export default function DashboardPage() {
   return (
     <ProtectedRoute>
-      <DashboardContent />
+      <Suspense fallback={<DashboardSkeleton />}>
+        <DashboardContent />
+      </Suspense>
     </ProtectedRoute>
   )
 } 

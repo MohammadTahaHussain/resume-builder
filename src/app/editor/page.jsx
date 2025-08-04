@@ -1,366 +1,224 @@
 "use client";
 
-import { useState, useEffect, useCallback, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { sampleResumeData } from "../../constants/sampleData";
-import TemplateManager from "../../components/TemplateManager";
 import EditDrawer from "../../components/EditDrawer";
-import PDFDownloader from "../../components/PDFDownloader";
-import AIAssistant from "@/components/AIAssistant";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ClassicTemplate from "../../components/templates/ClassicTemplate";
+import ModernTemplate from "../../components/templates/ModernTemplate";
+import CreativeTemplate from "../../components/templates/CreativeTemplate";
+import MinimalTemplate from "../../components/templates/MinimalTemplate";
+import TechTemplate from "../../components/templates/TechTemplate";
+import AcademicTemplate from "../../components/templates/AcademicTemplate";
+import StartupTemplate from "../../components/templates/StartupTemplate";
+import FederalTemplate from "../../components/templates/FederalTemplate";
+import AIAssistant from "../../components/AIAssistant";
+import { sampleData } from "../../constants/sampleData";
 
 function EditorContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const templateId = searchParams.get("template") || "modern";
-  const professionId = searchParams.get("profession") || "softwareEngineer";
-  const resumeId = searchParams.get("id"); // For editing existing resume
-
-  const [resumeData, setResumeData] = useState({});
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("personal");
-  const [isSaving, setIsSaving] = useState(false);
-  const [lastSaved, setLastSaved] = useState(null);
+  const [activeSection, setActiveSection] = useState('personal');
+  const [resumeData, setResumeData] = useState({
+    name: '',
+    title: '',
+    email: '',
+    phone: '',
+    location: '',
+    summary: '',
+    linkedin: '',
+    website: '',
+    experience: [],
+    education: [],
+    skills: [],
+    projects: [],
+    certifications: [],
+    awards: [],
+    achievements: [],
+    publications: [],
+    memberships: [],
+    clearance: [],
+    references: [],
+    teaching: [],
+    additional: [],
+    languages: [],
+    interests: []
+  });
 
-  // Initialize resume data based on profession - memoized to prevent re-renders
-  const initializeResumeData = useCallback(() => {
-    if (professionId === "empty") {
-      return {
-        name: "",
-        title: "",
-        email: "",
-        phone: "",
-        location: "",
-        summary: "",
-        experience: [],
-        education: [],
-        skills: [],
-        projects: [],
-        certifications: [],
-        awards: [],
-        achievements: [],
-        publications: [],
-        memberships: [],
-        clearance: [],
-        references: [],
-        teaching: [],
-        additional: [],
-      };
-    } else {
-      return sampleResumeData[professionId] || {};
-    }
-  }, [professionId]);
-
-  // Load resume from database if editing existing resume
   useEffect(() => {
-    if (resumeId) {
-      loadResume(resumeId);
-    } else {
-      // Initialize with sample data for new resume
-      const initialData = initializeResumeData();
-      setResumeData(initialData);
-    }
-  }, [resumeId, initializeResumeData]);
+    const template = searchParams.get('template') || 'modern';
+    const profession = searchParams.get('profession');
+    const resumeId = searchParams.get('id');
 
-  // Load resume from database
-  const loadResume = async (id) => {
+    if (resumeId) {
+      // Load existing resume
+      fetchResume(resumeId);
+    } else if (profession && sampleData[profession]) {
+      // Load sample data for profession
+      setResumeData(sampleData[profession]);
+    }
+  }, [searchParams]);
+
+  const fetchResume = async (id) => {
     try {
       const response = await fetch(`/api/resumes/${id}`);
       if (response.ok) {
         const resume = await response.json();
-
-        // Transform the nested data structure to flat structure for templates
-        const transformedData = {
-          // Personal info (flatten from data.personal)
-          name: resume.data.personal?.name || "",
-          title: resume.data.personal?.title || "",
-          email: resume.data.personal?.email || "",
-          phone: resume.data.personal?.phone || "",
-          location: resume.data.personal?.location || "",
-          summary: resume.data.personal?.summary || "",
-          linkedin: resume.data.personal?.linkedin || "",
-          website: resume.data.personal?.website || "",
-
-          // Other sections
-          experience: resume.data.experience || [],
-          education: resume.data.education || [],
-
-          // Handle skills - convert from nested format to simple array if needed
-          skills: (() => {
-            const skills = resume.data.skills || [];
-            // If skills is in old nested format [{category, skills: [...]}], flatten it
-            if (
-              Array.isArray(skills) &&
-              skills.length > 0 &&
-              typeof skills[0] === "object" &&
-              skills[0].skills
-            ) {
-              return skills.flatMap((skillGroup) => skillGroup.skills || []);
-            }
-            // If skills is already a simple array, use it as is
-            return skills;
-          })(),
-
-          projects: resume.data.projects || [],
-          certifications: resume.data.certifications || [],
-          awards: resume.data.awards || [],
-          achievements: resume.data.achievements || [],
-          publications: resume.data.publications || [],
-          memberships: resume.data.memberships || [],
-          clearance: resume.data.clearance || [],
-          references: resume.data.references || [],
-          teaching: resume.data.teaching || [],
-          additional: resume.data.additional || [],
-          languages: resume.data.languages || [],
-          interests: resume.data.interests || [],
-        };
-
-        setResumeData(transformedData);
-
-        // Update template in URL if it's different
-        if (resume.template !== templateId) {
-          const params = new URLSearchParams(searchParams);
-          params.set("template", resume.template);
-          router.push(`/editor?id=${id}&${params.toString()}`);
-        }
+        setResumeData(resume.data);
       }
     } catch (error) {
-      console.error("Error loading resume:", error);
+      console.error('Error fetching resume:', error);
     }
   };
 
-  // Save resume to database
-  const saveResume = async (title = resumeData.name || "My Resume") => {
-    setIsSaving(true);
+  const handleDataUpdate = (newData) => {
+    setResumeData(prev => ({ ...prev, ...newData }));
+  };
+
+  const handleSaveResume = async () => {
     try {
-      const resumePayload = {
-        title,
-        template: templateId,
-        data: resumeData,
-      };
-
-      let url, method;
-
-      if (resumeId) {
-        // Update existing resume
-        url = `/api/resumes/${resumeId}`;
-        method = "PUT";
-      } else {
-        // Create new resume
-        url = "/api/resumes";
-        method = "POST";
-      }
-
-      const response = await fetch(url, {
-        method,
+      const response = await fetch('/api/resumes', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(resumePayload),
+        body: JSON.stringify({
+          title: resumeData.name || 'My Resume',
+          template: searchParams.get('template') || 'modern',
+          data: resumeData,
+        }),
       });
 
       if (response.ok) {
         const savedResume = await response.json();
-        setLastSaved(new Date());
-
-        // If this was a new resume, update the URL with the ID
-        if (!resumeId && savedResume._id) {
-          const params = new URLSearchParams(searchParams);
-          params.set("id", savedResume._id);
-          router.push(`/editor?${params.toString()}`);
-        }
-
-        // alert('Resume saved successfully!');
-      } else {
-        alert("Failed to save resume. Please try again.");
+        router.push(`/editor?id=${savedResume._id}`);
       }
     } catch (error) {
-      console.error("Error saving resume:", error);
-      alert("Failed to save resume. Please try again.");
-    } finally {
-      setIsSaving(false);
+      console.error('Error saving resume:', error);
     }
   };
 
-  const handleDataUpdate = useCallback((newData) => {
-    setResumeData(newData);
-  }, []);
+  const renderTemplate = () => {
+    const template = searchParams.get('template') || 'modern';
+    
+    switch (template) {
+      case 'classic':
+        return <ClassicTemplate data={resumeData} />;
+      case 'creative':
+        return <CreativeTemplate data={resumeData} />;
+      case 'minimal':
+        return <MinimalTemplate data={resumeData} />;
+      case 'tech':
+        return <TechTemplate data={resumeData} />;
+      case 'academic':
+        return <AcademicTemplate data={resumeData} />;
+      case 'startup':
+        return <StartupTemplate data={resumeData} />;
+      case 'federal':
+        return <FederalTemplate data={resumeData} />;
+      default:
+        return <ModernTemplate data={resumeData} />;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-card shadow-sm border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-3 sm:h-16 gap-3 sm:gap-0">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
-              <h1 className="text-lg sm:text-xl font-semibold text-card-foreground">
-                Resume Editor
-              </h1>
-              <span className="text-xs sm:text-sm text-muted-foreground">
-                Template:{" "}
-                {templateId.charAt(0).toUpperCase() + templateId.slice(1)}
-              </span>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
-              {lastSaved && (
-                <span className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
-                  Last saved: {lastSaved.toLocaleTimeString()}
-                </span>
-              )}
-              <div className="flex space-x-2 sm:space-x-3">
-                <button
-                  onClick={() => saveResume()}
-                  disabled={isSaving}
-                  className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50"
-                >
-                  {isSaving ? "Saving..." : "Save Resume"}
-                </button>
-                <button
-                  onClick={() => setIsEditDrawerOpen(true)}
-                  className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700"
-                >
-                  Edit Resume
-                </button>
-              </div>
-            </div>
+      <div className="bg-card border-b border-border p-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="text-muted-foreground hover:text-card-foreground transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+            </button>
+            <h1 className="text-xl font-semibold text-card-foreground">Resume Editor</h1>
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={handleSaveResume}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Save Resume
+            </button>
+            <button
+              onClick={() => setIsEditDrawerOpen(true)}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              Edit Resume
+            </button>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Resume Preview - Takes 2/3 of the width */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-card-foreground">
-                Resume Preview
-              </h2>
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-muted-foreground">
-                  Live Preview
-                </span>
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              </div>
-            </div>
-
-            {/* Full Resume Display */}
-            <div className="bg-card shadow-lg rounded-lg overflow-hidden border border-border">
-              {/* <div className="bg-gray-50 py-2 border-b">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-700">
-                    {templateId.charAt(0).toUpperCase() + templateId.slice(1)}{" "}
-                    Template
-                  </span>
-                  <span className="text-xs text-gray-500">A4 Format</span>
-                </div>
-              </div> */}
-
-              {/* Resume Content - Fixed overflow */}
-              <div className="min-w-full">
-                <TemplateManager templateType={templateId} data={resumeData} />
-              </div>
-            </div>
+      <div className="flex h-[calc(100vh-80px)]">
+        {/* Resume Preview */}
+        <div className="flex-1 overflow-auto bg-white">
+          <div className="max-w-4xl mx-auto p-8">
+            {renderTemplate()}
           </div>
+        </div>
 
-          {/* Quick Actions & PDF Download - Takes 1/3 of the width */}
-          <div className="space-y-6">
-            {/* Quick Stats */}
-            <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
-              <h3 className="text-lg font-semibold text-card-foreground mb-4">
-                Resume Stats
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">
-                    {resumeData.experience?.length || 0}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    Experience
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">
-                    {resumeData.skills?.length || 0}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Skills</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">
-                    {resumeData.projects?.length || 0}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Projects</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-600">
-                    {resumeData.education?.length || 0}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Education</div>
-                </div>
-              </div>
-            </div>
+        {/* Edit Drawer */}
+        <EditDrawer
+          isOpen={isEditDrawerOpen}
+          onClose={() => setIsEditDrawerOpen(false)}
+          data={resumeData}
+          onDataUpdate={handleDataUpdate}
+          activeSection={activeSection}
+          onSectionChange={setActiveSection}
+        />
 
-            {/* PDF Download */}
-            <div className="bg-card rounded-lg shadow-lg p-6 border border-border">
-              <h3 className="text-lg font-semibold text-card-foreground mb-4">
-                Download PDF
-              </h3>
-              <PDFDownloader
-                resumeData={resumeData}
-                templateType={templateId}
-                templateName={
-                  templateId.charAt(0).toUpperCase() + templateId.slice(1)
-                }
-              />
-            </div>
+        {/* AI Assistant */}
+        <AIAssistant 
+          resumeData={resumeData} 
+          onUpdateData={handleDataUpdate}
+        />
+      </div>
+    </div>
+  );
+}
 
-            {/* Quick Tips */}
-            <div className="bg-blue-50 rounded-lg p-6 border border-border">
-              <h3 className="text-lg font-semibold text-blue-900 mb-2">
-                💡 Quick Tips
-              </h3>
-              <ul className="text-sm text-blue-800 space-y-1">
-                <li>• Use the "Edit Resume" button to modify your content</li>
-                <li>• All changes are reflected in real-time</li>
-                <li>• Save your progress regularly</li>
-                <li>• Download PDF when you're satisfied</li>
-              </ul>
+function EditorSkeleton() {
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="bg-card border-b border-border p-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="h-6 w-6 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="h-10 w-24 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-10 w-24 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+      <div className="flex h-[calc(100vh-80px)]">
+        <div className="flex-1 overflow-auto bg-white">
+          <div className="max-w-4xl mx-auto p-8">
+            <div className="space-y-4">
+              <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+              <div className="h-32 bg-gray-200 rounded animate-pulse"></div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Edit Drawer */}
-      <EditDrawer
-        isOpen={isEditDrawerOpen}
-        onClose={() => setIsEditDrawerOpen(false)}
-        data={resumeData}
-        onDataUpdate={handleDataUpdate}
-        activeSection={activeSection}
-        onSectionChange={setActiveSection}
-      />
-
-      <AIAssistant />
     </div>
   );
 }
 
 export default function EditorPage() {
   return (
-    <ProtectedRoute>
-      <Suspense
-        fallback={
-          <div className="min-h-screen bg-background flex items-center justify-center">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-muted-foreground">Loading editor...</p>
-            </div>
-          </div>
-        }
-      >
-        <EditorContent />
-      </Suspense>
-    </ProtectedRoute>
+    <Suspense fallback={<EditorSkeleton />}>
+      <EditorContent />
+    </Suspense>
   );
 }

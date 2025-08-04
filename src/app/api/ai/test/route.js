@@ -1,70 +1,37 @@
+// File: app/api/.../route.js
+
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
+import { auth } from '@/lib/auth'; // Make sure this path is correct
+import aiService from '@/lib/ai';
 
 export const runtime = 'nodejs';
 
 export async function GET(request) {
   try {
+    // 1. Get the session using the auth() helper
     const session = await auth();
-    
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    // 2. Protect the route: if no session, return 401
+    if (!session || !session.user) {
+      return NextResponse.json({ error: 'Unauthorized: No active session found.' }, { status: 401 });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    // Optional: You can log the user ID for your records
+    console.log(`AI service accessed by user: ${session.user.id}`);
+
+    // 3. Proceed with your main logic
+    const response = await aiService.generate('Hello, this is a test message. Please respond with "AI is working correctly!"');
     
-    if (!apiKey) {
-      return NextResponse.json({ 
-        error: 'API key not configured',
-        status: 'missing_key'
-      }, { status: 500 });
-    }
+    return NextResponse.json({ response });
 
-    // Test the API key with a simple request
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-goog-api-key': apiKey
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: 'Hello, this is a test message. Please respond with "API is working!"'
-          }]
-        }],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 50,
-        }
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      return NextResponse.json({ 
-        error: `API test failed: ${response.status}`,
-        details: errorText,
-        status: 'api_error'
-      }, { status: 500 });
-    }
-
-    const data = await response.json();
-    
-    return NextResponse.json({ 
-      success: true,
-      message: 'API is working!',
-      response: data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response text',
-      status: 'working'
-    });
   } catch (error) {
-    console.error('Error testing AI API:', error);
+    // Log the detailed error on the server
+    console.error('Error in AI API route:', error);
+
+    // Return a generic error message to the client
     return NextResponse.json(
-      { 
-        error: error.message || 'Failed to test AI API',
-        status: 'error'
-      },
+      { error: 'An internal server error occurred.' },
       { status: 500 }
     );
   }
-} 
+}

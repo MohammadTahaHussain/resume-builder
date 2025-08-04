@@ -727,6 +727,441 @@ export const sampleResumeData = {
         email: 'lisa.wang@innovatetech.com'
       }
     ]
+  },
+
+  designer: {
+    name: 'Emily Chen',
+    title: 'Senior UI/UX Designer',
+    email: 'emily.chen@email.com',
+    phone: '+1 (555) 321-6540',
+    location: 'San Francisco, CA',
+    summary: 'Creative UI/UX designer with 5+ years of experience crafting intuitive digital experiences. Specialized in user-centered design, prototyping, and design systems. Passionate about creating beautiful and functional interfaces.',
+    experience: [
+      {
+        title: 'Senior UI/UX Designer',
+        company: 'TechCorp Inc.',
+        startDate: '2021',
+        endDate: 'Present',
+        achievements: [
+          'Led design for mobile app with 2M+ downloads and 4.8-star rating',
+          'Created comprehensive design system used across 10+ products',
+          'Improved user engagement by 35% through UX optimization'
+        ]
+      },
+      {
+        title: 'UI/UX Designer',
+        company: 'Design Studio',
+        startDate: '2019',
+        endDate: '2021',
+        achievements: [
+          'Designed 15+ web applications for clients across industries',
+          'Conducted user research and usability testing for 8 projects',
+          'Collaborated with developers to ensure pixel-perfect implementation'
+        ]
+      }
+    ],
+    education: [
+      {
+        degree: 'Bachelor of Design in Interaction Design',
+        institution: 'Design Institute',
+        graduationYear: '2019'
+      }
+    ],
+    skills: [
+      'Figma', 'Sketch', 'Adobe Creative Suite', 'Prototyping', 'User Research',
+      'Design Systems', 'Wireframing', 'User Testing', 'Information Architecture',
+      'Visual Design', 'Interaction Design', 'Responsive Design'
+    ],
+    projects: [
+      {
+        name: 'E-commerce Mobile App',
+        description: 'Designed complete user experience for mobile shopping app',
+        technologies: ['Figma', 'Prototyping', 'User Research']
+      },
+      {
+        name: 'Dashboard Redesign',
+        description: 'Redesigned analytics dashboard improving user efficiency by 40%',
+        technologies: ['Sketch', 'Design Systems', 'User Testing']
+      }
+    ],
+    certifications: [
+      {
+        name: 'Google UX Design Certificate',
+        issuer: 'Google',
+        date: '2022'
+      }
+    ],
+    awards: [],
+    achievements: [],
+    publications: [],
+    memberships: [],
+    clearance: [],
+    references: [],
+    teaching: [],
+    additional: [],
+    languages: [],
+    interests: []
+  },
+
+  consultant: {
+    name: 'Michael Rodriguez',
+    title: 'Senior Business Consultant',
+    email: 'michael.rodriguez@email.com',
+    phone: '+1 (555) 456-7890',
+    location: 'New York, NY',
+    summary: 'Strategic business consultant with 8+ years of experience helping organizations optimize operations, increase efficiency, and drive growth. Expert in process improvement, change management, and strategic planning.',
+    experience: [
+      {
+        title: 'Senior Business Consultant',
+        company: 'McKinsey & Company',
+        startDate: '2020',
+        endDate: 'Present',
+        achievements: [
+          'Led transformation projects for Fortune 500 companies saving $50M+ annually',
+          'Managed team of 8 consultants across multiple client engagements',
+          'Developed strategic roadmaps for 15+ organizations'
+        ]
+      },
+      {
+        title: 'Business Analyst',
+        company: 'Deloitte',
+        startDate: '2018',
+        endDate: '2020',
+        achievements: [
+          'Conducted operational assessments for 20+ clients',
+          'Implemented process improvements reducing costs by 25%',
+          'Created detailed business requirements and project plans'
+        ]
+      }
+    ],
+    education: [
+      {
+        degree: 'Master of Business Administration',
+        institution: 'Harvard Business School',
+        graduationYear: '2018'
+      },
+      {
+        degree: 'Bachelor of Science in Economics',
+        institution: 'Stanford University',
+        graduationYear: '2016'
+      }
+    ],
+    skills: [
+      'Strategic Planning', 'Process Improvement', 'Change Management',
+      'Data Analysis', 'Project Management', 'Stakeholder Management',
+      'Financial Modeling', 'Business Strategy', 'Risk Assessment',
+      'Performance Metrics', 'Lean Six Sigma', 'Agile Methodology'
+    ],
+    projects: [
+      {
+        name: 'Digital Transformation Initiative',
+        description: 'Led comprehensive digital transformation for retail chain',
+        technologies: ['Strategy', 'Change Management', 'Process Design']
+      },
+      {
+        name: 'Operational Efficiency Study',
+        description: 'Identified and implemented efficiency improvements saving $10M annually',
+        technologies: ['Process Analysis', 'Data Analytics', 'Implementation']
+      }
+    ],
+    certifications: [
+      {
+        name: 'Certified Management Consultant',
+        issuer: 'Institute of Management Consultants',
+        date: '2021'
+      },
+      {
+        name: 'Lean Six Sigma Black Belt',
+        issuer: 'ASQ',
+        date: '2020'
+      }
+    ],
+    awards: [],
+    achievements: [],
+    publications: [],
+    memberships: [],
+    clearance: [],
+    references: [],
+    teaching: [],
+    additional: [],
+    languages: [],
+    interests: []
+  },
+
+  teacher: {
+    name: 'Dr. Jennifer Wilson',
+    title: 'Associate Professor of Computer Science',
+    email: 'jennifer.wilson@university.edu',
+    phone: '+1 (555) 789-0123',
+    location: 'Boston, MA',
+    summary: 'Dedicated educator and researcher with 10+ years of experience in computer science education. Passionate about inspiring students and advancing knowledge in artificial intelligence and machine learning.',
+    experience: [
+      {
+        title: 'Associate Professor',
+        company: 'MIT',
+        startDate: '2019',
+        endDate: 'Present',
+        achievements: [
+          'Published 25+ peer-reviewed papers in top-tier conferences',
+          'Secured $2M in research grants for AI and ML projects',
+          'Mentored 15 graduate students and 5 postdoctoral researchers'
+        ]
+      },
+      {
+        title: 'Assistant Professor',
+        company: 'Stanford University',
+        startDate: '2016',
+        endDate: '2019',
+        achievements: [
+          'Taught advanced courses in AI, ML, and Data Structures',
+          'Developed innovative curriculum for 5 new courses',
+          'Received Outstanding Teaching Award for 3 consecutive years'
+        ]
+      }
+    ],
+    education: [
+      {
+        degree: 'PhD in Computer Science',
+        institution: 'MIT',
+        graduationYear: '2016'
+      },
+      {
+        degree: 'Master of Science in Computer Science',
+        institution: 'MIT',
+        graduationYear: '2012'
+      },
+      {
+        degree: 'Bachelor of Science in Computer Science',
+        institution: 'Stanford University',
+        graduationYear: '2010'
+      }
+    ],
+    skills: [
+      'Machine Learning', 'Artificial Intelligence', 'Python', 'TensorFlow',
+      'Research Methods', 'Curriculum Development', 'Student Mentoring',
+      'Academic Writing', 'Grant Writing', 'Conference Presentations',
+      'Statistical Analysis', 'Deep Learning', 'Natural Language Processing'
+    ],
+    projects: [
+      {
+        name: 'AI Ethics Research',
+        description: 'Leading research on ethical implications of AI systems',
+        technologies: ['Machine Learning', 'Ethics', 'Research']
+      },
+      {
+        name: 'Educational Technology Platform',
+        description: 'Developed AI-powered learning platform for computer science education',
+        technologies: ['AI', 'Education Technology', 'Python']
+      }
+    ],
+    certifications: [
+      {
+        name: 'Teaching Excellence Certificate',
+        issuer: 'Center for Teaching and Learning',
+        date: '2020'
+      }
+    ],
+    awards: [
+      {
+        name: 'Outstanding Teaching Award',
+        issuer: 'MIT Department of Computer Science',
+        date: '2022'
+      },
+      {
+        name: 'Best Paper Award',
+        issuer: 'International Conference on Machine Learning',
+        date: '2021'
+      }
+    ],
+    achievements: [
+      'Published 40+ peer-reviewed papers in top-tier venues',
+      'Secured $5M+ in research funding',
+      'Graduated 20+ PhD students who now work at leading tech companies'
+    ],
+    publications: [
+      {
+        title: 'Ethical Considerations in Machine Learning Systems',
+        journal: 'Nature Machine Intelligence',
+        date: '2023'
+      },
+      {
+        title: 'Advances in Deep Learning for Natural Language Processing',
+        journal: 'Journal of Machine Learning Research',
+        date: '2022'
+      }
+    ],
+    memberships: [
+      {
+        organization: 'Association for Computing Machinery',
+        role: 'Senior Member',
+        date: '2020-Present'
+      },
+      {
+        organization: 'IEEE Computer Society',
+        role: 'Member',
+        date: '2015-Present'
+      }
+    ],
+    clearance: [],
+    references: [
+      {
+        name: 'Dr. Robert Chen',
+        title: 'Professor and Department Head',
+        company: 'MIT Computer Science',
+        email: 'robert.chen@mit.edu',
+        phone: '+1 (555) 123-4567'
+      },
+      {
+        name: 'Dr. Sarah Johnson',
+        title: 'Research Director',
+        company: 'Stanford AI Lab',
+        email: 'sarah.johnson@stanford.edu',
+        phone: '+1 (555) 987-6543'
+      }
+    ],
+    teaching: [
+      {
+        course: 'Introduction to Artificial Intelligence',
+        institution: 'MIT',
+        date: '2020-Present',
+        description: 'Undergraduate course covering fundamental AI concepts and applications'
+      },
+      {
+        course: 'Advanced Machine Learning',
+        institution: 'MIT',
+        date: '2019-Present',
+        description: 'Graduate-level course on advanced ML algorithms and techniques'
+      }
+    ],
+    additional: [],
+    languages: ['English', 'Spanish'],
+    interests: ['AI Ethics', 'Educational Technology', 'Research Mentoring']
+  },
+
+  federal: {
+    name: 'Federal Government',
+    title: 'Senior Data Analyst',
+    email: 'federal.analyst@email.com',
+    phone: '+1 (555) 111-2222',
+    location: 'Washington, DC',
+    summary: 'Experienced data analyst with 7+ years of experience in federal government. Specialized in data visualization, statistical analysis, and policy analysis. Proven track record of delivering actionable insights to senior leadership.',
+    experience: [
+      {
+        title: 'Senior Data Analyst',
+        company: 'Department of Defense',
+        startDate: '2020',
+        endDate: 'Present',
+        achievements: [
+          'Developed interactive dashboards for strategic decision-making',
+          'Led data-driven analysis for national security initiatives',
+          'Managed team of 5 analysts and improved data processing efficiency'
+        ]
+      },
+      {
+        title: 'Data Analyst',
+        company: 'National Security Agency',
+        startDate: '2018',
+        endDate: '2020',
+        achievements: [
+          'Conducted detailed statistical analysis for intelligence reports',
+          'Developed predictive models for threat detection',
+          'Optimized data processing pipelines for 24/7 operations'
+        ]
+      }
+    ],
+    education: [
+      {
+        degree: 'Bachelor of Science in Computer Science',
+        institution: 'University of Technology',
+        graduationYear: '2018',
+        gpa: '3.7'
+      }
+    ],
+    skills: [
+      'Python', 'R', 'SQL', 'Data Visualization', 'Statistical Analysis',
+      'Machine Learning', 'Policy Analysis', 'Data Processing', 'Data Security',
+      'Data Modeling', 'Data Reporting', 'Data Integration'
+    ],
+    projects: [
+      {
+        name: 'Intelligence Dashboard',
+        description: 'Developed interactive dashboard for real-time threat monitoring',
+        technologies: ['Python', 'Dash', 'Plotly']
+      },
+      {
+        name: 'Data Pipeline Optimization',
+        description: 'Optimized data processing pipeline for 24/7 operations',
+        technologies: ['Python', 'Apache Kafka', 'AWS']
+      }
+    ],
+    certifications: [
+      {
+        name: 'Federal Government Data Analyst',
+        issuer: 'Department of Defense',
+        date: '2023'
+      },
+      {
+        name: 'Data Security Certification',
+        issuer: 'National Security Agency',
+        date: '2022'
+      }
+    ],
+    awards: [
+      {
+        name: 'Outstanding Analyst Award',
+        issuer: 'Department of Defense',
+        date: '2023'
+      },
+      {
+        name: 'Innovation in Data Analysis',
+        issuer: 'National Security Agency',
+        date: '2022'
+      }
+    ],
+    achievements: [
+      {
+        title: 'Data Insights',
+        description: 'Delivered actionable insights to senior leadership',
+        metrics: '100+ actionable insights'
+      },
+      {
+        title: 'Process Efficiency',
+        description: 'Improved data processing efficiency by 50%',
+        metrics: '50% efficiency increase'
+      }
+    ],
+    memberships: [
+      {
+        organization: 'Association for Computing Machinery',
+        role: 'Member',
+        date: '2018-Present'
+      },
+      {
+        organization: 'National Security Agency',
+        role: 'Employee',
+        date: '2018-Present'
+      }
+    ],
+    references: [
+      {
+        name: 'Dr. Maria Rodriguez',
+        title: 'Senior Data Scientist',
+        company: 'Tech Analytics Corp',
+        email: 'maria.rodriguez@techanalytics.com',
+        phone: '+1 (555) 321-6540'
+      },
+      {
+        name: 'David Wilson',
+        title: 'Senior Product Manager',
+        company: 'TechStart Inc.',
+        email: 'david.wilson@techstart.com',
+        phone: '+1 (555) 234-5678'
+      }
+    ],
+    teaching: [],
+    additional: [],
+    languages: [],
+    interests: []
   }
 };
 
