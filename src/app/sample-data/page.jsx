@@ -38,7 +38,7 @@ function SampleDataContent() {
         </div>
 
         {/* Template Selection */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <h2 className="text-2xl font-bold text-card-foreground mb-4">Select Template</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
             {['modern', 'classic', 'creative', 'minimal', 'tech', 'academic', 'startup', 'federal'].map((template) => (
@@ -56,10 +56,32 @@ function SampleDataContent() {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Professions Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {/* Empty Template Option */}
+          <div
+            className="bg-card rounded-lg shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer group transform hover:-translate-y-2 border border-border"
+            onClick={() => router.push(`/editor?template=${selectedTemplate}`)}
+          >
+            <div className="p-6">
+              <div className="text-4xl mb-4">📝</div>
+              <h3 className="text-xl font-bold text-card-foreground mb-2">
+                Start with an empty template
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Begin with a blank canvas and add your own content
+              </p>
+              <div className="flex items-center text-blue-600 group-hover:text-blue-700 transition-colors">
+                <span className="font-medium">Get Started</span>
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
           {professions.map((profession) => (
             <div
               key={profession}
@@ -134,7 +156,8 @@ function getProfessionIcon(profession) {
     'designer': '🎨',
     'consultant': '💼',
     'teacher': '📚',
-    'federal': '🏛️'
+    'federal': '🏛️',
+    'digital-marketing': '📱'
   };
   return icons[profession] || '👤';
 }
@@ -147,7 +170,8 @@ function getProfessionDescription(profession) {
     'designer': 'UI/UX design, creative direction, and user experience',
     'consultant': 'Business strategy, process optimization, and client management',
     'teacher': 'Educational leadership, curriculum development, and student engagement',
-    'federal': 'Government policy, regulatory compliance, and public service'
+    'federal': 'Government policy, regulatory compliance, and public service',
+    'digital-marketing': 'Digital strategy, social media marketing, and performance optimization'
   };
   return descriptions[profession] || 'Professional experience and achievements';
 }

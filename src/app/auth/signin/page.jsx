@@ -9,6 +9,7 @@ export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false)
   const [session, setSession] = useState(null)
   const [providers, setProviders] = useState({})
+  const [providersLoading, setProvidersLoading] = useState(true)
 
   useEffect(() => {
     getSession().then((session) => {
@@ -28,8 +29,14 @@ export default function SignIn() {
     // Fetch available providers
     fetch('/api/auth/providers')
       .then(res => res.json())
-      .then(data => setProviders(data))
-      .catch(err => console.error('Error fetching providers:', err))
+      .then(data => {
+        setProviders(data)
+        setProvidersLoading(false)
+      })
+      .catch(err => {
+        console.error('Error fetching providers:', err)
+        setProvidersLoading(false)
+      })
   }, [router])
 
   const handleSignIn = async (provider) => {
@@ -52,6 +59,18 @@ export default function SignIn() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-2 text-muted-foreground">Redirecting...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Show loading state while providers are being fetched
+  if (providersLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-2 text-muted-foreground">Loading...</p>
         </div>
       </div>
     )

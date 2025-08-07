@@ -914,7 +914,177 @@ export const sampleData = {
   },
   'consultant': sampleResumeData.consultant,
   'teacher': sampleResumeData.teacher,
-  'federal': sampleResumeData.federal
+  'federal': sampleResumeData.federal,
+  'digital-marketing': {
+    personal: {
+      name: 'Priya Sharma',
+      title: 'Senior Digital Marketing Manager',
+      email: 'priya.sharma@digital.com',
+      phone: '+1 (555) 234-5678',
+      location: 'Mumbai, India',
+      summary: 'Dynamic digital marketing professional with 8+ years of experience in digital strategy, social media marketing, and performance optimization. Proven track record of driving brand awareness and increasing conversion rates through data-driven campaigns.',
+      linkedin: 'linkedin.com/in/priyasharma',
+      website: 'priyasharma.digital'
+    },
+    experience: [
+      {
+        title: 'Senior Digital Marketing Manager',
+        company: 'Digital Growth Agency',
+        startDate: '2021',
+        endDate: 'Present',
+        achievements: [
+          'Increased client revenue by 300% through comprehensive digital marketing strategies',
+          'Managed 50+ client accounts with combined budget of $2M+',
+          'Led team of 12 digital marketing specialists across multiple channels'
+        ]
+      },
+      {
+        title: 'Digital Marketing Specialist',
+        company: 'E-commerce Solutions Ltd.',
+        startDate: '2019',
+        endDate: '2021',
+        achievements: [
+          'Improved conversion rates by 45% through A/B testing and optimization',
+          'Increased organic traffic by 200% through SEO and content marketing',
+          'Reduced cost per acquisition by 30% through targeted campaigns'
+        ]
+      }
+    ],
+    education: [
+      {
+        degree: 'Master of Business Administration in Marketing',
+        institution: 'Indian School of Business',
+        gpa: '3.8'
+      },
+      {
+        degree: 'Bachelor of Commerce in Marketing',
+        institution: 'Delhi University',
+        gpa: '3.7'
+      }
+    ],
+    skills: [
+      'Digital Marketing Strategy', 'Social Media Marketing', 'Google Ads', 'Facebook Ads',
+      'SEO/SEM', 'Content Marketing', 'Email Marketing', 'Marketing Automation',
+      'Google Analytics', 'Data Analysis', 'Conversion Optimization', 'Brand Management',
+      'Influencer Marketing', 'Video Marketing', 'Mobile Marketing', 'E-commerce Marketing'
+    ],
+    projects: [
+      {
+        name: 'E-commerce Brand Launch Campaign',
+        description: 'Led complete digital marketing campaign for new e-commerce brand, achieving 500% ROI in first quarter',
+        technologies: ['Google Ads', 'Facebook Ads', 'Instagram Marketing', 'Email Marketing']
+      },
+      {
+        name: 'B2B Lead Generation Program',
+        description: 'Developed and executed B2B lead generation strategy generating 200+ qualified leads monthly',
+        technologies: ['LinkedIn Ads', 'Content Marketing', 'Email Automation', 'CRM Integration']
+      }
+    ],
+    certifications: [
+      {
+        name: 'Google Ads Certification',
+        issuer: 'Google',
+        date: '2023'
+      },
+      {
+        name: 'Facebook Blueprint Certification',
+        issuer: 'Meta',
+        date: '2023'
+      },
+      {
+        name: 'HubSpot Marketing Certification',
+        issuer: 'HubSpot Academy',
+        date: '2022'
+      },
+      {
+        name: 'Google Analytics Individual Qualification',
+        issuer: 'Google',
+        date: '2022'
+      }
+    ],
+    awards: [
+      {
+        name: 'Digital Marketing Excellence Award',
+        issuer: 'Digital Marketing Association of India',
+        date: '2023'
+      },
+      {
+        name: 'Best Performance Marketing Campaign',
+        issuer: 'Marketing Excellence Awards',
+        date: '2022'
+      }
+    ],
+    achievements: [
+      'Successfully managed campaigns with total ad spend of $5M+ annually',
+      'Increased client base from 10 to 50+ within 2 years',
+      'Achieved average 400% ROI across all digital marketing campaigns',
+      'Reduced client churn rate by 60% through improved customer retention strategies'
+    ],
+    publications: [
+      {
+        title: 'The Future of Digital Marketing in India',
+        journal: 'Digital Marketing Today',
+        authors: 'Priya Sharma',
+        date: '2023'
+      },
+      {
+        title: 'Effective Social Media Strategies for B2B Companies',
+        journal: 'Marketing Insights',
+        authors: 'Priya Sharma, Rahul Verma',
+        date: '2022'
+      }
+    ],
+    memberships: [
+      {
+        organization: 'Digital Marketing Association of India',
+        period: '2020-Present'
+      },
+      {
+        organization: 'American Marketing Association',
+        period: '2021-Present'
+      }
+    ],
+    clearance: [],
+    references: [
+      {
+        name: 'Rajesh Kumar',
+        title: 'CEO',
+        organization: 'Digital Growth Agency',
+        phone: '+91 98765-43210',
+        email: 'rajesh.kumar@digitalgrowth.com'
+      },
+      {
+        name: 'Anita Patel',
+        title: 'Marketing Director',
+        organization: 'E-commerce Solutions Ltd.',
+        phone: '+91 87654-32109',
+        email: 'anita.patel@ecommerce.com'
+      }
+    ],
+    teaching: [
+      {
+        name: 'Digital Marketing Fundamentals',
+        institution: 'Digital Marketing Institute',
+        period: '2022-Present'
+      }
+    ],
+    additional: [
+      {
+        title: 'Industry Speaker',
+        content: 'Regular speaker at digital marketing conferences and webinars across India'
+      },
+      {
+        title: 'Mentor',
+        content: 'Mentoring 20+ junior digital marketers and helping them grow their careers'
+      }
+    ],
+    languages: [
+      { language: 'English', proficiency: 'Native' },
+      { language: 'Hindi', proficiency: 'Native' },
+      { language: 'Gujarati', proficiency: 'Fluent' }
+    ],
+    interests: ['Digital Marketing Trends', 'Social Media Strategy', 'Performance Marketing', 'E-commerce Growth']
+  }
 };
 
 // Default resume data
