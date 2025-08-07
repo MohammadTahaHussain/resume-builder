@@ -92,7 +92,7 @@ const PDFDownloader = ({ resumeData, templateType, templateName, className }) =>
         const FederalTemplate = require("./templates/FederalTemplate").default;
         return <FederalTemplate data={data} />;
       default:
-        const DefaultTemplate = require("./templates/ModernTemplate").default;
+        const DefaultTemplate = require("./templates/ClassicTemplate").default;
         return <DefaultTemplate data={data} />;
     }
   };

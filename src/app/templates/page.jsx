@@ -99,13 +99,13 @@ export default function TemplatesPage() {
         {/* Call to Action */}
         <div className="text-center mt-12">
           <p className="text-muted-foreground mb-4">
-            Can't decide? Start with our Modern template - it's perfect for most industries!
+            Can't decide? Start with our Classic Executive template - it's perfect for most industries!
           </p>
           <button
-            onClick={() => handleTemplateSelect('modern')}
+            onClick={() => handleTemplateSelect('classic')}
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform"
           >
-            Start with Modern Template
+            Start with Classic Template
           </button>
         </div>
       </div>

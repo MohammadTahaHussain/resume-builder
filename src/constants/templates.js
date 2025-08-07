@@ -1,20 +1,6 @@
 // Template configurations
 export const templates = [
   {
-    id: 'modern',
-    name: 'Modern Professional',
-    description: 'Clean and contemporary design perfect for tech and creative industries',
-    category: 'Professional',
-    features: ['ATS Optimized', 'Clean Layout', 'Professional Colors'],
-    difficulty: 'Easy',
-    preview: '/api/placeholder/400/500',
-    colors: {
-      primary: '#3B82F6',
-      secondary: '#1E40AF',
-      accent: '#10B981'
-    }
-  },
-  {
     id: 'classic',
     name: 'Classic Executive',
     description: 'Traditional layout ideal for corporate and executive positions',
@@ -26,6 +12,20 @@ export const templates = [
       primary: '#374151',
       secondary: '#1F2937',
       accent: '#6B7280'
+    }
+  },
+  {
+    id: 'modern',
+    name: 'Modern Professional',
+    description: 'Clean and contemporary design perfect for tech and creative industries',
+    category: 'Professional',
+    features: ['ATS Optimized', 'Clean Layout', 'Professional Colors'],
+    difficulty: 'Easy',
+    preview: '/api/placeholder/400/500',
+    colors: {
+      primary: '#3B82F6',
+      secondary: '#1E40AF',
+      accent: '#10B981'
     }
   },
   {

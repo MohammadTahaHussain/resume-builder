@@ -21,7 +21,7 @@ function EditorContent() {
   const router = useRouter();
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("personal");
-  const [currentTemplate, setCurrentTemplate] = useState("modern");
+  const [currentTemplate, setCurrentTemplate] = useState("classic");
   const [isSaving, setIsSaving] = useState(false);
   const [lastModified, setLastModified] = useState(null);
   const [resumeData, setResumeData] = useState({
@@ -51,7 +51,7 @@ function EditorContent() {
   });
 
   useEffect(() => {
-    const template = searchParams.get("template") || "modern";
+    const template = searchParams.get("template") || "classic";
     const profession = searchParams.get("profession");
     const resumeId = searchParams.get("id");
 
@@ -185,7 +185,7 @@ function EditorContent() {
       case "federal":
         return <FederalTemplate data={resumeData} />;
       default:
-        return <ModernTemplate data={resumeData} />;
+        return <ClassicTemplate data={resumeData} />;
     }
   };
 

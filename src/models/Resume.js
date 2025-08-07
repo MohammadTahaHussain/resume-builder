@@ -14,7 +14,7 @@ const resumeSchema = new mongoose.Schema({
   template: {
     type: String,
     required: true,
-    default: 'modern'
+    default: 'classic'
   },
   data: {
     personal: {

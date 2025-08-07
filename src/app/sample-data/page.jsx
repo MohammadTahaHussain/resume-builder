@@ -8,7 +8,7 @@ function SampleDataContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedProfession, setSelectedProfession] = useState('');
-  const [selectedTemplate, setSelectedTemplate] = useState('modern');
+  const [selectedTemplate, setSelectedTemplate] = useState('classic');
 
   useEffect(() => {
     const template = searchParams.get('template');

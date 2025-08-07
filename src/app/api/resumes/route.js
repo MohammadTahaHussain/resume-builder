@@ -96,7 +96,7 @@ export async function POST(request) {
     const resume = new Resume({
       userId: userId,
       title: title || 'My Resume',
-      template: template || 'modern',
+      template: template || 'classic',
       data: transformedData,
     })
     

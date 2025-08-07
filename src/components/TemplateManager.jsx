@@ -30,7 +30,7 @@ const TemplateManager = forwardRef(({ templateType, data, isForPDF = false }, re
       case 'federal':
         return <FederalTemplate data={data} />;
       default:
-        return <ModernTemplate data={data} />;
+        return <ClassicTemplate data={data} />;
     }
   };
 
