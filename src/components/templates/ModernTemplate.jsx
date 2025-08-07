@@ -351,7 +351,7 @@ const ModernTemplate = ({ data }) => {
                         key={index}
                         className="bg-emerald-100 text-emerald-800 px-2 py-1 rounded text-xs font-medium"
                       >
-                        {typeof language === 'string' ? language : `${language.name}${language.proficiency ? ` (${language.proficiency})` : ''}`}
+                        {typeof language === 'string' ? language : `${language.language}${language.proficiency ? ` (${language.proficiency})` : ''}`}
                       </span>
                     ))}
                   </div>

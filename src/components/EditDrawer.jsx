@@ -1214,13 +1214,28 @@ const EditDrawer = ({
             <div className="space-y-3">
               <input
                 type="text"
-                value={typeof language === 'string' ? language : (language.name || "")}
-                onChange={(e) =>
-                  handleArrayChange("languages", index, e.target.value)
-                }
+                value={typeof language === 'string' ? language : (language.language || "")}
+                onChange={(e) => {
+                  const newValue = typeof language === 'string' 
+                    ? e.target.value 
+                    : { ...language, language: e.target.value };
+                  handleArrayChange("languages", index, { update: newValue });
+                }}
                 className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
                 placeholder="Language (e.g., English, Spanish, French)"
               />
+              {typeof language === 'object' && (
+                <input
+                  type="text"
+                  value={language.proficiency || ""}
+                  onChange={(e) => {
+                    const newValue = { ...language, proficiency: e.target.value };
+                    handleArrayChange("languages", index, { update: newValue });
+                  }}
+                  className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground"
+                  placeholder="Proficiency (e.g., Native, Fluent, Intermediate)"
+                />
+              )}
             </div>
           </div>
         ))}

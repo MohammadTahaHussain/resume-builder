@@ -268,9 +268,18 @@ export const sampleResumeData = {
       }
     ],
     achievements: [
-      'Successfully raised $15M in total funding across 3 companies',
-      'Built and led teams of 50+ employees across multiple ventures',
-      'Achieved 10x revenue growth in 2 years for current startup'
+      {
+        title: 'Successfully raised $15M in total funding across 3 companies',
+        description: 'Secured funding from top-tier VCs and angel investors'
+      },
+      {
+        title: 'Built and led teams of 50+ employees across multiple ventures',
+        description: 'Managed cross-functional teams in engineering, sales, and operations'
+      },
+      {
+        title: 'Achieved 10x revenue growth in 2 years for current startup',
+        description: 'Scaled business from $100K to $1M+ in annual recurring revenue'
+      }
     ],
     publications: [
       {
@@ -298,7 +307,9 @@ export const sampleResumeData = {
     ],
     teaching: [],
     additional: [],
-    languages: ['English'],
+    languages: [
+      { language: 'English', proficiency: 'Native' }
+    ],
     interests: ['Startup Ecosystem', 'Innovation', 'Venture Capital']
   },
 
@@ -416,7 +427,10 @@ export const sampleResumeData = {
     ],
     teaching: [],
     additional: [],
-    languages: ['English', 'Mandarin'],
+    languages: [
+      { language: 'English', proficiency: 'Native' },
+      { language: 'Mandarin', proficiency: 'Fluent' }
+    ],
     interests: ['Business Strategy', 'Digital Transformation', 'Organizational Development']
   },
 
@@ -514,9 +528,18 @@ export const sampleResumeData = {
       }
     ],
     achievements: [
-      'Published 25+ peer-reviewed articles in top education journals',
-      'Secured $1.2M in research funding for educational innovation projects',
-      'Developed 3 new courses with 95% student satisfaction ratings'
+      {
+        title: 'Published 25+ peer-reviewed articles in top education journals',
+        description: 'Contributed to leading publications in educational technology and pedagogy'
+      },
+      {
+        title: 'Secured $1.2M in research funding for educational innovation projects',
+        description: 'Successfully obtained grants from NSF and private foundations'
+      },
+      {
+        title: 'Developed 3 new courses with 95% student satisfaction ratings',
+        description: 'Created innovative curriculum integrating technology and inclusive practices'
+      }
     ],
     publications: [
       {
@@ -572,7 +595,10 @@ export const sampleResumeData = {
       }
     ],
     additional: [],
-    languages: ['English', 'Spanish'],
+    languages: [
+      { language: 'English', proficiency: 'Native' },
+      { language: 'Spanish', proficiency: 'Fluent' }
+    ],
     interests: ['Educational Innovation', 'Digital Learning', 'Inclusive Education']
   },
 
@@ -703,7 +729,9 @@ export const sampleResumeData = {
     ],
     teaching: [],
     additional: [],
-    languages: ['English'],
+    languages: [
+      { language: 'English', proficiency: 'Native' }
+    ],
     interests: ['Federal Policy', 'Cybersecurity', 'Infrastructure Development']
   }
 };
@@ -777,7 +805,9 @@ export const sampleData = {
     references: [],
     teaching: [],
     additional: [],
-    languages: [],
+    languages: [
+      { language: 'English', proficiency: 'Native' }
+    ],
     interests: []
   },
   'product-manager': {
@@ -826,7 +856,9 @@ export const sampleData = {
     references: [],
     teaching: [],
     additional: [],
-    languages: [],
+    languages: [
+      { language: 'English', proficiency: 'Native' }
+    ],
     interests: []
   },
   'designer': {
@@ -875,7 +907,9 @@ export const sampleData = {
     references: [],
     teaching: [],
     additional: [],
-    languages: [],
+    languages: [
+      { language: 'English', proficiency: 'Native' }
+    ],
     interests: []
   },
   'consultant': sampleResumeData.consultant,

@@ -440,7 +440,7 @@ const AcademicTemplate = ({ data }) => {
                   key={index}
                   className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
                 >
-                  {typeof language === 'string' ? language : `${language.name}${language.proficiency ? ` (${language.proficiency})` : ''}`}
+                  {typeof language === 'string' ? language : `${language.language}${language.proficiency ? ` (${language.proficiency})` : ''}`}
                 </span>
               ))}
             </div>

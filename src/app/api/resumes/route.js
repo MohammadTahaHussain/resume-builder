@@ -68,14 +68,28 @@ export async function POST(request) {
       projects: data.projects || [],
       certifications: data.certifications || [],
       awards: data.awards || [],
-      achievements: data.achievements || [],
+      achievements: (data.achievements || []).map(achievement => {
+        // If achievement is a string, convert to object format
+        if (typeof achievement === 'string') {
+          return { title: achievement, description: '' };
+        }
+        // If it's already an object, return as is
+        return achievement;
+      }),
       publications: data.publications || [],
       memberships: data.memberships || [],
       clearance: data.clearance || [],
       references: data.references || [],
       teaching: data.teaching || [],
       additional: data.additional || [],
-      languages: data.languages || [],
+      languages: (data.languages || []).map(language => {
+        // If language is a string, convert to object format
+        if (typeof language === 'string') {
+          return { language: language, proficiency: 'Fluent' };
+        }
+        // If it's already an object, return as is
+        return language;
+      }),
       interests: data.interests || []
     }
     

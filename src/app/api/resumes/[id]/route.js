@@ -81,14 +81,14 @@ export async function PUT(request, { params }) {
     // Transform the data to match our schema
     const transformedData = {
       personal: {
-        name: body.data?.name || '',
-        title: body.data?.title || '',
-        email: body.data?.email || '',
-        phone: body.data?.phone || '',
-        location: body.data?.location || '',
-        summary: body.data?.summary || '',
-        linkedin: body.data?.linkedin || '',
-        website: body.data?.website || '',
+        name: body.data?.personal?.name || '',
+        title: body.data?.personal?.title || '',
+        email: body.data?.personal?.email || '',
+        phone: body.data?.personal?.phone || '',
+        location: body.data?.personal?.location || '',
+        summary: body.data?.personal?.summary || '',
+        linkedin: body.data?.personal?.linkedin || '',
+        website: body.data?.personal?.website || '',
       },
       experience: body.data?.experience || [],
       education: body.data?.education || [],
@@ -96,14 +96,28 @@ export async function PUT(request, { params }) {
       projects: body.data?.projects || [],
       certifications: body.data?.certifications || [],
       awards: body.data?.awards || [],
-      achievements: body.data?.achievements || [],
+      achievements: (body.data?.achievements || []).map(achievement => {
+        // If achievement is a string, convert to object format
+        if (typeof achievement === 'string') {
+          return { title: achievement, description: '' };
+        }
+        // If it's already an object, return as is
+        return achievement;
+      }),
       publications: body.data?.publications || [],
       memberships: body.data?.memberships || [],
       clearance: body.data?.clearance || [],
       references: body.data?.references || [],
       teaching: body.data?.teaching || [],
       additional: body.data?.additional || [],
-      languages: body.data?.languages || [],
+      languages: (body.data?.languages || []).map(language => {
+        // If language is a string, convert to object format
+        if (typeof language === 'string') {
+          return { language: language, proficiency: 'Fluent' };
+        }
+        // If it's already an object, return as is
+        return language;
+      }),
       interests: body.data?.interests || []
     }
     

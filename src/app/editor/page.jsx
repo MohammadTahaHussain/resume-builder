@@ -19,17 +19,19 @@ function EditorContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('personal');
-  const [currentTemplate, setCurrentTemplate] = useState('modern');
+  const [activeSection, setActiveSection] = useState("personal");
+  const [currentTemplate, setCurrentTemplate] = useState("modern");
+  const [isSaving, setIsSaving] = useState(false);
+  const [lastModified, setLastModified] = useState(null);
   const [resumeData, setResumeData] = useState({
-    name: '',
-    title: '',
-    email: '',
-    phone: '',
-    location: '',
-    summary: '',
-    linkedin: '',
-    website: '',
+    name: "",
+    title: "",
+    email: "",
+    phone: "",
+    location: "",
+    summary: "",
+    linkedin: "",
+    website: "",
     experience: [],
     education: [],
     skills: [],
@@ -44,13 +46,13 @@ function EditorContent() {
     teaching: [],
     additional: [],
     languages: [],
-    interests: []
+    interests: [],
   });
 
   useEffect(() => {
-    const template = searchParams.get('template') || 'modern';
-    const profession = searchParams.get('profession');
-    const resumeId = searchParams.get('id');
+    const template = searchParams.get("template") || "modern";
+    const profession = searchParams.get("profession");
+    const resumeId = searchParams.get("id");
 
     if (resumeId) {
       // Load existing resume
@@ -71,34 +73,40 @@ function EditorContent() {
       if (response.ok) {
         const resume = await response.json();
         setResumeData(resume.data);
-        
+
         // Pick template from backend resume data if available
         if (resume.template) {
           setCurrentTemplate(resume.template);
         }
+
+        // Set last modified time
+        if (resume.updatedAt) {
+          setLastModified(new Date(resume.updatedAt));
+        }
       }
     } catch (error) {
-      console.error('Error fetching resume:', error);
+      console.error("Error fetching resume:", error);
     }
   };
 
   const handleDataUpdate = (newData) => {
-    setResumeData(prev => ({ ...prev, ...newData }));
+    setResumeData((prev) => ({ ...prev, ...newData }));
   };
 
   const handleSaveResume = async () => {
     try {
-      const resumeId = searchParams.get('id');
-      const method = resumeId ? 'PUT' : 'POST';
-      const url = resumeId ? `/api/resumes/${resumeId}` : '/api/resumes';
-      
+      setIsSaving(true);
+      const resumeId = searchParams.get("id");
+      const method = resumeId ? "PUT" : "POST";
+      const url = resumeId ? `/api/resumes/${resumeId}` : "/api/resumes";
+
       const response = await fetch(url, {
         method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          title: resumeData.personal?.name || resumeData.name || 'My Resume',
+          title: resumeData.personal?.name || resumeData.name || "My Resume",
           template: currentTemplate,
           data: resumeData,
         }),
@@ -106,14 +114,38 @@ function EditorContent() {
 
       if (response.ok) {
         const savedResume = await response.json();
+        // Update last modified time
+        setLastModified(new Date());
+        
         if (!resumeId) {
           // Only redirect if it's a new resume
           router.push(`/editor?id=${savedResume._id}`);
         }
       }
     } catch (error) {
-      console.error('Error saving resume:', error);
+      console.error("Error saving resume:", error);
+    } finally {
+      setIsSaving(false);
     }
+  };
+
+  // Helper function to format last modified time
+  const formatLastModified = (date) => {
+    if (!date) return null;
+    
+    const now = new Date();
+    const diffInMinutes = Math.floor((now - date) / (1000 * 60));
+    
+    if (diffInMinutes < 1) return "Just now";
+    if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
+    
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `${diffInHours} hours ago`;
+    
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7) return `${diffInDays} days ago`;
+    
+    return date.toLocaleDateString();
   };
 
   // Calculate stats
@@ -132,24 +164,24 @@ function EditorContent() {
     teaching: resumeData.teaching?.length || 0,
     additional: resumeData.additional?.length || 0,
     languages: resumeData.languages?.length || 0,
-    interests: resumeData.interests?.length || 0
+    interests: resumeData.interests?.length || 0,
   };
 
   const renderTemplate = () => {
     switch (currentTemplate) {
-      case 'classic':
+      case "classic":
         return <ClassicTemplate data={resumeData} />;
-      case 'creative':
+      case "creative":
         return <CreativeTemplate data={resumeData} />;
-      case 'minimal':
+      case "minimal":
         return <MinimalTemplate data={resumeData} />;
-      case 'tech':
+      case "tech":
         return <TechTemplate data={resumeData} />;
-      case 'academic':
+      case "academic":
         return <AcademicTemplate data={resumeData} />;
-      case 'startup':
+      case "startup":
         return <StartupTemplate data={resumeData} />;
-      case 'federal':
+      case "federal":
         return <FederalTemplate data={resumeData} />;
       default:
         return <ModernTemplate data={resumeData} />;
@@ -165,14 +197,26 @@ function EditorContent() {
           <div className="hidden lg:flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => router.push('/dashboard')}
+                onClick={() => router.push("/dashboard")}
                 className="text-muted-foreground hover:text-card-foreground transition-colors"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
                 </svg>
               </button>
-              <h1 className="text-xl font-semibold text-card-foreground">Resume Editor</h1>
+              <h1 className="text-xl font-semibold text-card-foreground">
+                Resume Editor
+              </h1>
               {/* Template indicator */}
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-muted-foreground">Template:</span>
@@ -181,9 +225,9 @@ function EditorContent() {
                 </span>
               </div>
             </div>
-            
+
             {/* Stats */}
-            <div className="flex items-center space-x-6 text-sm text-muted-foreground">
+            {/* <div className="flex items-center space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <span className="font-medium">Experience:</span>
                 <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
@@ -208,20 +252,40 @@ function EditorContent() {
                   {stats.projects}
                 </span>
               </div>
-            </div>
-            
+            </div> */}
+
             <div className="flex items-center space-x-3">
               <PDFDownloader
                 resumeData={resumeData}
                 template={currentTemplate}
                 templateType={currentTemplate}
               />
-              <button
-                onClick={handleSaveResume}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Save 
-              </button>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={handleSaveResume}
+                  disabled={isSaving}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                >
+                  {isSaving ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>Saving...</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                      </svg>
+                      <span>Save progress</span>
+                    </>
+                  )}
+                </button>
+                {lastModified && (
+                  <span className="text-xs text-muted-foreground">
+                    Last saved: {formatLastModified(lastModified)}
+                  </span>
+                )}
+              </div>
               <button
                 onClick={() => setIsEditDrawerOpen(true)}
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
@@ -237,16 +301,28 @@ function EditorContent() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <button
-                  onClick={() => router.push('/dashboard')}
+                  onClick={() => router.back()}
                   className="text-muted-foreground hover:text-card-foreground transition-colors p-1"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    />
                   </svg>
                 </button>
-                <h1 className="text-lg font-semibold text-card-foreground">Resume Editor</h1>
+                <h1 className="text-lg font-semibold text-card-foreground">
+                  Resume Editor
+                </h1>
               </div>
-              
+
               {/* Template Badge */}
               <div className="flex items-center space-x-2">
                 <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium capitalize">
@@ -256,7 +332,7 @@ function EditorContent() {
             </div>
 
             {/* Stats Row */}
-            <div className="flex items-center justify-center space-x-3 text-xs">
+            {/* <div className="flex items-center justify-center space-x-3 text-xs">
               <div className="flex items-center space-x-1">
                 <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
                   {stats.experience}
@@ -281,30 +357,51 @@ function EditorContent() {
                 </span>
                 <span className="text-muted-foreground">Proj</span>
               </div>
-            </div>
+            </div> */}
 
             {/* Action Buttons Row */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <PDFDownloader
-                  resumeData={resumeData}
-                  template={currentTemplate}
-                  templateType={currentTemplate}
-                />
+            <div className="">
+              <PDFDownloader
+                className="!w-full"
+                resumeData={resumeData}
+                template={currentTemplate}
+                templateType={currentTemplate}
+              />
+              <div className="grid grid-cols-2 gap-2 mt-2">
                 <button
                   onClick={handleSaveResume}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                  disabled={isSaving}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                 >
-                  Save
+                  {isSaving ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>Saving...</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                      </svg>
+                      <span>Save progress</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  onClick={() => setIsEditDrawerOpen(true)}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+                >
+                  Edit Resume
                 </button>
               </div>
-              
-              <button
-                onClick={() => setIsEditDrawerOpen(true)}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
-              >
-                Edit Resume
-              </button>
+              {lastModified && (
+                <div className="mt-2 text-center">
+                  <span className="text-xs text-muted-foreground">
+                    Last saved: {formatLastModified(lastModified)}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -314,9 +411,7 @@ function EditorContent() {
       <div className="flex ">
         {/* Resume Preview */}
         <div className="flex-1 overflow-auto bg-white">
-          <div className="max-w-4xl mx-auto p-8">
-            {renderTemplate()}
-          </div>
+          <div className="max-w-4xl mx-auto p-8">{renderTemplate()}</div>
         </div>
 
         {/* Edit Drawer */}
@@ -330,10 +425,7 @@ function EditorContent() {
         />
 
         {/* AI Assistant */}
-        <AIAssistant 
-          resumeData={resumeData} 
-          onUpdateData={handleDataUpdate}
-        />
+        <AIAssistant resumeData={resumeData} onUpdateData={handleDataUpdate} />
       </div>
     </div>
   );

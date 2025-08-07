@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { renderToString } from "react-dom/server";
 
-const PDFDownloader = ({ resumeData, templateType, templateName }) => {
+const PDFDownloader = ({ resumeData, templateType, templateName, className }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showWatermark, setShowWatermark] = useState(true);
   const [watermarkText, setWatermarkText] = useState("ResumeAI Builder");
@@ -98,7 +98,7 @@ const PDFDownloader = ({ resumeData, templateType, templateName }) => {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4">
+    <div className={`flex flex-col items-center space-y-4 ${className}`}>
       {/* Watermark Options */}
       {/* <div className="w-full space-y-3">
         <div className="flex items-center justify-between">
