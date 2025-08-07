@@ -176,30 +176,30 @@ export const templateFeatures = [
 
 // Template recommendations based on profession
 export const professionTemplateRecommendations = {
-  'Software Engineer': ['modern', 'tech', 'minimal'],
-  'Data Scientist': ['modern', 'tech', 'academic'],
-  'Marketing Manager': ['modern', 'classic', 'creative'],
-  'Graphic Designer': ['creative', 'minimal', 'modern'],
-  'Product Manager': ['modern', 'classic', 'startup'],
-  'UX Designer': ['creative', 'minimal', 'modern'],
-  'Sales Representative': ['classic', 'modern', 'startup'],
-  'Project Manager': ['classic', 'modern', 'executive'],
-  'Business Analyst': ['classic', 'modern', 'minimal'],
-  'Research Scientist': ['academic', 'modern', 'minimal'],
-  'Entrepreneur': ['startup', 'creative', 'modern'],
-  'Government Employee': ['federal', 'classic', 'modern']
+  'Software Engineer': ['modern', 'tech', 'minimal', 'premium'],
+  'Data Scientist': ['modern', 'tech', 'academic', 'premium'],
+  'Marketing Manager': ['modern', 'classic', 'creative', 'premium'],
+  'Graphic Designer': ['creative', 'minimal', 'modern', 'premium'],
+  'Product Manager': ['modern', 'classic', 'startup', 'premium'],
+  'UX Designer': ['creative', 'minimal', 'modern', 'premium'],
+  'Sales Representative': ['classic', 'modern', 'startup', 'premium'],
+  'Project Manager': ['classic', 'modern', 'executive', 'premium'],
+  'Business Analyst': ['classic', 'modern', 'minimal', 'premium'],
+  'Research Scientist': ['academic', 'modern', 'minimal', 'premium'],
+  'Entrepreneur': ['startup', 'creative', 'modern', 'premium'],
+  'Government Employee': ['federal', 'classic', 'modern', 'premium']
 };
 
 // Template compatibility with different industries
 export const industryTemplateCompatibility = {
-  'Technology': ['modern', 'tech', 'minimal', 'creative'],
-  'Finance': ['classic', 'modern', 'executive'],
-  'Healthcare': ['classic', 'modern', 'academic'],
-  'Education': ['academic', 'modern', 'classic'],
-  'Creative': ['creative', 'minimal', 'modern'],
-  'Government': ['federal', 'classic', 'modern'],
-  'Startup': ['startup', 'modern', 'creative'],
-  'Corporate': ['classic', 'executive', 'modern'],
-  'Non-profit': ['modern', 'classic', 'minimal'],
-  'Consulting': ['classic', 'modern', 'executive']
+  'Technology': ['modern', 'tech', 'minimal', 'creative', 'premium'],
+  'Finance': ['classic', 'modern', 'executive', 'premium'],
+  'Healthcare': ['classic', 'modern', 'academic', 'premium'],
+  'Education': ['academic', 'modern', 'classic', 'premium'],
+  'Creative': ['creative', 'minimal', 'modern', 'premium'],
+  'Government': ['federal', 'classic', 'modern', 'premium'],
+  'Startup': ['startup', 'modern', 'creative', 'premium'],
+  'Corporate': ['classic', 'executive', 'modern', 'premium'],
+  'Non-profit': ['modern', 'classic', 'minimal', 'premium'],
+  'Consulting': ['classic', 'modern', 'executive', 'premium']
 }; 
