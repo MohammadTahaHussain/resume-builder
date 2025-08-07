@@ -245,7 +245,7 @@ const ModernTemplate = ({ data }) => {
                             )}
                           </div>
                           <span className="text-gray-600 font-medium text-sm whitespace-nowrap">
-                            {edu.graduationYear}
+                            {edu.endDate || 'Present'}
                           </span>
                         </div>
                       </div>

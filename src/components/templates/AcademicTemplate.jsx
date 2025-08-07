@@ -78,8 +78,8 @@ const AcademicTemplate = ({ data }) => {
                         <p className="text-gray-600">GPA: {edu.gpa}</p>
                       )}
                     </div>
-                    <span className="text-gray-600 font-medium text-lg">
-                      {edu.graduationYear}
+                    <span className="text-gray-600 font-medium text-lg whitespace-nowrap">
+                      {edu.endDate || 'Present'}
                     </span>
                   </div>
                 </div>

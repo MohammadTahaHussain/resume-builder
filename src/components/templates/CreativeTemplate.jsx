@@ -199,8 +199,8 @@ const CreativeTemplate = ({ data }) => {
                             {edu.institution}
                           </p>
                         </div>
-                        <span className="text-gray-500 text-sm bg-white px-3 py-1 rounded-full shadow-sm">
-                          {edu.graduationYear}
+                        <span className="text-gray-600 font-medium text-lg whitespace-nowrap">
+                          {edu.endDate || 'Present'}
                         </span>
                       </div>
                     </div>

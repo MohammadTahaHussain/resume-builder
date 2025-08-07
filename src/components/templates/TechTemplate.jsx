@@ -1,4 +1,7 @@
 const TechTemplate = ({ data }) => {
+  // Extract personal data with fallback to old structure for backward compatibility
+  const personal = data.personal || data;
+
   return (
     <div className="w-full overflow-x-auto max-lg:p-4">
       <div className="bg-white min-w-[700px] max-w-4xl mx-auto lg:p-8 font-mono">
@@ -6,27 +9,52 @@ const TechTemplate = ({ data }) => {
         <div className="bg-gray-900 text-white p-8 mb-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-2">
-              {data.name || 'Your Name'}
+              {personal.name || 'Your Name'}
             </h1>
             <p className="text-xl text-green-400 font-semibold mb-4">
-              {data.title || 'Software Engineer'}
+              {personal.title || 'Software Engineer'}
             </p>
             <div className="flex justify-center space-x-6 text-gray-300">
-              <span>{data.email || 'email@example.com'}</span>
-              <span>{data.phone || '+1 (555) 123-4567'}</span>
-              <span>{data.location || 'San Francisco, CA'}</span>
+              <span>{personal.email || 'email@example.com'}</span>
+              <span>{personal.phone || '+1 (555) 123-4567'}</span>
+              <span>{personal.location || 'San Francisco, CA'}</span>
             </div>
+            {/* LinkedIn and Website links */}
+            {(personal.linkedin || personal.website) && (
+              <div className="flex justify-center space-x-6 text-gray-300 mt-2">
+                {personal.linkedin && (
+                  <a 
+                    href={`https://${personal.linkedin}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-green-400 hover:text-green-300"
+                  >
+                    LinkedIn
+                  </a>
+                )}
+                {personal.website && (
+                  <a 
+                    href={`https://${personal.website}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-green-400 hover:text-green-300"
+                  >
+                    Website
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
       {/* Summary */}
-      {data.summary && (
+      {personal.summary && (
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
             Technical Summary
           </h2>
           <p className="text-gray-700 leading-relaxed">
-            {data.summary}
+            {personal.summary}
           </p>
         </div>
       )}
@@ -101,20 +129,27 @@ const TechTemplate = ({ data }) => {
                   <h3 className="text-lg font-semibold text-gray-900">
                     {project.name}
                   </h3>
-                </div>
-                <p className="text-gray-700 mb-4 leading-relaxed">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
+                  {project.url && (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-600 hover:text-green-800 font-medium"
                     >
-                      {tech}
-                    </span>
-                  ))}
+                      View Project →
+                    </a>
+                  )}
                 </div>
+                {project.technologies && (
+                  <p className="text-green-600 font-medium mb-2">
+                    {Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies}
+                  </p>
+                )}
+                {project.description && (
+                  <p className="text-gray-700 leading-relaxed">
+                    {project.description}
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -138,11 +173,11 @@ const TechTemplate = ({ data }) => {
                     {edu.institution}
                   </p>
                   {edu.gpa && (
-                    <p className="text-gray-600">GPA: {edu.gpa}</p>
+                    <p className="text-gray-600 text-sm">GPA: {edu.gpa}</p>
                   )}
                 </div>
-                <span className="text-gray-600 text-sm">
-                  {edu.graduationYear}
+                <span className="text-gray-600 font-medium text-lg whitespace-nowrap">
+                  {edu.endDate || 'Present'}
                 </span>
               </div>
             ))}
@@ -163,7 +198,7 @@ const TechTemplate = ({ data }) => {
                   {cert.name}
                 </span>
                 <span className="text-gray-600 text-sm">
-                  {cert.issuer} • {cert.date}
+                  {cert.date}
                 </span>
               </div>
             ))}
@@ -188,11 +223,11 @@ const TechTemplate = ({ data }) => {
                     {course.date}
                   </span>
                 </div>
-                <p className="text-blue-600 font-medium mb-2">
+                <p className="text-green-600 font-medium mb-2">
                   {course.institution}
                 </p>
                 {course.description && (
-                  <p className="text-gray-700 text-sm">
+                  <p className="text-gray-700 leading-relaxed">
                     {course.description}
                   </p>
                 )}
@@ -217,19 +252,21 @@ const TechTemplate = ({ data }) => {
                 <p className="text-green-600 font-medium mb-1">
                   {pub.journal}
                 </p>
-                <p className="text-gray-600 text-sm mb-2">
-                  {pub.date}
-                </p>
-                {pub.url && (
-                  <a
-                    href={pub.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800 text-sm"
-                  >
-                    View Publication →
-                  </a>
-                )}
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 text-sm">
+                    {pub.date}
+                  </span>
+                  {pub.url && (
+                    <a
+                      href={pub.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-600 hover:text-green-800 font-medium text-sm"
+                    >
+                      View Publication →
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -318,6 +355,106 @@ const TechTemplate = ({ data }) => {
                     <p>Phone: {reference.phone}</p>
                   )}
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Achievements */}
+      {data.achievements && data.achievements.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+            Achievements
+          </h2>
+          <div className="space-y-3">
+            {data.achievements.map((achievement, index) => (
+              <div key={index} className="border-l-4 border-green-600 pl-4">
+                {typeof achievement === 'string' ? (
+                  <p className="text-gray-700 leading-relaxed">
+                    {achievement}
+                  </p>
+                ) : (
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      {achievement.title}
+                    </h3>
+                    {achievement.description && (
+                      <p className="text-gray-700 leading-relaxed">
+                        {achievement.description}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Languages */}
+      {data.languages && data.languages.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+            Languages
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {data.languages.map((language, index) => (
+              <span
+                key={index}
+                className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
+              >
+                {typeof language === 'string' ? language : `${language.language}${language.proficiency ? ` (${language.proficiency})` : ''}`}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Interests */}
+      {data.interests && data.interests.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+            Interests
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {data.interests.map((interest, index) => (
+              <span
+                key={index}
+                className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"
+              >
+                {interest}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Additional Information */}
+      {data.additional && data.additional.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
+            Additional Information
+          </h2>
+          <div className="space-y-3">
+            {data.additional.map((item, index) => (
+              <div key={index} className="border-l-4 border-blue-600 pl-4">
+                {typeof item === 'string' ? (
+                  <p className="text-gray-700 leading-relaxed">
+                    {item}
+                  </p>
+                ) : (
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      {item.title}
+                    </h3>
+                    {item.content && (
+                      <p className="text-gray-700 leading-relaxed">
+                        {item.content}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
           </div>

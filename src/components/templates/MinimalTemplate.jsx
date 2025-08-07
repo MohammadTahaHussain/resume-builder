@@ -1,27 +1,55 @@
 const MinimalTemplate = ({ data }) => {
+  // Extract personal data with fallback to old structure for backward compatibility
+  const personal = data.personal || data;
+
   return (
     <div className="w-full overflow-x-auto max-lg:p-4">
       <div className="bg-white min-w-[700px] max-w-3xl mx-auto lg:p-8 font-sans">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-light text-gray-900 mb-2">
-            {data.name || 'Your Name'}
+            {personal.name || 'Your Name'}
           </h1>
           <p className="text-lg text-gray-600 mb-4">
-            {data.title || 'Professional Title'}
+            {personal.title || 'Professional Title'}
           </p>
           <div className="flex justify-center space-x-4 text-sm text-gray-500">
-            <span>{data.email || 'email@example.com'}</span>
-            <span>{data.phone || '+1 (555) 123-4567'}</span>
-            <span>{data.location || 'City, State'}</span>
+            <span>{personal.email || 'email@example.com'}</span>
+            <span>{personal.phone || '+1 (555) 123-4567'}</span>
+            <span>{personal.location || 'City, State'}</span>
           </div>
+          {/* LinkedIn and Website links */}
+          {(personal.linkedin || personal.website) && (
+            <div className="flex justify-center space-x-4 text-sm text-gray-500 mt-2">
+              {personal.linkedin && (
+                <a 
+                  href={`https://${personal.linkedin}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  LinkedIn
+                </a>
+              )}
+              {personal.website && (
+                <a 
+                  href={`https://${personal.website}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  Website
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
       {/* Summary */}
-      {data.summary && (
+      {personal.summary && (
         <div className="mb-10">
           <p className="text-gray-700 leading-relaxed text-lg text-center max-w-3xl mx-auto">
-            {data.summary}
+            {personal.summary}
           </p>
         </div>
       )}
@@ -82,7 +110,7 @@ const MinimalTemplate = ({ data }) => {
                   )}
                 </div>
                 <span className="text-gray-500 text-sm">
-                  {edu.graduationYear}
+                  {edu.endDate || 'Present'}
                 </span>
               </div>
             ))}
@@ -352,6 +380,106 @@ const MinimalTemplate = ({ data }) => {
                     <p>Phone: {reference.phone}</p>
                   )}
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Achievements */}
+      {data.achievements && data.achievements.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-2xl font-light text-gray-900 mb-6 text-center uppercase tracking-wide">
+            Achievements
+          </h2>
+          <div className="space-y-4">
+            {data.achievements.map((achievement, index) => (
+              <div key={index} className="border-l border-gray-300 pl-6">
+                {typeof achievement === 'string' ? (
+                  <p className="text-gray-700 leading-relaxed">
+                    {achievement}
+                  </p>
+                ) : (
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      {achievement.title}
+                    </h3>
+                    {achievement.description && (
+                      <p className="text-gray-700 leading-relaxed">
+                        {achievement.description}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Languages */}
+      {data.languages && data.languages.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-2xl font-light text-gray-900 mb-6 text-center uppercase tracking-wide">
+            Languages
+          </h2>
+          <div className="flex flex-wrap justify-center gap-2">
+            {data.languages.map((language, index) => (
+              <span
+                key={index}
+                className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium"
+              >
+                {typeof language === 'string' ? language : `${language.language}${language.proficiency ? ` (${language.proficiency})` : ''}`}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Interests */}
+      {data.interests && data.interests.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-2xl font-light text-gray-900 mb-6 text-center uppercase tracking-wide">
+            Interests
+          </h2>
+          <div className="flex flex-wrap justify-center gap-2">
+            {data.interests.map((interest, index) => (
+              <span
+                key={index}
+                className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium"
+              >
+                {interest}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Additional Information */}
+      {data.additional && data.additional.length > 0 && (
+        <div className="mb-10">
+          <h2 className="text-2xl font-light text-gray-900 mb-6 text-center uppercase tracking-wide">
+            Additional Information
+          </h2>
+          <div className="space-y-4">
+            {data.additional.map((item, index) => (
+              <div key={index} className="border-l border-gray-300 pl-6">
+                {typeof item === 'string' ? (
+                  <p className="text-gray-700 leading-relaxed">
+                    {item}
+                  </p>
+                ) : (
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      {item.title}
+                    </h3>
+                    {item.content && (
+                      <p className="text-gray-700 leading-relaxed">
+                        {item.content}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
           </div>

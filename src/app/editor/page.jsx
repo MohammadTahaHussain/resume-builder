@@ -14,6 +14,7 @@ import FederalTemplate from "../../components/templates/FederalTemplate";
 import AIAssistant from "../../components/AIAssistant";
 import { sampleData } from "../../constants/sampleData";
 import PDFDownloader from "@/components/PDFDownloader";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 function EditorContent() {
   const searchParams = useSearchParams();
@@ -116,7 +117,7 @@ function EditorContent() {
         const savedResume = await response.json();
         // Update last modified time
         setLastModified(new Date());
-        
+
         if (!resumeId) {
           // Only redirect if it's a new resume
           router.push(`/editor?id=${savedResume._id}`);
@@ -132,19 +133,19 @@ function EditorContent() {
   // Helper function to format last modified time
   const formatLastModified = (date) => {
     if (!date) return null;
-    
+
     const now = new Date();
     const diffInMinutes = Math.floor((now - date) / (1000 * 60));
-    
+
     if (diffInMinutes < 1) return "Just now";
     if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
-    
+
     const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInHours < 24) return `${diffInHours} hours ago`;
-    
+
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays < 7) return `${diffInDays} days ago`;
-    
+
     return date.toLocaleDateString();
   };
 
@@ -273,8 +274,18 @@ function EditorContent() {
                     </>
                   ) : (
                     <>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                        />
                       </svg>
                       <span>Save progress</span>
                     </>
@@ -380,8 +391,18 @@ function EditorContent() {
                     </>
                   ) : (
                     <>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                        />
                       </svg>
                       <span>Save progress</span>
                     </>
@@ -464,8 +485,10 @@ function EditorSkeleton() {
 
 export default function EditorPage() {
   return (
-    <Suspense fallback={<EditorSkeleton />}>
-      <EditorContent />
-    </Suspense>
+    <ProtectedRoute>
+      <Suspense fallback={<EditorSkeleton />}>
+        <EditorContent />
+      </Suspense>
+    </ProtectedRoute>
   );
 }

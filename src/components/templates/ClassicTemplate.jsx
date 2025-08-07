@@ -117,7 +117,7 @@ const ClassicTemplate = ({ data }) => {
                     )}
                   </div>
                   <span className="text-gray-600 font-medium text-lg whitespace-nowrap">
-                    {edu.graduationYear}
+                    {edu.endDate || 'Present'}
                   </span>
                 </div>
               ))}
