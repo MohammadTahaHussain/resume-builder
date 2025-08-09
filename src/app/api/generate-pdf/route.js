@@ -31,7 +31,7 @@ export async function POST(request) {
     const page = await browser.newPage();
 
     // Watermark configuration from client
-    const showWatermark = true;
+    const showWatermark = false;
     const watermarkText = "Resume Builder by Taha";
     const watermarkOpacity = "0.2"; // Very light watermark
     const watermarkColor = "#000000"; // Black color
